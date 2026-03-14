@@ -10,6 +10,8 @@
  * - int    $max_upload_mb
  * - int    $effective_max_upload_mb
  * - array  $upload_limits
+ * - array  $key_status
+ * - int    $legacy_plaintext_count
  * - string $notice
  */
 
@@ -50,6 +52,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
 			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $legacy_plaintext_count ) ) : ?>
+		<div class="notice notice-warning">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: legacy file count */
+					esc_html__( 'Detected %d legacy plaintext file(s). They are no longer served by this plugin. Migrate or remove them from uploads/wedding-gallery.', 'wedding-gallery' ),
+					(int) $legacy_plaintext_count
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( empty( $key_status['healthy'] ) ) : ?>
+		<div class="notice notice-error">
+			<p><?php esc_html_e( 'Encryption key status is unhealthy. Media uploads/downloads may fail until the key configuration is repaired.', 'wedding-gallery' ); ?></p>
 		</div>
 	<?php endif; ?>
 
@@ -103,19 +125,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</p>
 					</td>
 				</tr>
-				<tr>
-					<th scope="row">
-						<label for="max_upload_mb"><?php esc_html_e( 'Max Upload Size (MB)', 'wedding-gallery' ); ?></label>
-					</th>
-					<td>
-						<input
-							type="number"
-							id="max_upload_mb"
-							name="max_upload_mb"
-							min="1"
-							step="1"
-							value="<?php echo esc_attr( $max_upload_mb ); ?>"
-						/>
+					<tr>
+						<th scope="row">
+							<label for="max_upload_mb"><?php esc_html_e( 'Max Upload Size (MB)', 'wedding-gallery' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="number"
+								id="max_upload_mb"
+								name="max_upload_mb"
+								min="1"
+								step="1"
+								value="<?php echo esc_attr( $max_upload_mb ); ?>"
+							/>
 							<p class="description">
 								<?php
 								printf(
@@ -140,8 +162,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</p>
 						</td>
 					</tr>
-			</tbody>
-		</table>
+					<tr>
+						<th scope="row">
+							<label for="cleanup_on_uninstall"><?php esc_html_e( 'Cleanup On Uninstall', 'wedding-gallery' ); ?></label>
+						</th>
+						<td>
+							<label for="cleanup_on_uninstall">
+								<input
+									type="checkbox"
+									id="cleanup_on_uninstall"
+									name="cleanup_on_uninstall"
+									value="1"
+									<?php checked( ! empty( $settings['cleanup_on_uninstall'] ) ); ?>
+								/>
+								<?php esc_html_e( 'Yes, permanently delete wedding media + metadata from uploads/wedding-gallery when uninstalling this plugin.', 'wedding-gallery' ); ?>
+							</label>
+							<p class="description">
+								<?php esc_html_e( 'Leave unchecked to keep files on disk after uninstall.', 'wedding-gallery' ); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Encryption Key', 'wedding-gallery' ); ?></th>
+						<td>
+							<p>
+								<?php
+								printf(
+									/* translators: 1: healthy/unhealthy, 2: version, 3: key fingerprint */
+									esc_html__( 'Status: %1$s | Version: %2$d | Fingerprint: %3$s', 'wedding-gallery' ),
+									! empty( $key_status['healthy'] ) ? esc_html__( 'Healthy', 'wedding-gallery' ) : esc_html__( 'Problem', 'wedding-gallery' ),
+									(int) $key_status['key_version'],
+									esc_html( (string) $key_status['fingerprint'] )
+								);
+								?>
+							</p>
+							<p class="description">
+								<?php esc_html_e( 'Backup requirement: keep database/plugin options and uploads/wedding-gallery together in the same backup/restore set. Restoring only one can make media undecryptable.', 'wedding-gallery' ); ?>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
 		<?php submit_button( __( 'Save Settings', 'wedding-gallery' ) ); ?>
 	</form>

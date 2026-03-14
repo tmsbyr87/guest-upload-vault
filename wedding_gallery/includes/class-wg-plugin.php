@@ -65,6 +65,7 @@ class WG_Plugin {
 			'max_upload_mb'   => self::DEFAULT_MAX_SIZE_MB,
 			'encryption_key'  => '',
 			'key_version'     => 1,
+			'cleanup_on_uninstall' => 0,
 		);
 	}
 
@@ -82,6 +83,7 @@ class WG_Plugin {
 		$settings['max_upload_mb']   = max( 1, absint( $settings['max_upload_mb'] ) );
 		$settings['key_version']     = max( 1, absint( $settings['key_version'] ) );
 		$settings['encryption_key']  = isset( $settings['encryption_key'] ) ? sanitize_text_field( (string) $settings['encryption_key'] ) : '';
+		$settings['cleanup_on_uninstall'] = ! empty( $settings['cleanup_on_uninstall'] ) ? 1 : 0;
 
 		if ( empty( $settings['access_token'] ) ) {
 			$settings['access_token'] = wp_generate_password( 32, false, false );
@@ -753,6 +755,7 @@ class WG_Plugin {
 		$access_token    = isset( $_POST['access_token'] ) ? sanitize_text_field( wp_unslash( $_POST['access_token'] ) ) : '';
 		$max_upload_mb   = isset( $_POST['max_upload_mb'] ) ? absint( $_POST['max_upload_mb'] ) : self::DEFAULT_MAX_SIZE_MB;
 		$limit_context   = $this->get_upload_limit_context( $max_upload_mb );
+		$cleanup_on_uninstall = ! empty( $_POST['cleanup_on_uninstall'] ) ? 1 : 0;
 
 		if ( isset( $_POST['rotate_token'] ) ) {
 			$access_token = wp_generate_password( 32, false, false );
@@ -765,6 +768,7 @@ class WG_Plugin {
 		$settings['upload_page_url'] = $upload_page_url;
 		$settings['access_token']    = $access_token;
 		$settings['max_upload_mb']   = (int) $limit_context['effective_mb'];
+		$settings['cleanup_on_uninstall'] = $cleanup_on_uninstall;
 
 		update_option( self::OPTION_KEY, $settings );
 
@@ -798,6 +802,64 @@ class WG_Plugin {
 		}
 
 		return add_query_arg( self::TOKEN_QUERY_ARG, $token, $page_url );
+	}
+
+	/**
+	 * @return int
+	 */
+	private function get_legacy_plaintext_file_count() {
+		$upload_dir = self::get_upload_dir();
+		if ( ! is_dir( $upload_dir ) ) {
+			return 0;
+		}
+
+		$items = scandir( $upload_dir );
+		if ( false === $items ) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ( $items as $item ) {
+			if ( '.' === $item || '..' === $item || 'index.php' === $item || '.htaccess' === $item || 'web.config' === $item ) {
+				continue;
+			}
+
+			$path = trailingslashit( $upload_dir ) . $item;
+			if ( ! is_file( $path ) ) {
+				continue;
+			}
+
+			if ( $this->is_encrypted_blob_file( $item ) || $this->is_metadata_file( $item ) ) {
+				continue;
+			}
+
+			$count++;
+		}
+
+		return $count;
+	}
+
+	/**
+	 * @return array<string, string|int|bool>
+	 */
+	private function get_encryption_key_status() {
+		$settings    = $this->get_settings();
+		$key_version = max( 1, absint( $settings['key_version'] ) );
+		$key         = $this->get_encryption_key_for_version( $key_version );
+
+		if ( false === $key ) {
+			return array(
+				'healthy'     => false,
+				'key_version' => $key_version,
+				'fingerprint' => '',
+			);
+		}
+
+		return array(
+			'healthy'     => true,
+			'key_version' => $key_version,
+			'fingerprint' => substr( hash( 'sha256', $key ), 0, 12 ),
+		);
 	}
 
 	/**
@@ -849,16 +911,6 @@ class WG_Plugin {
 
 				continue;
 			}
-
-			// Backward compatibility for files uploaded before encrypted storage.
-			$type_data = wp_check_filetype( $item, $this->get_allowed_mimes() );
-			$files[]   = array(
-				'name'        => $item,
-				'stored_file' => $item,
-				'size'        => filesize( $path ),
-				'mime_type'   => isset( $type_data['type'] ) ? $type_data['type'] : '',
-				'modified'    => filemtime( $path ),
-			);
 		}
 
 		usort(
@@ -888,6 +940,8 @@ class WG_Plugin {
 		$upload_limits        = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
 		$max_upload_mb        = (int) $upload_limits['configured_mb'];
 		$effective_max_upload_mb = (int) $upload_limits['effective_mb'];
+		$key_status           = $this->get_encryption_key_status();
+		$legacy_plaintext_count = $this->get_legacy_plaintext_file_count();
 		$notice               = isset( $_GET['wg_notice'] ) ? sanitize_key( wp_unslash( $_GET['wg_notice'] ) ) : '';
 
 		ob_start();
@@ -973,16 +1027,6 @@ class WG_Plugin {
 			exit;
 		}
 
-		$mime_type = wp_check_filetype( $file_name, $this->get_allowed_mimes() );
-		$type      = ! empty( $mime_type['type'] ) ? $mime_type['type'] : 'application/octet-stream';
-
-		nocache_headers();
-		header( 'Content-Description: File Transfer' );
-		header( 'Content-Type: ' . $type );
-		header( 'Content-Disposition: attachment; filename="' . basename( $file_name ) . '"' );
-		header( 'Content-Length: ' . filesize( $file_path ) );
-
-		readfile( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_readfile
-		exit;
+		wp_die( esc_html__( 'Plaintext legacy files are not served by the plugin. Please migrate them to encrypted storage.', 'wedding-gallery' ) );
 	}
 }
