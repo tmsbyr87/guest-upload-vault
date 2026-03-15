@@ -173,7 +173,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	.wg-health-ok { background: #e8f7ec; color: #1d5e30; }
 	.wg-health-warning { background: #fff7e6; color: #8a5a00; }
 	.wg-health-error { background: #fdecea; color: #8b1f17; }
+	.wg-ops-list {
+		margin: 0;
+		padding-left: 20px;
+	}
+	.wg-ops-list li {
+		margin-bottom: 6px;
+	}
 	</style>
+
+	<div class="notice notice-info">
+		<p><strong><?php esc_html_e( 'Pilot Handoff Notes', 'wedding-gallery' ); ?></strong></p>
+		<ul class="wg-ops-list">
+			<li><?php esc_html_e( 'Backup and restore database + uploads/wedding-gallery together to keep media decryptable.', 'wedding-gallery' ); ?></li>
+			<li><?php esc_html_e( 'Regenerating the guest token invalidates previous guest links and printed QR codes.', 'wedding-gallery' ); ?></li>
+			<li><?php esc_html_e( 'Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated.', 'wedding-gallery' ); ?></li>
+			<li><?php esc_html_e( 'On shared hosting, runtime and memory limits can reduce effective max upload size.', 'wedding-gallery' ); ?></li>
+		</ul>
+	</div>
 
 	<h2><?php esc_html_e( 'Settings', 'wedding-gallery' ); ?></h2>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
@@ -218,13 +235,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 							class="regular-text code"
 							value="<?php echo esc_attr( $settings['access_token'] ); ?>"
 						/>
-							<p>
-								<button type="submit" name="rotate_token" value="1" class="button">
-									<?php esc_html_e( 'Regenerate Guest Link', 'wedding-gallery' ); ?>
-								</button>
-							</p>
-						</td>
-					</tr>
+								<p>
+									<button type="submit" name="rotate_token" value="1" class="button">
+										<?php esc_html_e( 'Regenerate Guest Link', 'wedding-gallery' ); ?>
+									</button>
+								</p>
+								<p class="description">
+									<?php esc_html_e( 'Anyone with the protected link can upload. Regenerating token invalidates old links and QR prints.', 'wedding-gallery' ); ?>
+								</p>
+							</td>
+						</tr>
 					<tr>
 						<th scope="row">
 							<label for="max_upload_mb"><?php esc_html_e( 'Max Upload Size (MB)', 'wedding-gallery' ); ?></label>
@@ -277,11 +297,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 								/>
 								<?php esc_html_e( 'Yes, permanently delete wedding media + metadata from uploads/wedding-gallery when uninstalling this plugin.', 'wedding-gallery' ); ?>
 							</label>
-							<p class="description">
-								<?php esc_html_e( 'Leave unchecked to keep files on disk after uninstall.', 'wedding-gallery' ); ?>
-							</p>
-						</td>
-					</tr>
+								<p class="description">
+									<?php esc_html_e( 'Leave unchecked to keep files on disk after uninstall.', 'wedding-gallery' ); ?>
+								</p>
+								<p class="description">
+									<?php esc_html_e( 'This setting has no effect on normal plugin deactivation.', 'wedding-gallery' ); ?>
+								</p>
+							</td>
+						</tr>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Encryption Key', 'wedding-gallery' ); ?></th>
 						<td>
@@ -296,11 +319,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 								);
 								?>
 							</p>
-							<p class="description">
-								<?php esc_html_e( 'Backup requirement: keep database/plugin options and uploads/wedding-gallery together in the same backup/restore set. Restoring only one can make media undecryptable.', 'wedding-gallery' ); ?>
-							</p>
-						</td>
-					</tr>
+								<p class="description">
+									<?php esc_html_e( 'Backup requirement: keep database/plugin options and uploads/wedding-gallery together in the same backup/restore set. Restoring only one can make media undecryptable.', 'wedding-gallery' ); ?>
+								</p>
+								<p class="description">
+									<?php esc_html_e( 'Operational tip: verify restores on a staging site before the event date.', 'wedding-gallery' ); ?>
+								</p>
+							</td>
+						</tr>
 				</tbody>
 			</table>
 
