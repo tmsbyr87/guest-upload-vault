@@ -12,6 +12,8 @@
  * - array  $upload_limits
  * - array  $key_status
  * - int    $legacy_plaintext_count
+ * - array  $upload_health_summary
+ * - int    $qr_code_size
  * - string $notice
  */
 
@@ -75,6 +77,76 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
+	<?php if ( ! empty( $upload_health_summary['missing_metadata'] ) ) : ?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d encrypted file(s) are missing metadata. Those files cannot be downloaded until metadata is restored.', 'wedding-gallery' ),
+					(int) $upload_health_summary['missing_metadata']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $upload_health_summary['invalid_metadata'] ) ) : ?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d file(s) have damaged or unreadable metadata. Download may fail until repaired from backup.', 'wedding-gallery' ),
+					(int) $upload_health_summary['invalid_metadata']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $upload_health_summary['unsupported_key_version'] ) ) : ?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d file(s) require an encryption key version that is not available on this site.', 'wedding-gallery' ),
+					(int) $upload_health_summary['unsupported_key_version']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $upload_health_summary['decrypt_failed'] ) ) : ?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d file(s) failed the decryption health check. The encrypted file or metadata may be corrupted.', 'wedding-gallery' ),
+					(int) $upload_health_summary['decrypt_failed']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<style>
+	.wg-health-badge {
+		display: inline-block;
+		padding: 2px 8px;
+		border-radius: 999px;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.7;
+	}
+	.wg-health-ok { background: #e8f7ec; color: #1d5e30; }
+	.wg-health-warning { background: #fff7e6; color: #8a5a00; }
+	.wg-health-error { background: #fdecea; color: #8b1f17; }
+	</style>
+
 	<h2><?php esc_html_e( 'Settings', 'wedding-gallery' ); ?></h2>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 		<input type="hidden" name="action" value="wg_save_settings" />
@@ -106,11 +178,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</p>
 					</td>
 				</tr>
-				<tr>
-					<th scope="row">
-						<label for="access_token"><?php esc_html_e( 'Access Token', 'wedding-gallery' ); ?></label>
-					</th>
-					<td>
+					<tr>
+						<th scope="row">
+							<label for="access_token"><?php esc_html_e( 'Access Token', 'wedding-gallery' ); ?></label>
+						</th>
+						<td>
 						<input
 							type="text"
 							id="access_token"
@@ -118,13 +190,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 							class="regular-text code"
 							value="<?php echo esc_attr( $settings['access_token'] ); ?>"
 						/>
-						<p>
-							<button type="submit" name="rotate_token" value="1" class="button">
-								<?php esc_html_e( 'Rotate Token', 'wedding-gallery' ); ?>
-							</button>
-						</p>
-					</td>
-				</tr>
+							<p>
+								<button type="submit" name="rotate_token" value="1" class="button">
+									<?php esc_html_e( 'Regenerate Guest Link', 'wedding-gallery' ); ?>
+								</button>
+							</p>
+						</td>
+					</tr>
 					<tr>
 						<th scope="row">
 							<label for="max_upload_mb"><?php esc_html_e( 'Max Upload Size (MB)', 'wedding-gallery' ); ?></label>
@@ -212,51 +284,208 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<p>
 			<code><?php echo esc_html( $protected_upload_url ); ?></code>
 		</p>
-	<?php else : ?>
-		<p><?php esc_html_e( 'Set an Upload Page URL to generate the protected link.', 'wedding-gallery' ); ?></p>
-	<?php endif; ?>
+		<p>
+			<label for="wg_protected_upload_url"><strong><?php esc_html_e( 'Guest Upload Link', 'wedding-gallery' ); ?></strong></label><br />
+			<input
+				id="wg_protected_upload_url"
+				type="text"
+				class="regular-text code"
+				readonly
+				value="<?php echo esc_attr( $protected_upload_url ); ?>"
+				style="max-width: 100%; width: 520px;"
+			/>
+			<button type="button" class="button" onclick="wgCopyProtectedLink()">
+				<?php esc_html_e( 'Copy Link', 'wedding-gallery' ); ?>
+			</button>
+		</p>
+			<p><strong><?php esc_html_e( 'QR Code', 'wedding-gallery' ); ?></strong></p>
+			<div
+				id="wg_qr_code"
+				style="display: inline-block; border: 1px solid #dcdcde; padding: 8px; background: #fff; line-height: 0;"
+				aria-label="<?php esc_attr_e( 'Guest upload QR code', 'wedding-gallery' ); ?>"
+			></div>
+			<p>
+				<a class="button" id="wg_view_qr" href="#" target="_blank" rel="noopener" style="pointer-events: none; opacity: 0.7;">
+					<?php esc_html_e( 'View QR Code', 'wedding-gallery' ); ?>
+				</a>
+				<a class="button button-secondary" id="wg_download_qr" href="#" download="wedding-gallery-qr.png" style="pointer-events: none; opacity: 0.7;">
+					<?php esc_html_e( 'Download QR PNG', 'wedding-gallery' ); ?>
+				</a>
+			</p>
+			<p class="description">
+				<?php esc_html_e( 'QR code is generated locally in your browser. The protected upload URL is not sent to third-party QR services.', 'wedding-gallery' ); ?>
+			</p>
+			<p class="description">
+				<?php esc_html_e( 'Print tip: open the QR image and print at high quality for guest signage.', 'wedding-gallery' ); ?>
+			</p>
+		<?php else : ?>
+			<p><?php esc_html_e( 'Set an Upload Page URL to generate the protected link.', 'wedding-gallery' ); ?></p>
+		<?php endif; ?>
 
 	<h2><?php esc_html_e( 'Uploaded Files', 'wedding-gallery' ); ?></h2>
-	<?php if ( empty( $uploads ) ) : ?>
-		<p><?php esc_html_e( 'No uploads yet.', 'wedding-gallery' ); ?></p>
-	<?php else : ?>
-		<table class="widefat striped">
-			<thead>
-				<tr>
-					<th><?php esc_html_e( 'Filename', 'wedding-gallery' ); ?></th>
-					<th><?php esc_html_e( 'Type', 'wedding-gallery' ); ?></th>
-					<th><?php esc_html_e( 'Size', 'wedding-gallery' ); ?></th>
-					<th><?php esc_html_e( 'Uploaded', 'wedding-gallery' ); ?></th>
-					<th><?php esc_html_e( 'Action', 'wedding-gallery' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ( $uploads as $file ) : ?>
+		<?php if ( empty( $uploads ) ) : ?>
+			<p><?php esc_html_e( 'No uploads yet.', 'wedding-gallery' ); ?></p>
+		<?php else : ?>
+			<table class="widefat striped">
+				<thead>
 					<tr>
-						<td><?php echo esc_html( $file['name'] ); ?></td>
-						<td><?php echo esc_html( $file['mime_type'] ); ?></td>
-						<td><?php echo esc_html( size_format( (int) $file['size'] ) ); ?></td>
-						<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $file['modified'] ) ); ?></td>
-						<td>
-							<?php
-								$download_url = wp_nonce_url(
-									add_query_arg(
-										array(
+						<th><?php esc_html_e( 'Filename', 'wedding-gallery' ); ?></th>
+						<th><?php esc_html_e( 'Type', 'wedding-gallery' ); ?></th>
+						<th><?php esc_html_e( 'Size', 'wedding-gallery' ); ?></th>
+						<th><?php esc_html_e( 'Uploaded', 'wedding-gallery' ); ?></th>
+						<th><?php esc_html_e( 'Health', 'wedding-gallery' ); ?></th>
+						<th><?php esc_html_e( 'Action', 'wedding-gallery' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $uploads as $file ) : ?>
+						<?php
+						$health_status = isset( $file['health_status'] ) ? (string) $file['health_status'] : '';
+						$health_label  = __( 'Unknown', 'wedding-gallery' );
+						$health_class  = 'wg-health-warning';
+						switch ( $health_status ) {
+							case 'ok':
+								$health_label = __( 'Healthy', 'wedding-gallery' );
+								$health_class = 'wg-health-ok';
+								break;
+							case 'missing_metadata':
+								$health_label = __( 'Missing Metadata', 'wedding-gallery' );
+								$health_class = 'wg-health-error';
+								break;
+							case 'invalid_metadata':
+								$health_label = __( 'Metadata Damaged', 'wedding-gallery' );
+								$health_class = 'wg-health-error';
+								break;
+							case 'unsupported_key_version':
+								$health_label = __( 'Key Version Mismatch', 'wedding-gallery' );
+								$health_class = 'wg-health-error';
+								break;
+							case 'decrypt_failed':
+								$health_label = __( 'Decrypt Failed', 'wedding-gallery' );
+								$health_class = 'wg-health-error';
+								break;
+							case 'legacy_plaintext':
+								$health_label = __( 'Legacy Plaintext', 'wedding-gallery' );
+								$health_class = 'wg-health-warning';
+								break;
+						}
+						?>
+						<tr>
+							<td><?php echo esc_html( $file['name'] ); ?></td>
+							<td><?php echo esc_html( $file['mime_type'] ); ?></td>
+							<td><?php echo esc_html( size_format( (int) $file['size'] ) ); ?></td>
+							<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $file['modified'] ) ); ?></td>
+							<td>
+								<span class="wg-health-badge <?php echo esc_attr( $health_class ); ?>"><?php echo esc_html( $health_label ); ?></span><br />
+								<small><?php echo esc_html( isset( $file['health_message'] ) ? (string) $file['health_message'] : '' ); ?></small>
+							</td>
+							<td>
+								<?php if ( ! empty( $file['can_download'] ) ) : ?>
+									<?php
+									$download_url = wp_nonce_url(
+										add_query_arg(
+											array(
 											'action' => 'wg_download_upload',
 											'file'   => $file['stored_file'],
 										),
 										admin_url( 'admin-post.php' )
 									),
-									'wg_download_file_' . $file['stored_file']
-								);
-							?>
-							<a class="button button-secondary" href="<?php echo esc_url( $download_url ); ?>">
-								<?php esc_html_e( 'Download', 'wedding-gallery' ); ?>
-							</a>
-						</td>
-					</tr>
-				<?php endforeach; ?>
+										'wg_download_file_' . $file['stored_file']
+									);
+									?>
+									<a class="button button-secondary" href="<?php echo esc_url( $download_url ); ?>">
+										<?php esc_html_e( 'Download', 'wedding-gallery' ); ?>
+									</a>
+								<?php else : ?>
+									<span><?php esc_html_e( 'Unavailable', 'wedding-gallery' ); ?></span>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
 			</tbody>
 		</table>
 	<?php endif; ?>
 </div>
+<script src="<?php echo esc_url( WG_PLUGIN_URL . 'assets/js/qrcode.min.js' ); ?>"></script>
+<script>
+function wgCopyProtectedLink() {
+	const input = document.getElementById('wg_protected_upload_url');
+	if (!input) {
+		return;
+	}
+	input.select();
+	input.setSelectionRange(0, 99999);
+	try {
+		navigator.clipboard.writeText(input.value);
+	} catch (e) {
+		document.execCommand('copy');
+	}
+}
+
+function wgSetQrButtons(dataUrl) {
+	const viewBtn = document.getElementById('wg_view_qr');
+	const downloadBtn = document.getElementById('wg_download_qr');
+
+	if (!viewBtn || !downloadBtn) {
+		return;
+	}
+
+	if (!dataUrl) {
+		viewBtn.style.pointerEvents = 'none';
+		downloadBtn.style.pointerEvents = 'none';
+		viewBtn.style.opacity = '0.7';
+		downloadBtn.style.opacity = '0.7';
+		viewBtn.href = '#';
+		downloadBtn.href = '#';
+		return;
+	}
+
+	viewBtn.href = dataUrl;
+	downloadBtn.href = dataUrl;
+	viewBtn.style.pointerEvents = '';
+	downloadBtn.style.pointerEvents = '';
+	viewBtn.style.opacity = '';
+	downloadBtn.style.opacity = '';
+}
+
+function wgInitQrCode() {
+	const container = document.getElementById('wg_qr_code');
+	const input = document.getElementById('wg_protected_upload_url');
+	if (!container || !input || typeof QRCode === 'undefined') {
+		wgSetQrButtons('');
+		return;
+	}
+
+	const text = input.value || '';
+	if (!text) {
+		wgSetQrButtons('');
+		return;
+	}
+
+	container.innerHTML = '';
+	new QRCode(container, {
+		text: text,
+		width: <?php echo (int) $qr_code_size; ?>,
+		height: <?php echo (int) $qr_code_size; ?>,
+		colorDark: '#000000',
+		colorLight: '#ffffff',
+		correctLevel: QRCode.CorrectLevel.M
+	});
+
+	const canvas = container.querySelector('canvas');
+	if (canvas && typeof canvas.toDataURL === 'function') {
+		wgSetQrButtons(canvas.toDataURL('image/png'));
+		return;
+	}
+
+	const img = container.querySelector('img');
+	if (img && img.src) {
+		wgSetQrButtons(img.src);
+		return;
+	}
+
+	wgSetQrButtons('');
+}
+
+document.addEventListener('DOMContentLoaded', wgInitQrCode);
+</script>
