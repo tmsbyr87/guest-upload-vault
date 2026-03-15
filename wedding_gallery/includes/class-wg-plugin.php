@@ -328,6 +328,191 @@ class WG_Plugin {
 	}
 
 	/**
+	 * @param string               $blob_file_name
+	 * @param array<string, mixed> $meta
+	 * @return string
+	 */
+	private function build_metadata_integrity_payload( $blob_file_name, $meta ) {
+		$payload = array(
+			'blob_file'           => (string) $blob_file_name,
+			'version'             => isset( $meta['version'] ) ? (string) absint( $meta['version'] ) : '',
+			'uploaded_at'         => isset( $meta['uploaded_at'] ) ? (string) absint( $meta['uploaded_at'] ) : '',
+			'key_version'         => isset( $meta['key_version'] ) ? (string) absint( $meta['key_version'] ) : '',
+			'iv'                  => isset( $meta['iv'] ) ? (string) $meta['iv'] : '',
+			'tag'                 => isset( $meta['tag'] ) ? (string) $meta['tag'] : '',
+			'private_key_version' => isset( $meta['private_key_version'] ) ? (string) absint( $meta['private_key_version'] ) : '',
+			'private_iv'          => isset( $meta['private_iv'] ) ? (string) $meta['private_iv'] : '',
+			'private_tag'         => isset( $meta['private_tag'] ) ? (string) $meta['private_tag'] : '',
+			'private_ciphertext'  => isset( $meta['private_ciphertext'] ) ? (string) $meta['private_ciphertext'] : '',
+			'blob_sha256'         => isset( $meta['blob_sha256'] ) ? (string) $meta['blob_sha256'] : '',
+		);
+
+		$encoded = wp_json_encode( $payload );
+
+		return false !== $encoded ? $encoded : '';
+	}
+
+	/**
+	 * @param int $key_version
+	 * @return string|false
+	 */
+	private function get_metadata_integrity_key_for_version( $key_version ) {
+		$key = $this->get_encryption_key_for_version( $key_version );
+		if ( false === $key ) {
+			return false;
+		}
+
+		return hash_hmac( 'sha256', 'wedding-gallery-metadata-integrity-v1', $key, true );
+	}
+
+	/**
+	 * @param string               $blob_file_name
+	 * @param array<string, mixed> $meta
+	 * @return string|false
+	 */
+	private function compute_metadata_integrity_mac( $blob_file_name, $meta ) {
+		$key_version = isset( $meta['key_version'] ) ? absint( $meta['key_version'] ) : 0;
+		if ( $key_version < 1 ) {
+			return false;
+		}
+
+		$integrity_key = $this->get_metadata_integrity_key_for_version( $key_version );
+		if ( false === $integrity_key ) {
+			return false;
+		}
+
+		$payload = $this->build_metadata_integrity_payload( $blob_file_name, $meta );
+		if ( '' === $payload ) {
+			return false;
+		}
+
+		return hash_hmac( 'sha256', $payload, $integrity_key );
+	}
+
+	/**
+	 * @param string               $blob_file_name
+	 * @param string               $ciphertext
+	 * @param array<string, mixed> $meta
+	 * @return array<string, bool|string>
+	 */
+	private function verify_metadata_integrity( $blob_file_name, $ciphertext, $meta ) {
+		$version = isset( $meta['version'] ) ? absint( $meta['version'] ) : 1;
+		if ( $version < 2 ) {
+			return array(
+				'ok'     => true,
+				'legacy' => true,
+				'error'  => '',
+			);
+		}
+
+		$required_fields = array(
+			'integrity_mac',
+			'blob_sha256',
+			'key_version',
+			'iv',
+			'tag',
+			'private_key_version',
+			'private_iv',
+			'private_tag',
+			'private_ciphertext',
+		);
+		foreach ( $required_fields as $field ) {
+			if ( empty( $meta[ $field ] ) ) {
+				return array(
+					'ok'     => false,
+					'legacy' => false,
+					'error'  => 'invalid_metadata',
+				);
+			}
+		}
+
+		$expected_mac = $this->compute_metadata_integrity_mac( $blob_file_name, $meta );
+		if ( false === $expected_mac ) {
+			return array(
+				'ok'     => false,
+				'legacy' => false,
+				'error'  => 'unsupported_key_version',
+			);
+		}
+
+		$stored_mac = (string) $meta['integrity_mac'];
+		if ( ! hash_equals( $expected_mac, $stored_mac ) ) {
+			return array(
+				'ok'     => false,
+				'legacy' => false,
+				'error'  => 'metadata_tampered',
+			);
+		}
+
+		$blob_hash = hash( 'sha256', $ciphertext );
+		if ( ! hash_equals( (string) $meta['blob_sha256'], $blob_hash ) ) {
+			return array(
+				'ok'     => false,
+				'legacy' => false,
+				'error'  => 'metadata_tampered',
+			);
+		}
+
+		return array(
+			'ok'     => true,
+			'legacy' => false,
+			'error'  => '',
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $meta
+	 * @return array<string, mixed>|false
+	 */
+	private function decode_private_metadata_fields( $meta ) {
+		$version = isset( $meta['version'] ) ? absint( $meta['version'] ) : 1;
+		if ( $version < 2 ) {
+			return array(
+				'original_name' => isset( $meta['original_name'] ) ? sanitize_file_name( (string) $meta['original_name'] ) : '',
+				'mime_type'     => isset( $meta['mime_type'] ) ? sanitize_text_field( (string) $meta['mime_type'] ) : '',
+				'size'          => isset( $meta['size'] ) ? absint( $meta['size'] ) : 0,
+			);
+		}
+
+		$private_key_version = isset( $meta['private_key_version'] ) ? absint( $meta['private_key_version'] ) : 0;
+		if ( $private_key_version < 1 ) {
+			return false;
+		}
+
+		$private_iv         = isset( $meta['private_iv'] ) ? (string) $meta['private_iv'] : '';
+		$private_tag        = isset( $meta['private_tag'] ) ? (string) $meta['private_tag'] : '';
+		$private_ciphertext = isset( $meta['private_ciphertext'] ) ? base64_decode( (string) $meta['private_ciphertext'], true ) : false;
+		if ( '' === $private_iv || '' === $private_tag || false === $private_ciphertext ) {
+			return false;
+		}
+
+		if ( false === $this->get_encryption_key_for_version( $private_key_version ) ) {
+			return false;
+		}
+
+		$private_meta = array(
+			'key_version' => $private_key_version,
+			'iv'          => $private_iv,
+			'tag'         => $private_tag,
+		);
+		$private_plaintext = $this->decrypt_contents( $private_ciphertext, $private_meta );
+		if ( false === $private_plaintext ) {
+			return false;
+		}
+
+		$data = json_decode( $private_plaintext, true );
+		if ( ! is_array( $data ) ) {
+			return false;
+		}
+
+		return array(
+			'original_name' => isset( $data['original_name'] ) ? sanitize_file_name( (string) $data['original_name'] ) : '',
+			'mime_type'     => isset( $data['mime_type'] ) ? sanitize_text_field( (string) $data['mime_type'] ) : '',
+			'size'          => isset( $data['size'] ) ? absint( $data['size'] ) : 0,
+		);
+	}
+
+	/**
 	 * @param string $size_value INI shorthand value.
 	 * @return int Size in bytes; 0 means "no limit/unknown".
 	 */
@@ -678,16 +863,59 @@ class WG_Plugin {
 				continue;
 			}
 
-			$metadata = array(
-				'version'       => 1,
-				'original_name' => $sanitized_name,
-				'mime_type'     => $type_data['type'],
-				'size'          => $size,
-				'uploaded_at'   => time(),
-				'key_version'   => $encrypted_payload['key_version'],
-				'iv'            => $encrypted_payload['iv'],
-				'tag'           => $encrypted_payload['tag'],
+			$private_metadata_json = wp_json_encode(
+				array(
+					'original_name' => $sanitized_name,
+					'mime_type'     => $type_data['type'],
+					'size'          => $size,
+				)
 			);
+			if ( false === $private_metadata_json ) {
+				wp_delete_file( $target_path );
+				$errors[] = sprintf(
+					/* translators: %s: filename */
+					__( 'Could not encode private metadata for %s.', 'wedding-gallery' ),
+					$sanitized_name
+				);
+				continue;
+			}
+
+			$private_metadata_payload = $this->encrypt_contents( $private_metadata_json );
+			if ( false === $private_metadata_payload ) {
+				wp_delete_file( $target_path );
+				$errors[] = sprintf(
+					/* translators: %s: filename */
+					__( 'Could not protect metadata for %s.', 'wedding-gallery' ),
+					$sanitized_name
+				);
+				continue;
+			}
+
+			$metadata = array(
+				'version'             => 2,
+				'uploaded_at'         => time(),
+				'key_version'         => $encrypted_payload['key_version'],
+				'iv'                  => $encrypted_payload['iv'],
+				'tag'                 => $encrypted_payload['tag'],
+				'private_key_version' => $private_metadata_payload['key_version'],
+				'private_iv'          => $private_metadata_payload['iv'],
+				'private_tag'         => $private_metadata_payload['tag'],
+				'private_ciphertext'  => base64_encode( $private_metadata_payload['ciphertext'] ),
+				'blob_sha256'         => hash( 'sha256', $encrypted_payload['ciphertext'] ),
+			);
+
+			$metadata_mac = $this->compute_metadata_integrity_mac( $storage_names['blob'], $metadata );
+			if ( false === $metadata_mac ) {
+				wp_delete_file( $target_path );
+				$errors[] = sprintf(
+					/* translators: %s: filename */
+					__( 'Could not sign metadata for %s.', 'wedding-gallery' ),
+					$sanitized_name
+				);
+				continue;
+			}
+
+			$metadata['integrity_mac'] = $metadata_mac;
 
 			$metadata_json = wp_json_encode( $metadata );
 			if ( false === $metadata_json ) {
@@ -956,9 +1184,16 @@ class WG_Plugin {
 			if ( $this->is_encrypted_blob_file( $item ) ) {
 				$meta_path = trailingslashit( $upload_dir ) . $this->get_meta_file_name_for_blob( $item );
 				$meta      = $this->read_media_metadata( $meta_path );
+				$meta_version = isset( $meta['version'] ) ? absint( $meta['version'] ) : 1;
 				$status    = 'ok';
 				$message   = __( 'Encrypted file is healthy and downloadable.', 'wedding-gallery' );
 				$can_download = true;
+				$private_fields = array(
+					'original_name' => '',
+					'mime_type'     => '',
+					'size'          => 0,
+				);
+				$ciphertext = false;
 
 				if ( ! is_file( $meta_path ) ) {
 					$status       = 'missing_metadata';
@@ -976,20 +1211,58 @@ class WG_Plugin {
 						$can_download = false;
 					} else {
 						$ciphertext = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-						if ( false === $ciphertext || false === $this->decrypt_contents( $ciphertext, $meta ) ) {
+						if ( false === $ciphertext ) {
 							$status       = 'decrypt_failed';
-							$message      = __( 'Decryption check failed. The file or metadata may be corrupted.', 'wedding-gallery' );
+							$message      = __( 'Could not read encrypted file data.', 'wedding-gallery' );
 							$can_download = false;
+						} else {
+							$integrity = $this->verify_metadata_integrity( $item, $ciphertext, $meta );
+							if ( empty( $integrity['ok'] ) ) {
+								if ( 'unsupported_key_version' === $integrity['error'] ) {
+									$status  = 'unsupported_key_version';
+									$message = __( 'Encrypted with a key version not available on this site.', 'wedding-gallery' );
+								} elseif ( 'metadata_tampered' === $integrity['error'] ) {
+									$status  = 'metadata_tampered';
+									$message = __( 'Metadata integrity check failed. File metadata or blob appears modified.', 'wedding-gallery' );
+								} else {
+									$status  = 'invalid_metadata';
+									$message = __( 'Metadata looks damaged or unreadable. Download is currently unavailable.', 'wedding-gallery' );
+								}
+								$can_download = false;
+							} else {
+								$decoded_private = $this->decode_private_metadata_fields( $meta );
+								if ( false === $decoded_private ) {
+									$private_key_version = isset( $meta['private_key_version'] ) ? absint( $meta['private_key_version'] ) : 0;
+									if ( $meta_version >= 2 && $private_key_version > 0 && false === $this->get_encryption_key_for_version( $private_key_version ) ) {
+										$status  = 'unsupported_key_version';
+										$message = __( 'Encrypted with a key version not available on this site.', 'wedding-gallery' );
+									} else {
+										$status  = 'invalid_metadata';
+										$message = __( 'Private metadata could not be decoded.', 'wedding-gallery' );
+									}
+									$can_download = false;
+								} else {
+									$private_fields = $decoded_private;
+									if ( false === $this->decrypt_contents( $ciphertext, $meta ) ) {
+										$status       = 'decrypt_failed';
+										$message      = __( 'Decryption check failed. The file or metadata may be corrupted.', 'wedding-gallery' );
+										$can_download = false;
+									} elseif ( ! empty( $integrity['legacy'] ) ) {
+										$status  = 'legacy_metadata_plaintext';
+										$message = __( 'Download works, but metadata is from legacy plaintext format and should be re-uploaded for better privacy.', 'wedding-gallery' );
+									}
+								}
+							}
 						}
 					}
 				}
 
-				$display_name = isset( $meta['original_name'] ) ? sanitize_file_name( (string) $meta['original_name'] ) : $item;
+				$display_name = isset( $private_fields['original_name'] ) ? sanitize_file_name( (string) $private_fields['original_name'] ) : '';
 				if ( empty( $display_name ) ) {
 					$display_name = $item;
 				}
 
-				$display_size = isset( $meta['size'] ) ? absint( $meta['size'] ) : 0;
+				$display_size = isset( $private_fields['size'] ) ? absint( $private_fields['size'] ) : 0;
 				if ( $display_size < 1 ) {
 					$display_size = absint( filesize( $path ) );
 				}
@@ -998,7 +1271,7 @@ class WG_Plugin {
 					'name'          => $display_name,
 					'stored_file'   => $item,
 					'size'          => $display_size,
-					'mime_type'     => isset( $meta['mime_type'] ) ? sanitize_text_field( (string) $meta['mime_type'] ) : '',
+					'mime_type'     => isset( $private_fields['mime_type'] ) ? sanitize_text_field( (string) $private_fields['mime_type'] ) : '',
 					'modified'      => isset( $meta['uploaded_at'] ) ? absint( $meta['uploaded_at'] ) : filemtime( $path ),
 					'health_status' => $status,
 					'health_message'=> $message,
@@ -1037,8 +1310,10 @@ class WG_Plugin {
 	private function get_upload_health_summary( $uploads ) {
 		$summary = array(
 			'ok'                      => 0,
+			'legacy_metadata_plaintext' => 0,
 			'missing_metadata'        => 0,
 			'invalid_metadata'        => 0,
+			'metadata_tampered'       => 0,
 			'unsupported_key_version' => 0,
 			'decrypt_failed'          => 0,
 			'legacy_plaintext'        => 0,
@@ -1134,18 +1409,38 @@ class WG_Plugin {
 				wp_die( esc_html__( 'Could not read file.', 'wedding-gallery' ) );
 			}
 
+			$integrity = $this->verify_metadata_integrity( $file_name, $ciphertext, $meta );
+			if ( empty( $integrity['ok'] ) ) {
+				if ( 'unsupported_key_version' === $integrity['error'] ) {
+					wp_die( esc_html__( 'Could not decrypt file: unsupported encryption key version.', 'wedding-gallery' ) );
+				}
+				if ( 'metadata_tampered' === $integrity['error'] ) {
+					wp_die( esc_html__( 'Could not decrypt file. Metadata integrity check failed.', 'wedding-gallery' ) );
+				}
+				wp_die( esc_html__( 'Invalid file metadata.', 'wedding-gallery' ) );
+			}
+
+			$private_fields = $this->decode_private_metadata_fields( $meta );
+			if ( false === $private_fields ) {
+				$private_key_version = isset( $meta['private_key_version'] ) ? absint( $meta['private_key_version'] ) : 0;
+				if ( $private_key_version > 0 && false === $this->get_encryption_key_for_version( $private_key_version ) ) {
+					wp_die( esc_html__( 'Could not decrypt file: unsupported encryption key version.', 'wedding-gallery' ) );
+				}
+				wp_die( esc_html__( 'Invalid file metadata.', 'wedding-gallery' ) );
+			}
+
 			$plaintext = $this->decrypt_contents( $ciphertext, $meta );
 			if ( false === $plaintext ) {
 				wp_die( esc_html__( 'Could not decrypt file. Metadata may be invalid or the key may have changed.', 'wedding-gallery' ) );
 			}
 
-			$download_name = isset( $meta['original_name'] ) ? sanitize_file_name( (string) $meta['original_name'] ) : 'wedding-upload.bin';
+			$download_name = isset( $private_fields['original_name'] ) ? sanitize_file_name( (string) $private_fields['original_name'] ) : 'wedding-upload.bin';
 			if ( empty( $download_name ) ) {
 				$download_name = 'wedding-upload.bin';
 			}
 
 			$allowed_types = array_values( $this->get_allowed_mimes() );
-			$type          = isset( $meta['mime_type'] ) ? sanitize_text_field( (string) $meta['mime_type'] ) : '';
+			$type          = isset( $private_fields['mime_type'] ) ? sanitize_text_field( (string) $private_fields['mime_type'] ) : '';
 			if ( ! in_array( $type, $allowed_types, true ) ) {
 				$type = 'application/octet-stream';
 			}

@@ -105,6 +105,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
+	<?php if ( ! empty( $upload_health_summary['metadata_tampered'] ) ) : ?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d file(s) failed metadata integrity checks. They may have been modified or corrupted.', 'wedding-gallery' ),
+					(int) $upload_health_summary['metadata_tampered']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $upload_health_summary['unsupported_key_version'] ) ) : ?>
 		<div class="notice notice-error">
 			<p>
@@ -113,6 +127,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 					/* translators: %d: affected files count */
 					esc_html__( '%d file(s) require an encryption key version that is not available on this site.', 'wedding-gallery' ),
 					(int) $upload_health_summary['unsupported_key_version']
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $upload_health_summary['legacy_metadata_plaintext'] ) ) : ?>
+		<div class="notice notice-warning">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: affected files count */
+					esc_html__( '%d file(s) still use legacy plaintext metadata. They remain downloadable, but re-uploading improves privacy.', 'wedding-gallery' ),
+					(int) $upload_health_summary['legacy_metadata_plaintext']
 				);
 				?>
 			</p>
@@ -356,6 +384,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 								$health_label = __( 'Metadata Damaged', 'wedding-gallery' );
 								$health_class = 'wg-health-error';
 								break;
+							case 'metadata_tampered':
+								$health_label = __( 'Integrity Failed', 'wedding-gallery' );
+								$health_class = 'wg-health-error';
+								break;
 							case 'unsupported_key_version':
 								$health_label = __( 'Key Version Mismatch', 'wedding-gallery' );
 								$health_class = 'wg-health-error';
@@ -363,6 +395,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 							case 'decrypt_failed':
 								$health_label = __( 'Decrypt Failed', 'wedding-gallery' );
 								$health_class = 'wg-health-error';
+								break;
+							case 'legacy_metadata_plaintext':
+								$health_label = __( 'Legacy Metadata', 'wedding-gallery' );
+								$health_class = 'wg-health-warning';
 								break;
 							case 'legacy_plaintext':
 								$health_label = __( 'Legacy Plaintext', 'wedding-gallery' );
