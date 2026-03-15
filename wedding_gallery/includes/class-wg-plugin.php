@@ -48,6 +48,8 @@ class WG_Plugin {
 	 * Constructor.
 	 */
 	private function __construct() {
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'render_upload_shortcode' ) );
 
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
@@ -55,6 +57,17 @@ class WG_Plugin {
 		add_action( 'admin_post_wg_upload', array( $this, 'handle_upload' ) );
 		add_action( 'admin_post_nopriv_wg_upload', array( $this, 'handle_upload' ) );
 		add_action( 'admin_post_wg_download_upload', array( $this, 'handle_download' ) );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain(
+			'wedding-gallery',
+			false,
+			dirname( plugin_basename( WG_PLUGIN_FILE ) ) . '/languages'
+		);
 	}
 
 	/**

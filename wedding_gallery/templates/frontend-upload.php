@@ -232,7 +232,6 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 					type="file"
 					multiple
 					required
-					capture="environment"
 					accept=".jpg,.jpeg,.png,.webp,.mp4,image/jpeg,image/png,image/webp,video/mp4"
 				/>
 				<label for="wg_files" id="wg_picker_btn" class="wg-picker-btn">
@@ -253,7 +252,7 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 						);
 						?>
 					</p>
-					<p><?php esc_html_e( 'Tip: On iPhone/Android you can choose camera capture directly where supported.', 'wedding-gallery' ); ?></p>
+					<p><?php esc_html_e( 'On iPhone/Android you can choose camera, photo library/gallery, or files.', 'wedding-gallery' ); ?></p>
 					<p><?php esc_html_e( 'You can select multiple files at once.', 'wedding-gallery' ); ?></p>
 				</div>
 
@@ -286,7 +285,6 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 	const progressFill = document.getElementById('wg_progress_fill');
 	const progressText = document.getElementById('wg_progress_text');
 	const clientAlert = document.getElementById('wg-client-alert');
-	const redirectField = document.getElementById('wg_redirect_to');
 
 	function showClientError(message) {
 		if (!clientAlert) {
@@ -340,9 +338,6 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 		if (submitBtn) {
 			submitBtn.disabled = isBusy;
 		}
-		if (fileInput) {
-			fileInput.disabled = isBusy;
-		}
 		if (pickerBtn) {
 			pickerBtn.classList.toggle('is-disabled', isBusy);
 		}
@@ -353,6 +348,11 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 	}
 
 	form.addEventListener('submit', function (event) {
+		if (form.dataset.wgSubmitting === '1') {
+			event.preventDefault();
+			return;
+		}
+
 		clearClientError();
 
 		if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
@@ -361,60 +361,15 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 			return;
 		}
 
-		if (!window.FormData || !window.XMLHttpRequest) {
-			if (submitBtn) {
-				submitBtn.disabled = true;
-			}
-			if (pickerBtn) {
-				pickerBtn.classList.add('is-disabled');
-			}
-			setProgress(15, '<?php echo esc_js( __( 'Uploading...', 'wedding-gallery' ) ); ?>');
-			return;
-		}
-
-		event.preventDefault();
+		form.dataset.wgSubmitting = '1';
 		setUploadUiBusy(true);
-		setProgress(2, '<?php echo esc_js( __( 'Starting upload...', 'wedding-gallery' ) ); ?>');
-
-		const xhr = new XMLHttpRequest();
-		xhr.open('POST', form.action, true);
-		xhr.timeout = 180000;
-
-		xhr.upload.addEventListener('progress', function (progressEvent) {
-			if (progressEvent.lengthComputable && progressEvent.total > 0) {
-				const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-				setProgress(percent, '<?php echo esc_js( __( 'Uploading...', 'wedding-gallery' ) ); ?> ' + percent + '%');
-				return;
-			}
-			setProgress(55, '<?php echo esc_js( __( 'Uploading...', 'wedding-gallery' ) ); ?>');
-		});
-
-		xhr.addEventListener('load', function () {
-			if (xhr.status >= 200 && xhr.status < 400) {
-				setProgress(100, '<?php echo esc_js( __( 'Upload finished. Loading result...', 'wedding-gallery' ) ); ?>');
-				const target = xhr.responseURL || (redirectField ? redirectField.value : '') || window.location.href;
-				window.location.href = target;
-				return;
-			}
-
-			setUploadUiBusy(false);
-			showClientError('<?php echo esc_js( __( 'Upload failed. Please try again in a moment.', 'wedding-gallery' ) ); ?>');
-			setProgress(0, '<?php echo esc_js( __( 'Upload did not complete.', 'wedding-gallery' ) ); ?>');
-		});
-
-		xhr.addEventListener('error', function () {
-			setUploadUiBusy(false);
-			showClientError('<?php echo esc_js( __( 'Network issue during upload. Please retry.', 'wedding-gallery' ) ); ?>');
-			setProgress(0, '<?php echo esc_js( __( 'Upload did not complete.', 'wedding-gallery' ) ); ?>');
-		});
-
-		xhr.addEventListener('timeout', function () {
-			setUploadUiBusy(false);
-			showClientError('<?php echo esc_js( __( 'Upload timed out. Try fewer or smaller files.', 'wedding-gallery' ) ); ?>');
-			setProgress(0, '<?php echo esc_js( __( 'Upload timed out.', 'wedding-gallery' ) ); ?>');
-		});
-
-		xhr.send(new FormData(form));
+		setProgress(12, '<?php echo esc_js( __( 'Uploading... Please keep this page open.', 'wedding-gallery' ) ); ?>');
+		window.setTimeout(function () {
+			setProgress(42, '<?php echo esc_js( __( 'Upload in progress...', 'wedding-gallery' ) ); ?>');
+		}, 600);
+		window.setTimeout(function () {
+			setProgress(76, '<?php echo esc_js( __( 'Almost done...', 'wedding-gallery' ) ); ?>');
+		}, 1800);
 	});
 })();
 </script>
