@@ -19,28 +19,11 @@ if ( $cleanup ) {
 		$real_target = realpath( $target_dir );
 
 		if ( false !== $real_base && false !== $real_target && 0 === strpos( $real_target, $real_base ) && 'wedding-gallery' === basename( $real_target ) ) {
-			try {
-				$iterator = new RecursiveIteratorIterator(
-					new RecursiveDirectoryIterator( $real_target, FilesystemIterator::SKIP_DOTS ),
-					RecursiveIteratorIterator::CHILD_FIRST
-				);
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			global $wp_filesystem;
 
-				foreach ( $iterator as $item ) {
-					$path = $item->getRealPath();
-					if ( false === $path ) {
-						continue;
-					}
-
-					if ( $item->isDir() ) {
-						rmdir( $path );
-					} else {
-						unlink( $path );
-					}
-				}
-
-				rmdir( $real_target );
-			} catch ( Exception $exception ) {
-				// Best-effort cleanup during uninstall.
+			if ( WP_Filesystem() && is_object( $wp_filesystem ) ) {
+				$wp_filesystem->delete( $real_target, true );
 			}
 		}
 	}

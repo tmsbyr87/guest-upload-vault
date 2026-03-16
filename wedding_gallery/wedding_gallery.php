@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Wedding Gallery
- * Plugin URI:  https://example.com
+ * Plugin URI:  https://github.com/tmsbyr87/wedding-gallery
  * Description: Collect wedding guest photos and videos through a protected frontend upload page.
  * Version:     0.3.0
  * Author:      Wedding Gallery Team
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wedding-gallery
+ * Text Domain: wedding_gallery
  * Domain Path: /languages
  */
 

@@ -10,6 +10,6 @@
 # Translation packaging rules:
 # - keep runtime files in release (.mo/.po)
 # - source template (.pot) can be excluded
-/wedding_gallery/languages/wedding-gallery-de_DE.mo -export-ignore
-/wedding_gallery/languages/wedding-gallery-de_DE.po -export-ignore
-/wedding_gallery/languages/wedding-gallery.pot export-ignore
+/wedding_gallery/languages/wedding_gallery-de_DE.mo -export-ignore
+/wedding_gallery/languages/wedding_gallery-de_DE.po -export-ignore
+/wedding_gallery/languages/wedding_gallery.pot export-ignore
