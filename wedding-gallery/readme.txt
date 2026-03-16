@@ -19,6 +19,7 @@ Wedding Gallery provides a protected wedding media workflow for guests and admin
 * Size limit enforcement with runtime-safe clamping
 * Encrypted storage in `wp-content/uploads/wedding-gallery/`
 * Admin media tab with diagnostics, preview, download, and delete actions
+* Runtime UI translations for `de_DE`, `fr_FR`, `it_IT`, and `es_ES`
 
 == Installation ==
 1. Upload the `wedding-gallery` folder to `/wp-content/plugins/`.
@@ -37,9 +38,12 @@ Encrypted media files are stored in `wp-content/uploads/wedding-gallery/`.
 = Can I delete files on uninstall? =
 Yes. Enable **Cleanup On Uninstall** in plugin settings before uninstalling.
 
+= Which languages are available? =
+Runtime translations are bundled for German (`de_DE`), French (`fr_FR`), Italian (`it_IT`), and Spanish (`es_ES`). English uses the plugin source strings.
+
 == Changelog ==
 = 1.0.0 =
-* WordPress.org compliance cleanup, strict token access enforcement, and release metadata finalization.
+* WordPress.org compliance cleanup, strict token access enforcement, release metadata finalization, and expanded runtime locale coverage.
 
 = 0.3.0 =
 * Pilot release with tokenized guest uploads, local QR generation, encrypted storage, mobile-first UX, and diagnostics.

@@ -11,7 +11,7 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 - Encrypted media blob storage in `wp-content/uploads/wedding-gallery/`
 - Metadata integrity checks and tamper detection
 - Admin file list, health states, diagnostics, and admin-only download
-- WordPress i18n support (`wedding-gallery` text domain) with German (`de_DE`) translations
+- WordPress i18n support (`wedding-gallery` text domain) with runtime translations for `de_DE`, `fr_FR`, `it_IT`, and `es_ES`
 
 ## Setup (Pilot)
 
@@ -27,6 +27,13 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 ## Version
 
 - Current release target: `1.0.0`
+
+## Localized Pilot Handoff Docs
+
+- French: `docs/PILOT_HANDOFF.fr_FR.md`
+- Italian: `docs/PILOT_HANDOFF.it_IT.md`
+- Spanish: `docs/PILOT_HANDOFF.es_ES.md`
+- Translation ownership and review gate: `docs/TRANSLATION_OWNERS.md`
 
 ## Guest Token + QR Workflow
 
@@ -80,9 +87,9 @@ Do not ship repository noise / handoff artifacts:
 
 Language files in release:
 
-- `wedding-gallery/languages/wedding-gallery-de_DE.mo` should be shipped (runtime translations).
-- `wedding-gallery/languages/wedding-gallery-de_DE.po` can also be shipped (useful source/editable translation).
-- `wedding-gallery/languages/wedding-gallery.pot` may be excluded.
+- Ship runtime files for all supported locales (`de_DE`, `fr_FR`, `it_IT`, `es_ES`) as `wedding-gallery/languages/wedding-gallery-<locale>.mo`.
+- Keep matching `.po` files in Git for maintainability/review.
+- `wedding-gallery/languages/wedding-gallery.pot` may be excluded from release ZIP.
 - Important: if building release zips from Git, make sure `.mo/.po` files are committed so they are actually present in the archive.
 
 ## Plugin Icon/Banner Assets

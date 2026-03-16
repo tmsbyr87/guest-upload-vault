@@ -1,0 +1,758 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wedding-gallery 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-16 21:52\n"
+"PO-Revision-Date: 2026-03-16 21:52+0100\n"
+"Last-Translator: Wedding Gallery Team\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/class-wg-plugin.php:81 templates/frontend-upload.php:305
+msgid "No files selected yet."
+msgstr "Aucun fichier sélectionné pour l'instant."
+
+#: includes/class-wg-plugin.php:82
+msgid "files selected:"
+msgstr "fichiers sélectionnés:"
+
+#: includes/class-wg-plugin.php:83
+msgid "Please choose at least one photo or video."
+msgstr "Veuillez choisir au moins une photo ou une vidéo."
+
+#: includes/class-wg-plugin.php:84
+msgid "Uploading... Please keep this page open."
+msgstr "Téléchargement... Veuillez garder cette page ouverte."
+
+#: includes/class-wg-plugin.php:85
+msgid "Upload in progress..."
+msgstr "Téléchargement en cours..."
+
+#: includes/class-wg-plugin.php:86
+msgid "Almost done..."
+msgstr "Presque terminé..."
+
+#: includes/class-wg-plugin.php:145
+msgid "Delete this file permanently?"
+msgstr "Supprimer définitivement ce fichier?"
+
+#: includes/class-wg-plugin.php:146
+msgid "Delete selected media permanently?"
+msgstr "Supprimer définitivement le média sélectionné?"
+
+#: includes/class-wg-plugin.php:147
+msgid "Delete ALL wedding media permanently?"
+msgstr "Supprimer définitivement TOUS les médias de mariage?"
+
+#: includes/class-wg-plugin.php:148 templates/admin-page.php:133
+msgid "Please select at least one file first."
+msgstr "Veuillez d'abord sélectionner au moins un fichier."
+
+#: includes/class-wg-plugin.php:770 includes/class-wg-plugin.php:771
+#: templates/admin-page.php:56
+msgid "Wedding Gallery"
+msgstr "Galerie de mariage"
+
+#: includes/class-wg-plugin.php:845
+msgid "Invalid upload token."
+msgstr "Jeton de téléchargement invalide."
+
+#: includes/class-wg-plugin.php:850
+msgid "Security check failed."
+msgstr "Le contrôle de sécurité a échoué."
+
+#: includes/class-wg-plugin.php:855 includes/class-wg-plugin.php:860
+msgid "Please select at least one file."
+msgstr "Veuillez sélectionner au moins un fichier."
+
+#: includes/class-wg-plugin.php:871
+msgid "Upload encryption is unavailable on this server."
+msgstr "Le cryptage du téléchargement n'est pas disponible sur ce serveur."
+
+#: includes/class-wg-plugin.php:1021
+#, php-format
+msgid "%d file uploaded successfully."
+msgid_plural "%d files uploaded successfully."
+msgstr[0] "Fichier %d téléchargé avec succès."
+msgstr[1] "%d fichiers ont été téléchargés avec succès."
+
+#: includes/class-wg-plugin.php:1029
+msgid "Some files could not be uploaded."
+msgstr "Certains fichiers n'ont pas pu être téléchargés."
+
+#: includes/class-wg-plugin.php:1043
+#, php-format
+msgid "No files were uploaded. %s"
+msgstr "Aucun fichier n'a été téléchargé. %s"
+
+#: includes/class-wg-plugin.php:1049
+msgid "No files were uploaded. Please check file type and size limits and try again."
+msgstr "Aucun fichier n'a été téléchargé. Veuillez vérifier les limites de type et de taille de fichier, puis réessayer."
+
+#: includes/class-wg-plugin.php:1080
+#, php-format
+msgid "%1$d video was too large to upload (max %2$d MB)."
+msgid_plural "%1$d videos were too large to upload (max %2$d MB)."
+msgstr[0] "La vidéo %1$d était trop volumineuse pour être mise en ligne (maximum %2$d MB)."
+msgstr[1] "%1$d vidéos étaient trop volumineuses pour être mises en ligne (maximum %2$d MB)."
+
+#: includes/class-wg-plugin.php:1087
+#, php-format
+msgid "%1$d photo was too large to upload (max %2$d MB)."
+msgid_plural "%1$d photos were too large to upload (max %2$d MB)."
+msgstr[0] "La photo %1$d était trop grande pour être téléchargée (maximum %2$d MB)."
+msgstr[1] "%1$d photos étaient trop volumineuses pour être téléchargées (maximum %2$d MB)."
+
+#: includes/class-wg-plugin.php:1094
+#, php-format
+msgid "%1$d file was too large to upload (max %2$d MB)."
+msgid_plural "%1$d files were too large to upload (max %2$d MB)."
+msgstr[0] "Le fichier %1$d était trop volumineux pour être téléchargé (max %2$d MB)."
+msgstr[1] "Les fichiers %1$d étaient trop volumineux pour être téléchargés (maximum %2$d MB)."
+
+#: includes/class-wg-plugin.php:1104
+#, php-format
+msgid "%d file was not supported."
+msgid_plural "%d files were not supported."
+msgstr[0] "Le fichier %d n'était pas pris en charge."
+msgstr[1] "Les fichiers %d n'étaient pas pris en charge."
+
+#: includes/class-wg-plugin.php:1112
+#, php-format
+msgid "%d file could not be uploaded. Please try again."
+msgid_plural "%d files could not be uploaded. Please try again."
+msgstr[0] "Le fichier %d n'a pas pu être téléchargé. Veuillez réessayer."
+msgstr[1] "Les fichiers %d n'ont pas pu être téléchargés. Veuillez réessayer."
+
+#: includes/class-wg-plugin.php:1257 includes/class-wg-plugin.php:1910
+#: includes/class-wg-plugin.php:2039
+msgid "You are not allowed to access this page."
+msgstr "Vous n'êtes pas autorisé à accéder à cette page."
+
+#: includes/class-wg-plugin.php:1402
+msgid "Encrypted file is healthy and downloadable."
+msgstr "Le fichier crypté est sain et téléchargeable."
+
+#: includes/class-wg-plugin.php:1413
+msgid "Metadata file is missing. This upload cannot be decrypted."
+msgstr "Le fichier de métadonnées est manquant. Ce téléchargement ne peut pas être déchiffré."
+
+#: includes/class-wg-plugin.php:1417 includes/class-wg-plugin.php:1442
+msgid "Metadata looks damaged or unreadable. Download is currently unavailable."
+msgstr "Les métadonnées semblent endommagées ou illisibles. Le téléchargement est actuellement indisponible."
+
+#: includes/class-wg-plugin.php:1423 includes/class-wg-plugin.php:1436
+#: includes/class-wg-plugin.php:1451
+msgid "Encrypted with a key version not available on this site."
+msgstr "Chiffré avec une version de clé non disponible sur ce site."
+
+#: includes/class-wg-plugin.php:1429
+msgid "Could not read encrypted file data."
+msgstr "Impossible de lire les données du fichier crypté."
+
+#: includes/class-wg-plugin.php:1439
+msgid "Metadata integrity check failed. File metadata or blob appears modified."
+msgstr "La vérification de l'intégrité des métadonnées a échoué. Les métadonnées du fichier ou le blob semblent modifiés."
+
+#: includes/class-wg-plugin.php:1454
+msgid "Private metadata could not be decoded."
+msgstr "Les métadonnées privées n'ont pas pu être décodées."
+
+#: includes/class-wg-plugin.php:1461
+msgid "Decryption check failed. The file or metadata may be corrupted."
+msgstr "La vérification du décryptage a échoué. Le fichier ou les métadonnées peuvent être corrompus."
+
+#: includes/class-wg-plugin.php:1465
+msgid "Download works, but metadata is from legacy plaintext format and should be re-uploaded for better privacy."
+msgstr "Le téléchargement fonctionne, mais les métadonnées proviennent du format de texte brut existant et doivent être téléchargées à nouveau pour une meilleure confidentialité."
+
+#: includes/class-wg-plugin.php:1507
+msgid "Legacy plaintext file found. It is intentionally not served by this plugin."
+msgstr "Fichier en texte brut hérité trouvé. Il n'est intentionnellement pas servi par ce plugin."
+
+#: includes/class-wg-plugin.php:1658
+msgid "Invalid file."
+msgstr "Fichier invalide."
+
+#: includes/class-wg-plugin.php:1663
+msgid "File does not exist."
+msgstr "Le fichier n'existe pas."
+
+#: includes/class-wg-plugin.php:1669
+msgid "Missing file metadata."
+msgstr "Métadonnées de fichier manquantes."
+
+#: includes/class-wg-plugin.php:1692 includes/class-wg-plugin.php:1714
+#: includes/class-wg-plugin.php:1724
+msgid "Invalid file metadata."
+msgstr "Métadonnées de fichier non valides."
+
+#: includes/class-wg-plugin.php:1697 includes/class-wg-plugin.php:1708
+#: includes/class-wg-plugin.php:1721
+msgid "Could not decrypt file: unsupported encryption key version."
+msgstr "Impossible de déchiffrer le fichier: version de clé de chiffrement non prise en charge."
+
+#: includes/class-wg-plugin.php:1702
+msgid "Could not read file."
+msgstr "Impossible de lire le fichier."
+
+#: includes/class-wg-plugin.php:1711
+msgid "Could not decrypt file. Metadata integrity check failed."
+msgstr "Impossible de déchiffrer le fichier. La vérification de l'intégrité des métadonnées a échoué."
+
+#: includes/class-wg-plugin.php:1729
+msgid "Could not decrypt file. Metadata may be invalid or the key may have changed."
+msgstr "Impossible de déchiffrer le fichier. Les métadonnées peuvent être invalides ou la clé peut avoir changé."
+
+#: includes/class-wg-plugin.php:1952 includes/class-wg-plugin.php:2109
+msgid "You are not allowed to download files."
+msgstr "Vous n'êtes pas autorisé à télécharger des fichiers."
+
+#: includes/class-wg-plugin.php:1958 includes/class-wg-plugin.php:1985
+msgid "Missing file."
+msgstr "Fichier manquant."
+
+#: includes/class-wg-plugin.php:1963 includes/class-wg-plugin.php:1990
+#: includes/class-wg-plugin.php:2023
+msgid "Invalid security token."
+msgstr "Jeton de sécurité invalide."
+
+#: includes/class-wg-plugin.php:1979
+msgid "You are not allowed to access this file."
+msgstr "Vous n'êtes pas autorisé à accéder à ce fichier."
+
+#: includes/class-wg-plugin.php:2006 includes/class-wg-plugin.php:2055
+msgid "You are not allowed to delete files."
+msgstr "Vous n'êtes pas autorisé à supprimer des fichiers."
+
+#: includes/class-wg-plugin.php:2168
+#, php-format
+msgid "%d file(s) were skipped because they are not currently decryptable."
+msgstr "Les fichiers %d ont été ignorés car ils ne sont pas actuellement déchiffrables."
+
+#: templates/admin-page.php:58
+msgid "Wedding Gallery tabs"
+msgstr "Onglets de la galerie de mariage"
+
+#: templates/admin-page.php:60 templates/admin-page.php:278
+msgid "Settings"
+msgstr "Paramètres"
+
+#: templates/admin-page.php:63
+msgid "Media"
+msgstr "Médias"
+
+#: templates/admin-page.php:66
+msgid "Help"
+msgstr "Aide"
+
+#: templates/admin-page.php:72
+msgid "Settings saved."
+msgstr "Paramètres enregistrés."
+
+#: templates/admin-page.php:80
+#, php-format
+msgid "Settings saved. Max upload size was clamped to %d MB to match server/runtime safety limits."
+msgstr "Paramètres enregistrés. La taille maximale de téléchargement a été limitée à %d MB pour correspondre aux limites de sécurité du serveur/d'exécution."
+
+#: templates/admin-page.php:92
+#, php-format
+msgid "%d file was deleted."
+msgstr "Le fichier %d a été supprimé."
+
+#: templates/admin-page.php:100
+msgid "File could not be deleted."
+msgstr "Le fichier n'a pas pu être supprimé."
+
+#: templates/admin-page.php:108
+#, php-format
+msgid "%d files were deleted."
+msgstr "Les fichiers %d ont été supprimés."
+
+#: templates/admin-page.php:120
+#, php-format
+msgid "%1$d files were deleted. %2$d files were skipped."
+msgstr "Les fichiers %1$d ont été supprimés. Les fichiers %2$d ont été ignorés."
+
+#: templates/admin-page.php:129
+msgid "No files could be deleted."
+msgstr "Aucun fichier n'a pu être supprimé."
+
+#: templates/admin-page.php:137
+msgid "No encrypted files are currently available."
+msgstr "Aucun fichier crypté n'est actuellement disponible."
+
+#: templates/admin-page.php:141
+msgid "Bulk ZIP download is not available on this server (ZipArchive missing)."
+msgstr "Le téléchargement ZIP en masse n'est pas disponible sur ce serveur (ZipArchive manquant)."
+
+#: templates/admin-page.php:145
+msgid "Could not create ZIP archive. Please try again."
+msgstr "Impossible de créer l'archive ZIP. Veuillez réessayer."
+
+#: templates/admin-page.php:149
+msgid "No files could be added to ZIP download."
+msgstr "Aucun fichier n'a pu être ajouté au téléchargement ZIP."
+
+#: templates/admin-page.php:153
+msgid "Media diagnostics were refreshed."
+msgstr "Les diagnostics des médias ont été actualisés."
+
+#: templates/admin-page.php:163
+#, php-format
+msgid "Current configured max is %1$d MB, but this server can safely handle up to %2$d MB. Uploads are limited to the lower value."
+msgstr "Le maximum actuellement configuré est %1$d MB, mais ce serveur peut gérer en toute sécurité jusqu'à %2$d MB. Les téléchargements sont limités à la valeur inférieure."
+
+#: templates/admin-page.php:178
+#, php-format
+msgid "Detected %d legacy plaintext file(s). They are no longer served by this plugin. Migrate or remove them from uploads/wedding-gallery."
+msgstr "%d fichier(s) texte brut hérité a été détecté. Ils ne sont plus servis par ce plugin. Migrez-les ou supprimez-les de uploads/wedding-gallery."
+
+#: templates/admin-page.php:188
+msgid "Encryption key status is unhealthy. Media uploads/downloads may fail until the key configuration is repaired."
+msgstr "L’état de la clé de chiffrement n’est pas sain. Les téléchargements multimédias peuvent échouer jusqu'à ce que la configuration des clés soit réparée."
+
+#: templates/admin-page.php:198
+#, php-format
+msgid "%d encrypted file(s) are missing metadata. Those files cannot be downloaded until metadata is restored."
+msgstr "Il manque des métadonnées dans %d fichier(s) chiffré(s). Ces fichiers ne peuvent pas être téléchargés tant que les métadonnées ne sont pas restaurées."
+
+#: templates/admin-page.php:212
+#, php-format
+msgid "%d file(s) have damaged or unreadable metadata. Download may fail until repaired from backup."
+msgstr "Les fichiers %d contiennent des métadonnées endommagées ou illisibles. Le téléchargement peut échouer jusqu'à ce qu'il soit réparé à partir de la sauvegarde."
+
+#: templates/admin-page.php:226
+#, php-format
+msgid "%d file(s) failed metadata integrity checks. They may have been modified or corrupted."
+msgstr "Les contrôles d'intégrité des métadonnées du ou des fichiers %d ont échoué. Ils peuvent avoir été modifiés ou corrompus."
+
+#: templates/admin-page.php:240
+#, php-format
+msgid "%d file(s) require an encryption key version that is not available on this site."
+msgstr "Les fichiers %d nécessitent une version de clé de cryptage qui n'est pas disponible sur ce site."
+
+#: templates/admin-page.php:254
+#, php-format
+msgid "%d file(s) still use legacy plaintext metadata. They remain downloadable, but re-uploading improves privacy."
+msgstr "Les fichiers %d utilisent toujours des métadonnées en texte brut héritées. Ils restent téléchargeables, mais le nouveau téléchargement améliore la confidentialité."
+
+#: templates/admin-page.php:268
+#, php-format
+msgid "%d file(s) failed the decryption health check. The encrypted file or metadata may be corrupted."
+msgstr "Le(s) fichier(s) %d ont échoué lors de la vérification de l'état de déchiffrement. Le fichier chiffré ou les métadonnées peuvent être corrompus."
+
+#: templates/admin-page.php:287
+msgid "Upload Page URL"
+msgstr "URL de la page de téléchargement"
+
+#: templates/admin-page.php:302
+#, php-format
+msgid "Add shortcode %s to this page."
+msgstr "Ajoutez le shortcode %s à cette page."
+
+#: templates/admin-page.php:311
+msgid "Access Token"
+msgstr "Jeton d'accès"
+
+#: templates/admin-page.php:323
+msgid "Regenerate Guest Link"
+msgstr "Régénérer le lien invité"
+
+#: templates/admin-page.php:327
+msgid "Anyone with the protected link can upload. Regenerating token invalidates old links and QR prints."
+msgstr "Toute personne disposant du lien protégé peut télécharger. La régénération du jeton invalide les anciens liens et les impressions QR."
+
+#: templates/admin-page.php:333
+msgid "Max Upload Size (MB)"
+msgstr "Taille maximale de téléchargement (MB)"
+
+#: templates/admin-page.php:348
+#, php-format
+msgid "Allowed file types: %1$s. Effective per-file limit: %2$d MB."
+msgstr "Types de fichiers autorisés: %1$s. Limite effective par fichier: %2$d MB."
+
+#: templates/admin-page.php:358
+#, php-format
+msgid "Runtime limits (MB): upload_max_filesize=%1$d, post_max_size=%2$d, memory_limit=%3$d, memory-safe ceiling=%4$d."
+msgstr "Limites d'exécution (MB): upload_max_filesize=%1$d, post_max_size=%2$d, memory_limit=%3$d, plafond de sécurité mémoire=%4$d."
+
+#: templates/admin-page.php:370
+msgid "Cleanup On Uninstall"
+msgstr "Nettoyage lors de la désinstallation"
+
+#: templates/admin-page.php:381
+msgid "Yes, permanently delete wedding media + metadata from uploads/wedding-gallery when uninstalling this plugin."
+msgstr "Oui, supprimez définitivement les médias de mariage + les métadonnées de uploads/wedding-gallery lors de la désinstallation de ce plugin."
+
+#: templates/admin-page.php:384
+msgid "Leave unchecked to keep files on disk after uninstall."
+msgstr "Laissez décochée pour conserver les fichiers sur le disque après la désinstallation."
+
+#: templates/admin-page.php:387
+msgid "This setting has no effect on normal plugin deactivation."
+msgstr "Ce paramètre n'a aucun effet sur la désactivation normale du plugin."
+
+#: templates/admin-page.php:392
+msgid "Encryption Key"
+msgstr "Clé de cryptage"
+
+#: templates/admin-page.php:398
+#, php-format
+msgid "Status: %1$s | Version: %2$d | Fingerprint: %3$s"
+msgstr "Statut: %1$s | Version: %2$d | Empreinte digitale: %3$s"
+
+#: templates/admin-page.php:399 templates/admin-page.php:564
+msgid "Healthy"
+msgstr "En bonne santé"
+
+#: templates/admin-page.php:399
+msgid "Problem"
+msgstr "Problème"
+
+#: templates/admin-page.php:406
+msgid "Backup requirement: keep database/plugin options and uploads/wedding-gallery together in the same backup/restore set. Restoring only one can make media undecryptable."
+msgstr "Exigence de sauvegarde: conservez les options de base de données/plug-in et uploads/wedding-gallery ensemble dans le même ensemble de sauvegarde/restauration. En restaurer un seul peut rendre le média indéchiffrable."
+
+#: templates/admin-page.php:409
+msgid "Operational tip: verify restores on a staging site before the event date."
+msgstr "Conseil opérationnel: vérifiez les restaurations sur un site intermédiaire avant la date de l'événement."
+
+#: templates/admin-page.php:416
+msgid "Save Settings"
+msgstr "Enregistrer les paramètres"
+
+#: templates/admin-page.php:421
+msgid "Protected Upload URL (QR Target)"
+msgstr "URL de téléchargement protégée (cible QR)"
+
+#: templates/admin-page.php:425
+msgid "Guest Upload Link"
+msgstr "Lien de téléchargement invité"
+
+#: templates/admin-page.php:435
+msgid "Copy Link"
+msgstr "Copier le lien"
+
+#: templates/admin-page.php:438
+msgid "QR Code"
+msgstr "Code QR"
+
+#: templates/admin-page.php:439
+msgid "Guest upload QR code"
+msgstr "Invité télécharger le code QR"
+
+#: templates/admin-page.php:442
+msgid "View QR Code"
+msgstr "Afficher QR Code"
+
+#: templates/admin-page.php:445
+msgid "Download QR PNG"
+msgstr "Télécharger QR PNG"
+
+#: templates/admin-page.php:449
+msgid "QR code is generated locally in your browser. The protected upload URL is not sent to third-party QR services."
+msgstr "Le code QR est généré localement dans votre navigateur. L'URL de téléchargement protégée n'est pas envoyée aux services QR tiers."
+
+#: templates/admin-page.php:452
+msgid "Print tip: open the QR image and print at high quality for guest signage."
+msgstr "Conseil d'impression: ouvrez l'image QR et imprimez en haute qualité pour la signalisation des invités."
+
+#: templates/admin-page.php:455
+msgid "How to use the QR code"
+msgstr "Comment utiliser le code QR"
+
+#: templates/admin-page.php:457
+msgid "Set the Upload Page URL and click Save Settings to generate the current guest link."
+msgstr "Définissez l'URL de la page de téléchargement et cliquez sur Enregistrer les paramètres pour générer le lien invité actuel."
+
+#: templates/admin-page.php:458
+msgid "Use Copy Link for messages, or print the QR code and place it at your wedding."
+msgstr "Utilisez Copy Link pour les messages ou imprimez le code QR et placez-le à votre mariage."
+
+#: templates/admin-page.php:459
+msgid "Guests scan the QR code on iPhone or Android and upload from camera, photo library/gallery, or files."
+msgstr "Les invités scannent le code QR sur iPhone ou Android et le téléchargent depuis un appareil photo, une photothèque/galerie ou des fichiers."
+
+#: templates/admin-page.php:460
+msgid "If you regenerate the guest link/token, all older printed QR codes stop working and must be reprinted."
+msgstr "Si vous régénérez le lien/jeton invité, tous les anciens codes QR imprimés cessent de fonctionner et doivent être réimprimés."
+
+#: templates/admin-page.php:464
+msgid "Set an Upload Page URL to generate the protected link."
+msgstr "Définissez une URL de page de téléchargement pour générer le lien protégé."
+
+#: templates/admin-page.php:469
+msgid "Wedding Media"
+msgstr "Médias de mariage"
+
+#: templates/admin-page.php:475
+#, php-format
+msgid "Overview last updated: %1$s. Source: %2$s. Cache TTL: %3$d seconds."
+msgstr "Aperçu dernière mise à jour: %1$s. Source: %2$s. Durée de vie du cache: %3$d secondes."
+
+#: templates/admin-page.php:477
+msgid "Cached"
+msgstr "En cache"
+
+#: templates/admin-page.php:477
+msgid "Live"
+msgstr "En direct"
+
+#: templates/admin-page.php:485
+msgid "Refresh Diagnostics"
+msgstr "Actualiser les diagnostics"
+
+#: templates/admin-page.php:488
+msgid "No uploads yet."
+msgstr "Aucun téléchargement pour l'instant."
+
+#: templates/admin-page.php:496
+msgid "Download Selected (ZIP)"
+msgstr "Télécharger la sélection (ZIP)"
+
+#: templates/admin-page.php:499
+msgid "Download All (ZIP)"
+msgstr "Télécharger tout (ZIP)"
+
+#: templates/admin-page.php:502
+msgid "Delete Selected"
+msgstr "Supprimer la sélection"
+
+#: templates/admin-page.php:505
+msgid "Delete All"
+msgstr "Supprimer tout"
+
+#: templates/admin-page.php:513
+msgid "Select all files"
+msgstr "Sélectionnez tous les fichiers"
+
+#: templates/admin-page.php:516
+msgid "Preview"
+msgstr "Aperçu"
+
+#: templates/admin-page.php:517
+msgid "Filename"
+msgstr "Nom de fichier"
+
+#: templates/admin-page.php:518
+msgid "Media Type"
+msgstr "Type de média"
+
+#: templates/admin-page.php:519
+msgid "Size"
+msgstr "Taille"
+
+#: templates/admin-page.php:520
+msgid "Uploaded"
+msgstr "Téléchargé"
+
+#: templates/admin-page.php:521
+msgid "Health"
+msgstr "Santé"
+
+#: templates/admin-page.php:522
+msgid "Actions"
+msgstr "Actes"
+
+#: templates/admin-page.php:533
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: templates/admin-page.php:568
+msgid "Missing Metadata"
+msgstr "Métadonnées manquantes"
+
+#: templates/admin-page.php:572
+msgid "Metadata Damaged"
+msgstr "Métadonnées endommagées"
+
+#: templates/admin-page.php:576
+msgid "Integrity Failed"
+msgstr "Échec de l'intégrité"
+
+#: templates/admin-page.php:580
+msgid "Key Version Mismatch"
+msgstr "Incompatibilité de version de clé"
+
+#: templates/admin-page.php:584
+msgid "Decrypt Failed"
+msgstr "Échec du décryptage"
+
+#: templates/admin-page.php:588
+msgid "Legacy Metadata"
+msgstr "Métadonnées héritées"
+
+#: templates/admin-page.php:592
+msgid "Legacy Plaintext"
+msgstr "Texte brut hérité"
+
+#: templates/admin-page.php:597
+msgid "File"
+msgstr "Déposer"
+
+#: templates/admin-page.php:599
+msgid "Photo"
+msgstr "Photo"
+
+#: templates/admin-page.php:601
+msgid "Video"
+msgstr "Vidéo"
+
+#: templates/admin-page.php:608
+msgid "Select media file"
+msgstr "Sélectionnez le fichier multimédia"
+
+#: templates/admin-page.php:646
+msgid "View"
+msgstr "Voir"
+
+#: templates/admin-page.php:651
+msgid "Download"
+msgstr "Télécharger"
+
+#: templates/admin-page.php:668
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/admin-page.php:671
+msgid "Unavailable"
+msgstr "Indisponible"
+
+#: templates/admin-page.php:683
+msgid "How this plugin works"
+msgstr "Comment fonctionne ce plugin"
+
+#: templates/admin-page.php:684
+msgid "Wedding Gallery provides a protected guest upload page for wedding photos and videos. Guests can only upload through the tokenized link or QR code. Uploaded files are stored encrypted in uploads/wedding-gallery and can be managed by admins in the Media tab."
+msgstr "Wedding Gallery fournit une page de téléchargement d'invités protégée pour les photos et vidéos de mariage. Les invités ne peuvent télécharger que via le lien tokenisé ou le code QR. Les fichiers téléchargés sont stockés cryptés dans uploads/wedding-gallery et peuvent être gérés par les administrateurs dans l'onglet Médias."
+
+#: templates/admin-page.php:686
+msgid "Create a WordPress page with shortcode [wedding_gallery_upload]."
+msgstr "Créez une page WordPress avec le shortcode [wedding_gallery_upload]."
+
+#: templates/admin-page.php:687
+msgid "Set that page URL in Settings and save."
+msgstr "Définissez l’URL de cette page dans Paramètres et enregistrez."
+
+#: templates/admin-page.php:688
+msgid "Copy the protected guest link or print the QR code."
+msgstr "Copiez le lien invité protégé ou imprimez le code QR."
+
+#: templates/admin-page.php:689
+msgid "Guests upload photos/videos from phone camera, gallery/library, or files."
+msgstr "Les invités téléchargent des photos/vidéos depuis l'appareil photo du téléphone, une galerie/bibliothèque ou des fichiers."
+
+#: templates/admin-page.php:690
+msgid "Use the Media tab to view health status, preview, download, or delete uploads."
+msgstr "Utilisez l'onglet Média pour afficher l'état de santé, prévisualiser, télécharger ou supprimer des téléchargements."
+
+#: templates/admin-page.php:695
+msgid "Theme and page design info"
+msgstr "Informations sur la conception du thème et de la page"
+
+#: templates/admin-page.php:696
+msgid "The visual area above the upload card (for example hero images, logo, page header, and footer) is controlled by your active theme or page builder. The plugin itself renders the protected upload form card via shortcode inside that page."
+msgstr "La zone visuelle au-dessus de la carte de téléchargement (par exemple les images du héros, le logo, l'en-tête et le pied de page) est contrôlée par votre thème actif ou votre générateur de page. Le plugin lui-même restitue la carte de formulaire de téléchargement protégée via un shortcode à l'intérieur de cette page."
+
+#: templates/admin-page.php:700
+msgid "Pilot handoff notes"
+msgstr "Notes de transfert du pilote"
+
+#: templates/admin-page.php:702
+msgid "Backup and restore database + uploads/wedding-gallery together to keep media decryptable."
+msgstr "Sauvegardez et restaurez la base de données + uploads/wedding-gallery ensemble pour que les médias restent déchiffrables."
+
+#: templates/admin-page.php:703
+msgid "Regenerating the guest token invalidates previous guest links and printed QR codes."
+msgstr "La régénération du jeton invité invalide les liens invités précédents et les codes QR imprimés."
+
+#: templates/admin-page.php:704
+msgid "Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated."
+msgstr "Cleanup On Uninstall s'exécute uniquement lorsque le plugin est désinstallé, pas lorsqu'il est désactivé."
+
+#: templates/admin-page.php:705
+msgid "On shared hosting, runtime and memory limits can reduce effective max upload size."
+msgstr "Sur l'hébergement partagé, les limites d'exécution et de mémoire peuvent réduire la taille de téléchargement maximale effective."
+
+#: templates/admin-page.php:710
+msgid "Troubleshooting checklist"
+msgstr "Liste de contrôle de dépannage"
+
+#: templates/admin-page.php:712
+msgid "If guests cannot open the upload page, check that the URL includes a valid wg_token."
+msgstr "Si les invités ne peuvent pas ouvrir la page de téléchargement, vérifiez que l'URL inclut un wg_token valide."
+
+#: templates/admin-page.php:713
+msgid "If uploads fail, verify allowed file type and max file size limits."
+msgstr "Si les téléchargements échouent, vérifiez le type de fichier autorisé et les limites de taille maximale des fichiers."
+
+#: templates/admin-page.php:714
+msgid "If media cannot be downloaded, refresh diagnostics and check file health status in the Media tab."
+msgstr "Si le support ne peut pas être téléchargé, actualisez les diagnostics et vérifiez l'état de santé du fichier dans l'onglet Média."
+
+#: templates/admin-page.php:715
+msgid "If decryption errors occur after migration, verify database/options and uploads were restored together."
+msgstr "Si des erreurs de déchiffrement se produisent après la migration, vérifiez que la base de données/les options et les téléchargements ont été restaurés ensemble."
+
+#: templates/frontend-upload.php:21
+msgid "Thank you, upload complete."
+msgstr "Merci, téléchargement terminé."
+
+#: templates/frontend-upload.php:21
+msgid "Upload could not be completed."
+msgstr "Le téléchargement n'a pas pu être terminé."
+
+#: templates/frontend-upload.php:268
+msgid "Protected guest upload"
+msgstr "Téléchargement d'invité protégé"
+
+#: templates/frontend-upload.php:269
+msgid "This page is only available through the wedding QR link."
+msgstr "Cette page est uniquement disponible via le lien QR du mariage."
+
+#: templates/frontend-upload.php:274
+msgid "Share your wedding moments"
+msgstr "Partagez vos moments de mariage"
+
+#: templates/frontend-upload.php:275
+msgid "Select photos or videos from your phone and upload them in one step."
+msgstr "Sélectionnez des photos ou des vidéos sur votre téléphone et téléchargez-les en une seule étape."
+
+#: templates/frontend-upload.php:302
+msgid "Choose Photos or Videos"
+msgstr "Choisissez des photos ou des vidéos"
+
+#: templates/frontend-upload.php:313
+#, php-format
+msgid "Allowed: %1$s | Max per file: %2$d MB"
+msgstr "Autorisé: %1$s | Max par fichier: %2$d MB"
+
+#: templates/frontend-upload.php:319
+msgid "On iPhone/Android you can choose camera, photo library/gallery, or files."
+msgstr "Sur iPhone/Android, vous pouvez choisir un appareil photo, une bibliothèque/galerie de photos ou des fichiers."
+
+#: templates/frontend-upload.php:320
+msgid "Tip: Long phone videos are often large and may exceed the upload size limit."
+msgstr "Astuce: Les longues vidéos téléphoniques sont souvent volumineuses et peuvent dépasser la taille limite de téléchargement."
+
+#: templates/frontend-upload.php:321
+msgid "You can select multiple files at once."
+msgstr "Vous pouvez sélectionner plusieurs fichiers à la fois."
+
+#: templates/frontend-upload.php:325
+msgid "Upload Now"
+msgstr "Télécharger maintenant"
+
+#: templates/frontend-upload.php:332
+msgid "Preparing upload..."
+msgstr "Préparation du téléchargement..."
