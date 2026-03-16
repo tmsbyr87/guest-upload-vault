@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Guest Upload Vault
- * Plugin URI:  https://github.com/tmsbyr87/wedding-gallery
+ * Plugin URI:  https://github.com/tmsbyr87/guest-upload-vault.git
  * Description: Securely collect guest photos and videos via protected link or QR code.
  * Version:     1.0.0
  * Author:      Thomas Beyer
