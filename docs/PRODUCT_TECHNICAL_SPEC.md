@@ -1,8 +1,8 @@
-# Wedding Gallery Product / Technical Spec
+# Guest Upload Vault Product / Technical Spec
 
 ## 1. Product Summary
 
-Wedding Gallery is a WordPress plugin that lets wedding guests upload photos and videos through a protected page opened from a QR code.
+Guest Upload Vault is a WordPress plugin that lets event guests upload photos and videos through a protected page opened from a QR code.
 
 The plugin should feel native to WordPress:
 - guests use a simple mobile-friendly upload page
@@ -12,7 +12,7 @@ The plugin should feel native to WordPress:
 
 ## 2. Problem Statement
 
-Wedding guests take many photos and videos during an event, but collecting them afterward is fragmented and unreliable. The goal is to provide a low-friction upload experience that works instantly from a QR code without requiring guest accounts.
+Event guests take many photos and videos during an event, but collecting them afterward is fragmented and unreliable. The goal is to provide a low-friction upload experience that works instantly from a QR code without requiring guest accounts.
 
 ## 3. Goals
 
@@ -63,19 +63,19 @@ Admins configure the plugin, generate or manage the protected upload link, and r
 - Image uploads
 - Limited video uploads
 - WordPress admin settings page
-- Dedicated storage under `/wp-content/uploads/wedding-gallery/`
+- Dedicated storage under `/wp-content/uploads/guest-upload-vault/`
 - Basic moderation state stored in plugin-managed upload records
 - QR-target URL display for admins
 
 ### Recommended MVP Constraints
 
-- Support one wedding/event per site for the first release
+- Support one event per site for the first release
 - Support images: JPG, JPEG, PNG, WEBP
 - Support video: MP4 only
 - Allow multiple image uploads per request
 - Allow one video per request
 - Apply strict upload size limits
-- Store uploads locally under `/wp-content/uploads/wedding-gallery/`
+- Store uploads locally under `/wp-content/uploads/guest-upload-vault/`
 
 ## 8. Functional Requirements
 
@@ -110,13 +110,13 @@ The plugin must:
 - enforce upload size limits
 - limit file counts per request
 - reject unsupported formats
-- write accepted files into `/wp-content/uploads/wedding-gallery/`
+- write accepted files into `/wp-content/uploads/guest-upload-vault/`
 - store plugin-specific metadata in plugin-managed upload records
 
 ### Admin Experience
 
 The plugin admin area must allow an administrator to:
-- set the wedding/event name
+- set the event name
 - select or identify the upload page
 - generate, view, and rotate the access token
 - configure allowed file types
@@ -161,14 +161,14 @@ Use:
 Do not use the WordPress Media Library for guest uploads.
 
 Instead, store files in a dedicated directory:
-- `/wp-content/uploads/wedding-gallery/`
+- `/wp-content/uploads/guest-upload-vault/`
 
 Use WordPress-native upload path helpers and filesystem-safe handling where helpful, but do not create attachment posts for guest uploads.
 
 This approach ensures:
 - guest uploads remain isolated from the main Media Library
 - file organization is predictable for this plugin
-- admin review and moderation can be designed around wedding-specific workflows
+- admin review and moderation can be designed around event-specific workflows
 
 ## 10. Data Model
 
@@ -185,7 +185,7 @@ Store plugin configuration in WordPress options, including:
 ### Upload Records
 
 Store plugin-managed metadata for each uploaded file, such as:
-- source = wedding_gallery
+- source = guest_upload_vault
 - event name or event identifier
 - stored filename and relative path
 - original filename
@@ -329,7 +329,7 @@ The best MVP implementation approach is:
 - shortcode for the guest-facing page
 - custom REST endpoint for uploads
 - settings page built with Settings API
-- dedicated storage under `/wp-content/uploads/wedding-gallery/`
+- dedicated storage under `/wp-content/uploads/guest-upload-vault/`
 - plugin-managed upload records for file state and moderation
 - token-protected QR-code URL plus nonce verification
 
@@ -357,7 +357,7 @@ This keeps the plugin maintainable without requiring a heavy framework.
 
 After MVP validation, likely next steps are:
 - Gutenberg block instead of or alongside shortcode
-- multiple weddings/events
+- multiple events
 - dedicated admin upload review screen
 - storage offload to cloud media services
 - resumable or chunked uploads for large videos

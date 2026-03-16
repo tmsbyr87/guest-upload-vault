@@ -5,11 +5,11 @@
 /README.md export-ignore
 /CHANGELOG.md export-ignore
 /docs export-ignore
-/wedding-gallery/.DS_Store export-ignore
+/guest-upload-vault/.DS_Store export-ignore
 
 # Translation packaging rules:
 # - keep runtime files in release (.mo/.po)
 # - source template (.pot) can be excluded
-/wedding-gallery/languages/*.mo -export-ignore
-/wedding-gallery/languages/*.po -export-ignore
-/wedding-gallery/languages/wedding-gallery.pot export-ignore
+/guest-upload-vault/languages/*.mo -export-ignore
+/guest-upload-vault/languages/*.po -export-ignore
+/guest-upload-vault/languages/guest-upload-vault.pot export-ignore

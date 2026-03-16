@@ -4,26 +4,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WG_Plugin {
-	const OPTION_KEY          = 'wg_settings';
-	const SHORTCODE_TAG       = 'wedding_gallery_upload';
-	const TOKEN_QUERY_ARG     = 'wg_token';
+class GUV_Plugin {
+	const OPTION_KEY          = 'guv_settings';
+	const SHORTCODE_TAG       = 'guest_upload_vault';
+	const TOKEN_QUERY_ARG     = 'guv_token';
 	const DEFAULT_MAX_SIZE_MB = 50;
 	const DEFAULT_FALLBACK_SAFE_MAX_MB = 10;
 	const ACCESS_TOKEN_LENGTH = 48;
 	const QR_CODE_DEFAULT_SIZE = 360;
-	const ENCRYPTED_FILE_EXT  = '.wgenc';
-	const METADATA_FILE_EXT   = '.wgmeta';
-	const MEDIA_OVERVIEW_CACHE_KEY = 'wg_media_overview_v1';
+	const ENCRYPTED_FILE_EXT  = '.guvenc';
+	const METADATA_FILE_EXT   = '.guvmeta';
+	const MEDIA_OVERVIEW_CACHE_KEY = 'guv_media_overview_v1';
 	const MEDIA_OVERVIEW_CACHE_TTL = 120;
 
 	/**
-	 * @var WG_Plugin|null
+	 * @var GUV_Plugin|null
 	 */
 	private static $instance = null;
 
 	/**
-	 * @return WG_Plugin
+	 * @return GUV_Plugin
 	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
@@ -54,15 +54,15 @@ class WG_Plugin {
 
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
-		add_action( 'admin_post_wg_save_settings', array( $this, 'handle_save_settings' ) );
-		add_action( 'admin_post_wg_upload', array( $this, 'handle_upload' ) );
-		add_action( 'admin_post_nopriv_wg_upload', array( $this, 'handle_upload' ) );
-		add_action( 'admin_post_wg_download_upload', array( $this, 'handle_download' ) );
-		add_action( 'admin_post_wg_view_upload', array( $this, 'handle_view_upload' ) );
-		add_action( 'admin_post_wg_delete_upload', array( $this, 'handle_delete_upload' ) );
-		add_action( 'admin_post_wg_bulk_download', array( $this, 'handle_bulk_download' ) );
-		add_action( 'admin_post_wg_bulk_delete', array( $this, 'handle_bulk_delete' ) );
-		add_action( 'admin_post_wg_refresh_media_overview', array( $this, 'handle_refresh_media_overview' ) );
+		add_action( 'admin_post_guv_save_settings', array( $this, 'handle_save_settings' ) );
+		add_action( 'admin_post_guv_upload', array( $this, 'handle_upload' ) );
+		add_action( 'admin_post_nopriv_guv_upload', array( $this, 'handle_upload' ) );
+		add_action( 'admin_post_guv_download_upload', array( $this, 'handle_download' ) );
+		add_action( 'admin_post_guv_view_upload', array( $this, 'handle_view_upload' ) );
+		add_action( 'admin_post_guv_delete_upload', array( $this, 'handle_delete_upload' ) );
+		add_action( 'admin_post_guv_bulk_download', array( $this, 'handle_bulk_download' ) );
+		add_action( 'admin_post_guv_bulk_delete', array( $this, 'handle_bulk_delete' ) );
+		add_action( 'admin_post_guv_refresh_media_overview', array( $this, 'handle_refresh_media_overview' ) );
 	}
 
 	/**
@@ -70,28 +70,28 @@ class WG_Plugin {
 	 */
 	private function enqueue_frontend_upload_script() {
 		wp_register_script(
-			'wg-frontend-upload',
-			WG_PLUGIN_URL . 'assets/js/frontend-upload.js',
+			'guv-frontend-upload',
+			GUV_PLUGIN_URL . 'assets/js/frontend-upload.js',
 			array(),
-			WG_PLUGIN_VERSION,
+			GUV_PLUGIN_VERSION,
 			true
 		);
 
 		$i18n_data = array(
-			'noFilesSelected'      => __( 'No files selected yet.', 'wedding-gallery' ),
-			'filesSelectedPrefix'  => __( 'files selected:', 'wedding-gallery' ),
-			'chooseAtLeastOne'     => __( 'Please choose at least one photo or video.', 'wedding-gallery' ),
-			'uploadingKeepOpen'    => __( 'Uploading... Please keep this page open.', 'wedding-gallery' ),
-			'uploadingProgress'    => __( 'Upload in progress...', 'wedding-gallery' ),
-			'uploadingAlmostDone'  => __( 'Almost done...', 'wedding-gallery' ),
+			'noFilesSelected'      => __( 'No files selected yet.', 'guest-upload-vault' ),
+			'filesSelectedPrefix'  => __( 'files selected:', 'guest-upload-vault' ),
+			'chooseAtLeastOne'     => __( 'Please choose at least one photo or video.', 'guest-upload-vault' ),
+			'uploadingKeepOpen'    => __( 'Uploading... Please keep this page open.', 'guest-upload-vault' ),
+			'uploadingProgress'    => __( 'Upload in progress...', 'guest-upload-vault' ),
+			'uploadingAlmostDone'  => __( 'Almost done...', 'guest-upload-vault' ),
 		);
 
 		$json_i18n_data = wp_json_encode( $i18n_data );
 		if ( false !== $json_i18n_data ) {
-			wp_add_inline_script( 'wg-frontend-upload', 'window.wgUploadI18n = ' . $json_i18n_data . ';', 'before' );
+			wp_add_inline_script( 'guv-frontend-upload', 'window.guvUploadI18n = ' . $json_i18n_data . ';', 'before' );
 		}
 
-		wp_enqueue_script( 'wg-frontend-upload' );
+		wp_enqueue_script( 'guv-frontend-upload' );
 	}
 
 	/**
@@ -99,36 +99,36 @@ class WG_Plugin {
 	 * @return void
 	 */
 	public function enqueue_admin_assets( $hook_suffix ) {
-		if ( 'toplevel_page_wedding-gallery' !== $hook_suffix ) {
+		if ( 'toplevel_page_guest-upload-vault' !== $hook_suffix ) {
 			return;
 		}
 
 		wp_register_script(
-			'wg-admin-qrcode',
-			WG_PLUGIN_URL . 'assets/js/qrcode.min.js',
+			'guv-admin-qrcode',
+			GUV_PLUGIN_URL . 'assets/js/qrcode.min.js',
 			array(),
-			WG_PLUGIN_VERSION,
+			GUV_PLUGIN_VERSION,
 			true
 		);
 		wp_register_script(
-			'wg-admin-qr',
-			WG_PLUGIN_URL . 'assets/js/admin-qr.js',
-			array( 'wg-admin-qrcode' ),
-			WG_PLUGIN_VERSION,
+			'guv-admin-qr',
+			GUV_PLUGIN_URL . 'assets/js/admin-qr.js',
+			array( 'guv-admin-qrcode' ),
+			GUV_PLUGIN_VERSION,
 			true
 		);
 		wp_register_script(
-			'wg-admin-media',
-			WG_PLUGIN_URL . 'assets/js/admin-media.js',
+			'guv-admin-media',
+			GUV_PLUGIN_URL . 'assets/js/admin-media.js',
 			array(),
-			WG_PLUGIN_VERSION,
+			GUV_PLUGIN_VERSION,
 			true
 		);
 		wp_register_style(
-			'wg-admin',
-			WG_PLUGIN_URL . 'assets/css/admin.css',
+			'guv-admin',
+			GUV_PLUGIN_URL . 'assets/css/admin.css',
 			array(),
-			WG_PLUGIN_VERSION
+			GUV_PLUGIN_VERSION
 		);
 
 		$config_json = wp_json_encode(
@@ -137,25 +137,25 @@ class WG_Plugin {
 			)
 		);
 		if ( false !== $config_json ) {
-			wp_add_inline_script( 'wg-admin-qr', 'window.wgAdminQrConfig = ' . $config_json . ';', 'before' );
+			wp_add_inline_script( 'guv-admin-qr', 'window.guvAdminQrConfig = ' . $config_json . ';', 'before' );
 		}
 
 		$media_i18n_json = wp_json_encode(
 			array(
-				'confirmDeleteSingle'   => __( 'Delete this file permanently?', 'wedding-gallery' ),
-				'confirmDeleteSelected' => __( 'Delete selected media permanently?', 'wedding-gallery' ),
-				'confirmDeleteAll'      => __( 'Delete ALL wedding media permanently?', 'wedding-gallery' ),
-				'noSelection'           => __( 'Please select at least one file first.', 'wedding-gallery' ),
+				'confirmDeleteSingle'   => __( 'Delete this file permanently?', 'guest-upload-vault' ),
+				'confirmDeleteSelected' => __( 'Delete selected media permanently?', 'guest-upload-vault' ),
+				'confirmDeleteAll'      => __( 'Delete ALL collected media permanently?', 'guest-upload-vault' ),
+				'noSelection'           => __( 'Please select at least one file first.', 'guest-upload-vault' ),
 			)
 		);
 		if ( false !== $media_i18n_json ) {
-			wp_add_inline_script( 'wg-admin-media', 'window.wgAdminMediaI18n = ' . $media_i18n_json . ';', 'before' );
+			wp_add_inline_script( 'guv-admin-media', 'window.guvAdminMediaI18n = ' . $media_i18n_json . ';', 'before' );
 		}
 
-		wp_enqueue_script( 'wg-admin-qrcode' );
-		wp_enqueue_script( 'wg-admin-qr' );
-		wp_enqueue_script( 'wg-admin-media' );
-		wp_enqueue_style( 'wg-admin' );
+		wp_enqueue_script( 'guv-admin-qrcode' );
+		wp_enqueue_script( 'guv-admin-qr' );
+		wp_enqueue_script( 'guv-admin-media' );
+		wp_enqueue_style( 'guv-admin' );
 	}
 
 	/**
@@ -464,7 +464,7 @@ class WG_Plugin {
 			return false;
 		}
 
-		return hash_hmac( 'sha256', 'wedding-gallery-metadata-integrity-v1', $key, true );
+		return hash_hmac( 'sha256', 'guest-upload-vault-metadata-integrity-v1', $key, true );
 	}
 
 	/**
@@ -715,7 +715,7 @@ class WG_Plugin {
 	private static function get_upload_dir() {
 		$upload_dir = wp_upload_dir();
 
-		return trailingslashit( $upload_dir['basedir'] ) . 'wedding-gallery';
+		return trailingslashit( $upload_dir['basedir'] ) . 'guest-upload-vault';
 	}
 
 	/**
@@ -767,10 +767,10 @@ class WG_Plugin {
 	 */
 	public function register_admin_menu() {
 		add_menu_page(
-			__( 'Wedding Gallery', 'wedding-gallery' ),
-			__( 'Wedding Gallery', 'wedding-gallery' ),
+			__( 'Guest Upload Vault', 'guest-upload-vault' ),
+			__( 'Guest Upload Vault', 'guest-upload-vault' ),
 			'manage_options',
-			'wedding-gallery',
+			'guest-upload-vault',
 			array( $this, 'render_admin_page' ),
 			'dashicons-format-gallery'
 		);
@@ -812,9 +812,9 @@ class WG_Plugin {
 		$authorized_token = $is_authorized ? $current_token : '';
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only UI message state.
-		$status  = isset( $_GET['wg_status'] ) ? sanitize_key( wp_unslash( $_GET['wg_status'] ) ) : '';
+		$status  = isset( $_GET['guv_status'] ) ? sanitize_key( wp_unslash( $_GET['guv_status'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only UI message state.
-		$message = isset( $_GET['wg_message'] ) ? sanitize_text_field( wp_unslash( $_GET['wg_message'] ) ) : '';
+		$message = isset( $_GET['guv_message'] ) ? sanitize_text_field( wp_unslash( $_GET['guv_message'] ) ) : '';
 
 		$upload_limits = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
 		$max_upload_mb = (int) $upload_limits['effective_mb'];
@@ -825,7 +825,7 @@ class WG_Plugin {
 		$this->enqueue_frontend_upload_script();
 
 		ob_start();
-		require WG_PLUGIN_DIR . 'templates/frontend-upload.php';
+		require GUV_PLUGIN_DIR . 'templates/frontend-upload.php';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template output escapes dynamic data at source.
 		return (string) ob_get_clean();
@@ -842,22 +842,22 @@ class WG_Plugin {
 		$posted_token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
 		$token        = (string) $settings['access_token'];
 		if ( empty( $posted_token ) || empty( $token ) || ! hash_equals( $token, $posted_token ) ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Invalid upload token.', 'wedding-gallery' ) );
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Invalid upload token.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_POST['wg_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wg_upload_nonce'] ) ), 'wg_upload_action_' . $posted_token );
+		$nonce_ok = isset( $_POST['guv_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guv_upload_nonce'] ) ), 'guv_upload_action_' . $posted_token );
 		if ( ! $nonce_ok ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'wedding-gallery' ) );
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'guest-upload-vault' ) );
 		}
 		$redirect_url = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url( '/' );
 
-		if ( empty( $_FILES['wg_files'] ) || ! is_array( $_FILES['wg_files'] ) ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'wedding-gallery' ) );
+		if ( empty( $_FILES['guv_files'] ) || ! is_array( $_FILES['guv_files'] ) ) {
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'guest-upload-vault' ) );
 		}
 
-		$files = $_FILES['wg_files']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$files = $_FILES['guv_files']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $files['name'] ) || ! is_array( $files['name'] ) ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'wedding-gallery' ) );
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'guest-upload-vault' ) );
 		}
 
 		$upload_limits = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
@@ -868,7 +868,7 @@ class WG_Plugin {
 		$allowed_mimes = $this->get_allowed_mimes();
 
 		if ( ! $this->supports_encryption() ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Upload encryption is unavailable on this server.', 'wedding-gallery' ) );
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Upload encryption is unavailable on this server.', 'guest-upload-vault' ) );
 		}
 
 		$successful = 0;
@@ -1018,7 +1018,7 @@ class WG_Plugin {
 		if ( $successful > 0 ) {
 			$message = sprintf(
 				/* translators: %d: uploaded files count */
-				_n( '%d file uploaded successfully.', '%d files uploaded successfully.', $successful, 'wedding-gallery' ),
+				_n( '%d file uploaded successfully.', '%d files uploaded successfully.', $successful, 'guest-upload-vault' ),
 				$successful
 			);
 			if ( ! empty( $error_codes ) ) {
@@ -1026,7 +1026,7 @@ class WG_Plugin {
 				if ( '' !== $error_summary ) {
 					$message .= ' ' . $error_summary;
 				} else {
-					$message .= ' ' . __( 'Some files could not be uploaded.', 'wedding-gallery' );
+					$message .= ' ' . __( 'Some files could not be uploaded.', 'guest-upload-vault' );
 				}
 			}
 			$this->invalidate_media_overview_cache();
@@ -1040,13 +1040,13 @@ class WG_Plugin {
 				'error',
 				sprintf(
 					/* translators: %s: upload issue summary */
-					__( 'No files were uploaded. %s', 'wedding-gallery' ),
+					__( 'No files were uploaded. %s', 'guest-upload-vault' ),
 					$error_summary
 				)
 			);
 		}
 
-		$this->redirect_with_message( $redirect_url, 'error', __( 'No files were uploaded. Please check file type and size limits and try again.', 'wedding-gallery' ) );
+		$this->redirect_with_message( $redirect_url, 'error', __( 'No files were uploaded. Please check file type and size limits and try again.', 'guest-upload-vault' ) );
 	}
 
 	/**
@@ -1077,21 +1077,21 @@ class WG_Plugin {
 			if ( 'video' === $too_large_kind ) {
 				$messages[] = sprintf(
 					/* translators: %1$d: rejected videos count, %2$d: max upload size in MB */
-					_n( '%1$d video was too large to upload (max %2$d MB).', '%1$d videos were too large to upload (max %2$d MB).', $too_large_count, 'wedding-gallery' ),
+					_n( '%1$d video was too large to upload (max %2$d MB).', '%1$d videos were too large to upload (max %2$d MB).', $too_large_count, 'guest-upload-vault' ),
 					$too_large_count,
 					$max_upload_mb
 				);
 			} elseif ( 'photo' === $too_large_kind ) {
 				$messages[] = sprintf(
 					/* translators: %1$d: rejected photos count, %2$d: max upload size in MB */
-					_n( '%1$d photo was too large to upload (max %2$d MB).', '%1$d photos were too large to upload (max %2$d MB).', $too_large_count, 'wedding-gallery' ),
+					_n( '%1$d photo was too large to upload (max %2$d MB).', '%1$d photos were too large to upload (max %2$d MB).', $too_large_count, 'guest-upload-vault' ),
 					$too_large_count,
 					$max_upload_mb
 				);
 			} else {
 				$messages[] = sprintf(
 					/* translators: %1$d: rejected files count, %2$d: max upload size in MB */
-					_n( '%1$d file was too large to upload (max %2$d MB).', '%1$d files were too large to upload (max %2$d MB).', $too_large_count, 'wedding-gallery' ),
+					_n( '%1$d file was too large to upload (max %2$d MB).', '%1$d files were too large to upload (max %2$d MB).', $too_large_count, 'guest-upload-vault' ),
 					$too_large_count,
 					$max_upload_mb
 				);
@@ -1101,7 +1101,7 @@ class WG_Plugin {
 		if ( $unsupported_count > 0 ) {
 			$messages[] = sprintf(
 				/* translators: %d: unsupported files count */
-				_n( '%d file was not supported.', '%d files were not supported.', $unsupported_count, 'wedding-gallery' ),
+				_n( '%d file was not supported.', '%d files were not supported.', $unsupported_count, 'guest-upload-vault' ),
 				$unsupported_count
 			);
 		}
@@ -1109,7 +1109,7 @@ class WG_Plugin {
 		if ( $failed_count > 0 ) {
 			$messages[] = sprintf(
 				/* translators: %d: files that could not be uploaded */
-				_n( '%d file could not be uploaded. Please try again.', '%d files could not be uploaded. Please try again.', $failed_count, 'wedding-gallery' ),
+				_n( '%d file could not be uploaded. Please try again.', '%d files could not be uploaded. Please try again.', $failed_count, 'guest-upload-vault' ),
 				$failed_count
 			);
 		}
@@ -1204,7 +1204,7 @@ class WG_Plugin {
 		}
 
 		$base_args = array(
-			'page' => 'wedding-gallery',
+			'page' => 'guest-upload-vault',
 			'tab'  => $tab,
 		);
 		$query_args = array_merge( $base_args, $args );
@@ -1221,7 +1221,7 @@ class WG_Plugin {
 	private function redirect_admin_notice( $tab, $notice, $extra_args = array() ) {
 		$args = array_merge(
 			array(
-				'wg_notice' => sanitize_key( $notice ),
+				'guv_notice' => sanitize_key( $notice ),
 			),
 			$extra_args
 		);
@@ -1239,8 +1239,8 @@ class WG_Plugin {
 	private function redirect_with_message( $url, $status, $message ) {
 		$redirect = add_query_arg(
 			array(
-				'wg_status'  => $status,
-				'wg_message' => $message,
+				'guv_status'  => $status,
+				'guv_message' => $message,
 			),
 			$url
 		);
@@ -1254,10 +1254,10 @@ class WG_Plugin {
 	 */
 	public function handle_save_settings() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to access this page.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to access this page.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'wg_save_settings', 'wg_save_settings_nonce' );
+		check_admin_referer( 'guv_save_settings', 'guv_save_settings_nonce' );
 
 		$settings = $this->get_settings();
 
@@ -1399,7 +1399,7 @@ class WG_Plugin {
 				$meta      = $this->read_media_metadata( $meta_path );
 				$meta_version = isset( $meta['version'] ) ? absint( $meta['version'] ) : 1;
 				$status    = 'ok';
-				$message   = __( 'Encrypted file is healthy and downloadable.', 'wedding-gallery' );
+				$message   = __( 'Encrypted file is healthy and downloadable.', 'guest-upload-vault' );
 				$can_download = true;
 				$private_fields = array(
 					'original_name' => '',
@@ -1410,36 +1410,36 @@ class WG_Plugin {
 
 				if ( ! is_file( $meta_path ) ) {
 					$status       = 'missing_metadata';
-					$message      = __( 'Metadata file is missing. This upload cannot be decrypted.', 'wedding-gallery' );
+					$message      = __( 'Metadata file is missing. This upload cannot be decrypted.', 'guest-upload-vault' );
 					$can_download = false;
 				} elseif ( empty( $meta ) ) {
 					$status       = 'invalid_metadata';
-					$message      = __( 'Metadata looks damaged or unreadable. Download is currently unavailable.', 'wedding-gallery' );
+					$message      = __( 'Metadata looks damaged or unreadable. Download is currently unavailable.', 'guest-upload-vault' );
 					$can_download = false;
 				} else {
 					$key_version = isset( $meta['key_version'] ) ? absint( $meta['key_version'] ) : 1;
 					if ( false === $this->get_encryption_key_for_version( $key_version ) ) {
 						$status       = 'unsupported_key_version';
-						$message      = __( 'Encrypted with a key version not available on this site.', 'wedding-gallery' );
+						$message      = __( 'Encrypted with a key version not available on this site.', 'guest-upload-vault' );
 						$can_download = false;
 					} else {
 						$ciphertext = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 						if ( false === $ciphertext ) {
 							$status       = 'decrypt_failed';
-							$message      = __( 'Could not read encrypted file data.', 'wedding-gallery' );
+							$message      = __( 'Could not read encrypted file data.', 'guest-upload-vault' );
 							$can_download = false;
 						} else {
 							$integrity = $this->verify_metadata_integrity( $item, $ciphertext, $meta );
 							if ( empty( $integrity['ok'] ) ) {
 								if ( 'unsupported_key_version' === $integrity['error'] ) {
 									$status  = 'unsupported_key_version';
-									$message = __( 'Encrypted with a key version not available on this site.', 'wedding-gallery' );
+									$message = __( 'Encrypted with a key version not available on this site.', 'guest-upload-vault' );
 								} elseif ( 'metadata_tampered' === $integrity['error'] ) {
 									$status  = 'metadata_tampered';
-									$message = __( 'Metadata integrity check failed. File metadata or blob appears modified.', 'wedding-gallery' );
+									$message = __( 'Metadata integrity check failed. File metadata or blob appears modified.', 'guest-upload-vault' );
 								} else {
 									$status  = 'invalid_metadata';
-									$message = __( 'Metadata looks damaged or unreadable. Download is currently unavailable.', 'wedding-gallery' );
+									$message = __( 'Metadata looks damaged or unreadable. Download is currently unavailable.', 'guest-upload-vault' );
 								}
 								$can_download = false;
 							} else {
@@ -1448,21 +1448,21 @@ class WG_Plugin {
 									$private_key_version = isset( $meta['private_key_version'] ) ? absint( $meta['private_key_version'] ) : 0;
 									if ( $meta_version >= 2 && $private_key_version > 0 && false === $this->get_encryption_key_for_version( $private_key_version ) ) {
 										$status  = 'unsupported_key_version';
-										$message = __( 'Encrypted with a key version not available on this site.', 'wedding-gallery' );
+										$message = __( 'Encrypted with a key version not available on this site.', 'guest-upload-vault' );
 									} else {
 										$status  = 'invalid_metadata';
-										$message = __( 'Private metadata could not be decoded.', 'wedding-gallery' );
+										$message = __( 'Private metadata could not be decoded.', 'guest-upload-vault' );
 									}
 									$can_download = false;
 								} else {
 									$private_fields = $decoded_private;
 									if ( false === $this->decrypt_contents( $ciphertext, $meta ) ) {
 										$status       = 'decrypt_failed';
-										$message      = __( 'Decryption check failed. The file or metadata may be corrupted.', 'wedding-gallery' );
+										$message      = __( 'Decryption check failed. The file or metadata may be corrupted.', 'guest-upload-vault' );
 										$can_download = false;
 									} elseif ( ! empty( $integrity['legacy'] ) ) {
 										$status  = 'legacy_metadata_plaintext';
-										$message = __( 'Download works, but metadata is from legacy plaintext format and should be re-uploaded for better privacy.', 'wedding-gallery' );
+										$message = __( 'Download works, but metadata is from legacy plaintext format and should be re-uploaded for better privacy.', 'guest-upload-vault' );
 									}
 								}
 							}
@@ -1504,7 +1504,7 @@ class WG_Plugin {
 				'media_kind'    => $this->detect_media_kind_from_filename( $item ),
 				'modified'      => filemtime( $path ),
 				'health_status' => 'legacy_plaintext',
-				'health_message'=> __( 'Legacy plaintext file found. It is intentionally not served by this plugin.', 'wedding-gallery' ),
+				'health_message'=> __( 'Legacy plaintext file found. It is intentionally not served by this plugin.', 'guest-upload-vault' ),
 				'can_download'  => false,
 			);
 		}
@@ -1655,18 +1655,18 @@ class WG_Plugin {
 	private function resolve_encrypted_file_paths( $file_name ) {
 		$clean_name = sanitize_file_name( (string) $file_name );
 		if ( '' === $clean_name || ! $this->is_encrypted_blob_file( $clean_name ) ) {
-			return new WP_Error( 'invalid_file', __( 'Invalid file.', 'wedding-gallery' ) );
+			return new WP_Error( 'invalid_file', __( 'Invalid file.', 'guest-upload-vault' ) );
 		}
 
 		$blob_path = $this->resolve_existing_upload_file_path( $clean_name );
 		if ( false === $blob_path ) {
-			return new WP_Error( 'missing_file', __( 'File does not exist.', 'wedding-gallery' ) );
+			return new WP_Error( 'missing_file', __( 'File does not exist.', 'guest-upload-vault' ) );
 		}
 
 		$meta_file_name = $this->get_meta_file_name_for_blob( $clean_name );
 		$meta_path      = $this->resolve_existing_upload_file_path( $meta_file_name );
 		if ( false === $meta_path ) {
-			return new WP_Error( 'missing_metadata', __( 'Missing file metadata.', 'wedding-gallery' ) );
+			return new WP_Error( 'missing_metadata', __( 'Missing file metadata.', 'guest-upload-vault' ) );
 		}
 
 		return array(
@@ -1689,49 +1689,49 @@ class WG_Plugin {
 
 		$meta = $this->read_media_metadata( $resolved['meta_path'] );
 		if ( empty( $meta ) ) {
-			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'wedding-gallery' ) );
+			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'guest-upload-vault' ) );
 		}
 
 		$key_version = isset( $meta['key_version'] ) ? absint( $meta['key_version'] ) : 1;
 		if ( false === $this->get_encryption_key_for_version( $key_version ) ) {
-			return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'wedding-gallery' ) );
+			return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'guest-upload-vault' ) );
 		}
 
 		$ciphertext = file_get_contents( $resolved['blob_path'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		if ( false === $ciphertext ) {
-			return new WP_Error( 'read_failed', __( 'Could not read file.', 'wedding-gallery' ) );
+			return new WP_Error( 'read_failed', __( 'Could not read file.', 'guest-upload-vault' ) );
 		}
 
 		$integrity = $this->verify_metadata_integrity( $resolved['file_name'], $ciphertext, $meta );
 		if ( empty( $integrity['ok'] ) ) {
 			if ( 'unsupported_key_version' === $integrity['error'] ) {
-				return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'wedding-gallery' ) );
+				return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'guest-upload-vault' ) );
 			}
 			if ( 'metadata_tampered' === $integrity['error'] ) {
-				return new WP_Error( 'metadata_tampered', __( 'Could not decrypt file. Metadata integrity check failed.', 'wedding-gallery' ) );
+				return new WP_Error( 'metadata_tampered', __( 'Could not decrypt file. Metadata integrity check failed.', 'guest-upload-vault' ) );
 			}
 
-			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'wedding-gallery' ) );
+			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'guest-upload-vault' ) );
 		}
 
 		$private_fields = $this->decode_private_metadata_fields( $meta );
 		if ( false === $private_fields ) {
 			$private_key_version = isset( $meta['private_key_version'] ) ? absint( $meta['private_key_version'] ) : 0;
 			if ( $private_key_version > 0 && false === $this->get_encryption_key_for_version( $private_key_version ) ) {
-				return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'wedding-gallery' ) );
+				return new WP_Error( 'unsupported_key_version', __( 'Could not decrypt file: unsupported encryption key version.', 'guest-upload-vault' ) );
 			}
 
-			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'wedding-gallery' ) );
+			return new WP_Error( 'invalid_metadata', __( 'Invalid file metadata.', 'guest-upload-vault' ) );
 		}
 
 		$plaintext = $this->decrypt_contents( $ciphertext, $meta );
 		if ( false === $plaintext ) {
-			return new WP_Error( 'decrypt_failed', __( 'Could not decrypt file. Metadata may be invalid or the key may have changed.', 'wedding-gallery' ) );
+			return new WP_Error( 'decrypt_failed', __( 'Could not decrypt file. Metadata may be invalid or the key may have changed.', 'guest-upload-vault' ) );
 		}
 
-		$download_name = isset( $private_fields['original_name'] ) ? sanitize_file_name( (string) $private_fields['original_name'] ) : 'wedding-upload.bin';
+		$download_name = isset( $private_fields['original_name'] ) ? sanitize_file_name( (string) $private_fields['original_name'] ) : 'guest-upload.bin';
 		if ( '' === $download_name ) {
-			$download_name = 'wedding-upload.bin';
+			$download_name = 'guest-upload.bin';
 		}
 
 		$allowed_types = array_values( $this->get_allowed_mimes() );
@@ -1755,9 +1755,9 @@ class WG_Plugin {
 	 * @return void
 	 */
 	private function output_decrypted_media_response( $payload, $inline = false ) {
-		$download_name = isset( $payload['download_name'] ) ? sanitize_file_name( (string) $payload['download_name'] ) : 'wedding-upload.bin';
+		$download_name = isset( $payload['download_name'] ) ? sanitize_file_name( (string) $payload['download_name'] ) : 'guest-upload.bin';
 		if ( '' === $download_name ) {
-			$download_name = 'wedding-upload.bin';
+			$download_name = 'guest-upload.bin';
 		}
 
 		$mime_type = isset( $payload['mime_type'] ) ? sanitize_text_field( (string) $payload['mime_type'] ) : 'application/octet-stream';
@@ -1881,7 +1881,7 @@ class WG_Plugin {
 	private function get_unique_zip_entry_name( $candidate_name, &$used_names ) {
 		$base_name = sanitize_file_name( (string) $candidate_name );
 		if ( '' === $base_name ) {
-			$base_name = 'wedding-upload.bin';
+			$base_name = 'guest-upload.bin';
 		}
 
 		if ( ! isset( $used_names[ $base_name ] ) ) {
@@ -1907,7 +1907,7 @@ class WG_Plugin {
 	 */
 	public function render_admin_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to access this page.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to access this page.', 'guest-upload-vault' ) );
 		}
 
 		self::create_upload_dir();
@@ -1935,13 +1935,13 @@ class WG_Plugin {
 		$legacy_plaintext_count = 'media' === $current_tab ? (int) $upload_health_summary['legacy_plaintext'] : 0;
 		$qr_code_size            = self::QR_CODE_DEFAULT_SIZE;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice                  = isset( $_GET['wg_notice'] ) ? sanitize_key( wp_unslash( $_GET['wg_notice'] ) ) : '';
+		$notice                  = isset( $_GET['guv_notice'] ) ? sanitize_key( wp_unslash( $_GET['guv_notice'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice_count            = isset( $_GET['wg_count'] ) ? absint( wp_unslash( $_GET['wg_count'] ) ) : 0;
+		$notice_count            = isset( $_GET['guv_count'] ) ? absint( wp_unslash( $_GET['guv_count'] ) ) : 0;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice_skipped          = isset( $_GET['wg_skipped'] ) ? absint( wp_unslash( $_GET['wg_skipped'] ) ) : 0;
+		$notice_skipped          = isset( $_GET['guv_skipped'] ) ? absint( wp_unslash( $_GET['guv_skipped'] ) ) : 0;
 
-		require WG_PLUGIN_DIR . 'templates/admin-page.php';
+		require GUV_PLUGIN_DIR . 'templates/admin-page.php';
 	}
 
 	/**
@@ -1949,18 +1949,18 @@ class WG_Plugin {
 	 */
 	public function handle_download() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to download files.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to download files.', 'guest-upload-vault' ) );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified below.
 		$file_name = isset( $_GET['file'] ) ? sanitize_file_name( wp_unslash( $_GET['file'] ) ) : '';
 		if ( '' === $file_name ) {
-			wp_die( esc_html__( 'Missing file.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'Missing file.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wg_download_file_' . $file_name );
+		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_download_file_' . $file_name );
 		if ( ! $nonce_ok ) {
-			wp_die( esc_html__( 'Invalid security token.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
 		}
 
 		$payload = $this->get_decrypted_media_payload( $file_name );
@@ -1976,18 +1976,18 @@ class WG_Plugin {
 	 */
 	public function handle_view_upload() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to access this file.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to access this file.', 'guest-upload-vault' ) );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified below.
 		$file_name = isset( $_GET['file'] ) ? sanitize_file_name( wp_unslash( $_GET['file'] ) ) : '';
 		if ( '' === $file_name ) {
-			wp_die( esc_html__( 'Missing file.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'Missing file.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wg_view_file_' . $file_name );
+		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_view_file_' . $file_name );
 		if ( ! $nonce_ok ) {
-			wp_die( esc_html__( 'Invalid security token.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
 		}
 
 		$payload = $this->get_decrypted_media_payload( $file_name );
@@ -2003,7 +2003,7 @@ class WG_Plugin {
 	 */
 	public function handle_delete_upload() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to delete files.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to delete files.', 'guest-upload-vault' ) );
 		}
 
 		$file_name = isset( $_POST['file'] ) ? sanitize_file_name( wp_unslash( $_POST['file'] ) ) : '';
@@ -2015,17 +2015,17 @@ class WG_Plugin {
 			$this->redirect_admin_notice( 'media', 'delete_failed' );
 		}
 
-		$nonce_ok = isset( $_POST['wg_delete_file_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wg_delete_file_nonce'] ) ), 'wg_delete_file_' . $file_name );
+		$nonce_ok = isset( $_POST['guv_delete_file_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guv_delete_file_nonce'] ) ), 'guv_delete_file_' . $file_name );
 		if ( ! $nonce_ok ) {
-			$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wg_delete_file_' . $file_name );
+			$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_delete_file_' . $file_name );
 		}
 		if ( ! $nonce_ok ) {
-			wp_die( esc_html__( 'Invalid security token.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
 		}
 
 		if ( $this->delete_encrypted_blob_and_metadata( $file_name ) ) {
 			$this->invalidate_media_overview_cache();
-			$this->redirect_admin_notice( 'media', 'delete_success', array( 'wg_count' => 1 ) );
+			$this->redirect_admin_notice( 'media', 'delete_success', array( 'guv_count' => 1 ) );
 		}
 
 		$this->redirect_admin_notice( 'media', 'delete_failed' );
@@ -2036,10 +2036,10 @@ class WG_Plugin {
 	 */
 	public function handle_refresh_media_overview() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to access this page.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to access this page.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'wg_refresh_media_overview', 'wg_refresh_media_overview_nonce' );
+		check_admin_referer( 'guv_refresh_media_overview', 'guv_refresh_media_overview_nonce' );
 
 		$this->invalidate_media_overview_cache();
 		$this->get_media_overview_data( true );
@@ -2052,17 +2052,17 @@ class WG_Plugin {
 	 */
 	public function handle_bulk_delete() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to delete files.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to delete files.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'wg_bulk_delete', 'wg_bulk_delete_nonce' );
+		check_admin_referer( 'guv_bulk_delete', 'guv_bulk_delete_nonce' );
 
-		$scope_raw = isset( $_POST['wg_scope'] ) ? wp_unslash( $_POST['wg_scope'] ) : 'selected';
+		$scope_raw = isset( $_POST['guv_scope'] ) ? wp_unslash( $_POST['guv_scope'] ) : 'selected';
 		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
 
 		$selected_raw = array();
-		if ( isset( $_POST['wg_files'] ) && is_array( $_POST['wg_files'] ) ) {
-			$selected_raw = wp_unslash( $_POST['wg_files'] );
+		if ( isset( $_POST['guv_files'] ) && is_array( $_POST['guv_files'] ) ) {
+			$selected_raw = wp_unslash( $_POST['guv_files'] );
 		}
 		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
 		$files          = $this->get_bulk_target_files( $scope, $selected_files );
@@ -2087,18 +2087,18 @@ class WG_Plugin {
 				'media',
 				'bulk_delete_partial',
 				array(
-					'wg_count'   => $deleted,
-					'wg_skipped' => $skipped,
+					'guv_count'   => $deleted,
+					'guv_skipped' => $skipped,
 				)
 			);
 		}
 
 		if ( $deleted > 0 ) {
 			$this->invalidate_media_overview_cache();
-			$this->redirect_admin_notice( 'media', 'bulk_delete_success', array( 'wg_count' => $deleted ) );
+			$this->redirect_admin_notice( 'media', 'bulk_delete_success', array( 'guv_count' => $deleted ) );
 		}
 
-		$this->redirect_admin_notice( 'media', 'bulk_delete_failed', array( 'wg_skipped' => $skipped ) );
+		$this->redirect_admin_notice( 'media', 'bulk_delete_failed', array( 'guv_skipped' => $skipped ) );
 	}
 
 	/**
@@ -2106,17 +2106,17 @@ class WG_Plugin {
 	 */
 	public function handle_bulk_download() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to download files.', 'wedding-gallery' ) );
+			wp_die( esc_html__( 'You are not allowed to download files.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'wg_bulk_download', 'wg_bulk_download_nonce' );
+		check_admin_referer( 'guv_bulk_download', 'guv_bulk_download_nonce' );
 
-		$scope_raw = isset( $_POST['wg_scope'] ) ? wp_unslash( $_POST['wg_scope'] ) : 'selected';
+		$scope_raw = isset( $_POST['guv_scope'] ) ? wp_unslash( $_POST['guv_scope'] ) : 'selected';
 		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
 
 		$selected_raw = array();
-		if ( isset( $_POST['wg_files'] ) && is_array( $_POST['wg_files'] ) ) {
-			$selected_raw = wp_unslash( $_POST['wg_files'] );
+		if ( isset( $_POST['guv_files'] ) && is_array( $_POST['guv_files'] ) ) {
+			$selected_raw = wp_unslash( $_POST['guv_files'] );
 		}
 		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
 		$files          = $this->get_bulk_target_files( $scope, $selected_files );
@@ -2129,7 +2129,7 @@ class WG_Plugin {
 			$this->redirect_admin_notice( 'media', 'zip_unavailable' );
 		}
 
-		$temp_zip = wp_tempnam( 'wedding-gallery-export.zip' );
+		$temp_zip = wp_tempnam( 'guest-upload-vault-export.zip' );
 		if ( false === $temp_zip ) {
 			$this->redirect_admin_notice( 'media', 'zip_failed' );
 		}
@@ -2162,10 +2162,10 @@ class WG_Plugin {
 
 		if ( $skipped > 0 ) {
 			$zip->addFromString(
-				'_wedding-gallery-export-report.txt',
+				'_guest-upload-vault-export-report.txt',
 				sprintf(
 					/* translators: %d: skipped files count in ZIP export */
-					__( '%d file(s) were skipped because they are not currently decryptable.', 'wedding-gallery' ),
+					__( '%d file(s) were skipped because they are not currently decryptable.', 'guest-upload-vault' ),
 					$skipped
 				)
 			);
@@ -2175,10 +2175,10 @@ class WG_Plugin {
 
 		if ( $written < 1 ) {
 			wp_delete_file( $temp_zip );
-			$this->redirect_admin_notice( 'media', 'bulk_download_failed', array( 'wg_skipped' => $skipped ) );
+			$this->redirect_admin_notice( 'media', 'bulk_download_failed', array( 'guv_skipped' => $skipped ) );
 		}
 
-		$archive_name = 'wedding-gallery-media-' . gmdate( 'Ymd-His' ) . '.zip';
+		$archive_name = 'guest-upload-vault-media-' . gmdate( 'Ymd-His' ) . '.zip';
 
 		nocache_headers();
 		header( 'X-Content-Type-Options: nosniff' );

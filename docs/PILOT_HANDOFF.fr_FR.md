@@ -1,26 +1,26 @@
-# Wedding Gallery - Guide de handoff pilote (fr_FR)
+# Guest Upload Vault - Guide de handoff pilote (fr_FR)
 
 ## Portee
 
-- Upload invite via shortcode: `[wedding_gallery_upload]`
-- Lien invite protege par token (`wg_token`)
+- Upload invite via shortcode: `[guest_upload_vault]`
+- Lien invite protege par token (`guv_token`)
 - QR code genere localement dans l'admin WordPress
-- Stockage chiffre dans `wp-content/uploads/wedding-gallery/`
+- Stockage chiffre dans `wp-content/uploads/guest-upload-vault/`
 - Telechargement et gestion des medias reservees aux admins
 
 ## Mise en place
 
-1. Copier le dossier `wedding-gallery/` dans `wp-content/plugins/`.
+1. Copier le dossier `guest-upload-vault/` dans `wp-content/plugins/`.
 2. Activer le plugin dans WordPress.
-3. Creer une page d'upload et y ajouter le shortcode `[wedding_gallery_upload]`.
-4. Ouvrir **Wedding Gallery** dans l'admin.
+3. Creer une page d'upload et y ajouter le shortcode `[guest_upload_vault]`.
+4. Ouvrir **Guest Upload Vault** dans l'admin.
 5. Definir l'URL de la page d'upload.
 6. Enregistrer puis partager le lien protege ou le QR code.
 
 ## Flux invite (token + QR)
 
 1. L'admin configure l'URL de la page d'upload.
-2. Le plugin genere l'URL protegee avec `wg_token`.
+2. Le plugin genere l'URL protegee avec `guv_token`.
 3. Les invites ouvrent le lien ou scannent le QR code.
 4. Les invites uploadent des photos/videos depuis camera, galerie ou fichiers.
 
@@ -32,7 +32,7 @@ Important:
 
 Toujours sauvegarder/restaurer ensemble:
 - base de donnees WordPress (options plugin et cle de chiffrement)
-- dossier `wp-content/uploads/wedding-gallery/` (blobs chiffres + metadonnees)
+- dossier `wp-content/uploads/guest-upload-vault/` (blobs chiffres + metadonnees)
 
 Si un seul element est restaure, les fichiers peuvent devenir indechiffrables.
 
@@ -40,7 +40,7 @@ Si un seul element est restaure, les fichiers peuvent devenir indechiffrables.
 
 Option: **Cleanup On Uninstall**
 - Desactive (par defaut): conserve les fichiers apres desinstallation.
-- Active: supprime definitivement les medias/metadonnees dans `uploads/wedding-gallery/`.
+- Active: supprime definitivement les medias/metadonnees dans `uploads/guest-upload-vault/`.
 
 Cette option ne s'applique pas a la simple desactivation du plugin.
 

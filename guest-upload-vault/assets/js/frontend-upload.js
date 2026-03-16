@@ -1,18 +1,18 @@
 (function () {
-	const form = document.getElementById('wg-upload-form');
+	const form = document.getElementById('guv-upload-form');
 	if (!form) {
 		return;
 	}
 
-	const i18n = window.wgUploadI18n || {};
-	const fileInput = document.getElementById('wg_files');
-	const summary = document.getElementById('wg_file_summary');
-	const submitBtn = document.getElementById('wg_submit_btn');
-	const pickerBtn = document.getElementById('wg_picker_btn');
-	const progressWrap = document.getElementById('wg_progress_wrap');
-	const progressFill = document.getElementById('wg_progress_fill');
-	const progressText = document.getElementById('wg_progress_text');
-	const clientAlert = document.getElementById('wg-client-alert');
+	const i18n = window.guvUploadI18n || {};
+	const fileInput = document.getElementById('guv_files');
+	const summary = document.getElementById('guv_file_summary');
+	const submitBtn = document.getElementById('guv_submit_btn');
+	const pickerBtn = document.getElementById('guv_picker_btn');
+	const progressWrap = document.getElementById('guv_progress_wrap');
+	const progressFill = document.getElementById('guv_progress_fill');
+	const progressText = document.getElementById('guv_progress_text');
+	const clientAlert = document.getElementById('guv-client-alert');
 	let progressStepTimers = [];
 	let currentProgress = 0;
 
@@ -107,7 +107,7 @@
 	setUploadUiBusy(false);
 
 	form.addEventListener('submit', function (event) {
-		if (form.dataset.wgSubmitting === '1') {
+		if (form.dataset.guvSubmitting === '1') {
 			event.preventDefault();
 			return;
 		}
@@ -120,7 +120,7 @@
 			return;
 		}
 
-		form.dataset.wgSubmitting = '1';
+		form.dataset.guvSubmitting = '1';
 		setUploadUiBusy(true);
 		clearProgressTimers();
 		currentProgress = 0;
@@ -136,8 +136,8 @@
 	});
 
 	window.addEventListener('pageshow', function () {
-		if (form.dataset.wgSubmitting === '1') {
-			form.dataset.wgSubmitting = '0';
+		if (form.dataset.guvSubmitting === '1') {
+			form.dataset.guvSubmitting = '0';
 		}
 		clearProgressTimers();
 		setUploadUiBusy(false);

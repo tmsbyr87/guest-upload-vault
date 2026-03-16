@@ -1,0 +1,981 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: guest-upload-vault 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-16 22:17+0100\n"
+"PO-Revision-Date: 2026-03-16 21:43+0100\n"
+"Last-Translator: Guest Upload Vault Team\n"
+"Language-Team: Spanish\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:81
+#: guest-upload-vault/templates/frontend-upload.php:305
+msgid "No files selected yet."
+msgstr "Aún no hay archivos seleccionados."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:82
+msgid "files selected:"
+msgstr "archivos seleccionados:"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:83
+msgid "Please choose at least one photo or video."
+msgstr "Elija al menos una foto o un vídeo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:84
+msgid "Uploading... Please keep this page open."
+msgstr "Subiendo... Por favor, mantenga esta página abierta."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:85
+msgid "Upload in progress..."
+msgstr "Subida en curso..."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:86
+msgid "Almost done..."
+msgstr "Casi terminado..."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:145
+msgid "Delete this file permanently?"
+msgstr "¿Eliminar este archivo permanentemente?"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:146
+msgid "Delete selected media permanently?"
+msgstr "¿Eliminar permanentemente los medios seleccionados?"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:147
+msgid "Delete ALL collected media permanently?"
+msgstr "¿Eliminar TODOS los medios recopilados de forma permanente?"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:148
+#: guest-upload-vault/templates/admin-page.php:141
+msgid "Please select at least one file first."
+msgstr "Seleccione primero al menos un archivo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:770
+#: guest-upload-vault/includes/class-guv-plugin.php:771
+#: guest-upload-vault/templates/admin-page.php:56
+msgid "Guest Upload Vault"
+msgstr "Guest Upload Vault"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:845
+msgid "Invalid upload token."
+msgstr "Token de carga no válido."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:850
+msgid "Security check failed."
+msgstr "El control de seguridad falló."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:855
+#: guest-upload-vault/includes/class-guv-plugin.php:860
+msgid "Please select at least one file."
+msgstr "Seleccione al menos un archivo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:871
+msgid "Upload encryption is unavailable on this server."
+msgstr "El cifrado de carga no está disponible en este servidor."
+
+#. translators: %d: uploaded files count
+#: guest-upload-vault/includes/class-guv-plugin.php:1021
+#, php-format
+msgid "%d file uploaded successfully."
+msgid_plural "%d files uploaded successfully."
+msgstr[0] "El archivo %d se cargó correctamente."
+msgstr[1] "%d archivos cargados correctamente."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1029
+msgid "Some files could not be uploaded."
+msgstr "Algunos archivos no se pudieron cargar."
+
+#. translators: %s: upload issue summary
+#: guest-upload-vault/includes/class-guv-plugin.php:1043
+#, php-format
+msgid "No files were uploaded. %s"
+msgstr "No se cargaron archivos. %s"
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1049
+msgid ""
+"No files were uploaded. Please check file type and size limits and try again."
+msgstr ""
+"No se cargaron archivos. Verifique los límites de tamaño y tipo de archivo e "
+"inténtelo nuevamente."
+
+#. translators: %1$d: rejected videos count, %2$d: max upload size in MB
+#: guest-upload-vault/includes/class-guv-plugin.php:1080
+#, php-format
+msgid "%1$d video was too large to upload (max %2$d MB)."
+msgid_plural "%1$d videos were too large to upload (max %2$d MB)."
+msgstr[0] "El vídeo %1$d era demasiado grande para cargarlo (máximo %2$d MB)."
+msgstr[1] "%1$d videos eran demasiado grandes para cargarlos (máximo %2$d MB)."
+
+#. translators: %1$d: rejected photos count, %2$d: max upload size in MB
+#: guest-upload-vault/includes/class-guv-plugin.php:1087
+#, php-format
+msgid "%1$d photo was too large to upload (max %2$d MB)."
+msgid_plural "%1$d photos were too large to upload (max %2$d MB)."
+msgstr[0] "La foto %1$d era demasiado grande para cargarla (máximo %2$d MB)."
+msgstr[1] "%1$d fotos eran demasiado grandes para cargarlas (máximo %2$d MB)."
+
+#. translators: %1$d: rejected files count, %2$d: max upload size in MB
+#: guest-upload-vault/includes/class-guv-plugin.php:1094
+#, php-format
+msgid "%1$d file was too large to upload (max %2$d MB)."
+msgid_plural "%1$d files were too large to upload (max %2$d MB)."
+msgstr[0] ""
+"El archivo %1$d era demasiado grande para cargarlo (máximo %2$d MB)."
+msgstr[1] ""
+"Los archivos %1$d eran demasiado grandes para cargarlos (máximo %2$d MB)."
+
+#. translators: %d: unsupported files count
+#: guest-upload-vault/includes/class-guv-plugin.php:1104
+#, php-format
+msgid "%d file was not supported."
+msgid_plural "%d files were not supported."
+msgstr[0] "El archivo %d no era compatible."
+msgstr[1] "No se admitieron %d archivos."
+
+#. translators: %d: files that could not be uploaded
+#: guest-upload-vault/includes/class-guv-plugin.php:1112
+#, php-format
+msgid "%d file could not be uploaded. Please try again."
+msgid_plural "%d files could not be uploaded. Please try again."
+msgstr[0] "No se pudo cargar el archivo %d. Por favor inténtalo de nuevo."
+msgstr[1] "No se pudieron cargar %d archivos. Por favor inténtalo de nuevo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1257
+#: guest-upload-vault/includes/class-guv-plugin.php:1910
+#: guest-upload-vault/includes/class-guv-plugin.php:2039
+msgid "You are not allowed to access this page."
+msgstr "No tienes permitido acceder a esta página."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1402
+msgid "Encrypted file is healthy and downloadable."
+msgstr "El archivo cifrado está en buen estado y se puede descargar."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1413
+msgid "Metadata file is missing. This upload cannot be decrypted."
+msgstr "Falta el archivo de metadatos. Esta carga no se puede descifrar."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1417
+#: guest-upload-vault/includes/class-guv-plugin.php:1442
+msgid ""
+"Metadata looks damaged or unreadable. Download is currently unavailable."
+msgstr ""
+"Los metadatos parecen dañados o ilegibles. La descarga no está disponible "
+"actualmente."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1423
+#: guest-upload-vault/includes/class-guv-plugin.php:1436
+#: guest-upload-vault/includes/class-guv-plugin.php:1451
+msgid "Encrypted with a key version not available on this site."
+msgstr "Cifrado con una versión de clave no disponible en este sitio."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1429
+msgid "Could not read encrypted file data."
+msgstr "No se pudieron leer los datos del archivo cifrado."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1439
+msgid ""
+"Metadata integrity check failed. File metadata or blob appears modified."
+msgstr ""
+"Error en la comprobación de la integridad de los metadatos. Los metadatos "
+"del archivo o el blob aparecen modificados."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1454
+msgid "Private metadata could not be decoded."
+msgstr "No se pudieron descodificar los metadatos privados."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1461
+msgid "Decryption check failed. The file or metadata may be corrupted."
+msgstr ""
+"La comprobación de descifrado falló. El archivo o los metadatos pueden estar "
+"dañados."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1465
+msgid ""
+"Download works, but metadata is from legacy plaintext format and should be "
+"re-uploaded for better privacy."
+msgstr ""
+"La descarga funciona, pero los metadatos provienen del formato de texto sin "
+"formato heredado y deben volver a cargarse para mejorar la privacidad."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1507
+msgid ""
+"Legacy plaintext file found. It is intentionally not served by this plugin."
+msgstr ""
+"Se encontró un archivo de texto sin formato heredado. Este complemento no lo "
+"ofrece intencionalmente."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1658
+msgid "Invalid file."
+msgstr "Archivo no válido."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1663
+msgid "File does not exist."
+msgstr "El archivo no existe."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1669
+msgid "Missing file metadata."
+msgstr "Faltan metadatos del archivo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1692
+#: guest-upload-vault/includes/class-guv-plugin.php:1714
+#: guest-upload-vault/includes/class-guv-plugin.php:1724
+msgid "Invalid file metadata."
+msgstr "Metadatos de archivo no válidos."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1697
+#: guest-upload-vault/includes/class-guv-plugin.php:1708
+#: guest-upload-vault/includes/class-guv-plugin.php:1721
+msgid "Could not decrypt file: unsupported encryption key version."
+msgstr ""
+"No se pudo descifrar el archivo: versión de clave de cifrado no compatible."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1702
+msgid "Could not read file."
+msgstr "No se pudo leer el archivo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1711
+msgid "Could not decrypt file. Metadata integrity check failed."
+msgstr ""
+"No se pudo descifrar el archivo. Error en la comprobación de la integridad "
+"de los metadatos."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1729
+msgid ""
+"Could not decrypt file. Metadata may be invalid or the key may have changed."
+msgstr ""
+"No se pudo descifrar el archivo. Es posible que los metadatos no sean "
+"válidos o que la clave haya cambiado."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1952
+#: guest-upload-vault/includes/class-guv-plugin.php:2109
+msgid "You are not allowed to download files."
+msgstr "No se le permite descargar archivos."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1958
+#: guest-upload-vault/includes/class-guv-plugin.php:1985
+msgid "Missing file."
+msgstr "Archivo faltante."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1963
+#: guest-upload-vault/includes/class-guv-plugin.php:1990
+#: guest-upload-vault/includes/class-guv-plugin.php:2023
+msgid "Invalid security token."
+msgstr "Token de seguridad no válido."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:1979
+msgid "You are not allowed to access this file."
+msgstr "No tiene permiso para acceder a este archivo."
+
+#: guest-upload-vault/includes/class-guv-plugin.php:2006
+#: guest-upload-vault/includes/class-guv-plugin.php:2055
+msgid "You are not allowed to delete files."
+msgstr "No está permitido eliminar archivos."
+
+#. translators: %d: skipped files count in ZIP export
+#: guest-upload-vault/includes/class-guv-plugin.php:2168
+#, php-format
+msgid "%d file(s) were skipped because they are not currently decryptable."
+msgstr "Se omitieron %d archivos porque actualmente no se pueden descifrar."
+
+#: guest-upload-vault/templates/admin-page.php:60
+msgid "Guest Upload Vault logo"
+msgstr "Logotipo de Guest Upload Vault"
+
+#: guest-upload-vault/templates/admin-page.php:63
+msgid "Securely collect guest photos and videos via protected link or QR code."
+msgstr "Recopila de forma segura fotos y videos de invitados mediante enlace protegido o código QR."
+
+#: guest-upload-vault/templates/admin-page.php:66
+msgid "Guest Upload Vault tabs"
+msgstr "Pestañas de Guest Upload Vault"
+
+#: guest-upload-vault/templates/admin-page.php:68
+#: guest-upload-vault/templates/admin-page.php:286
+msgid "Settings"
+msgstr "Ajustes"
+
+#: guest-upload-vault/templates/admin-page.php:71
+msgid "Media"
+msgstr "Medios de comunicación"
+
+#: guest-upload-vault/templates/admin-page.php:74
+msgid "Help"
+msgstr "Ayuda"
+
+#: guest-upload-vault/templates/admin-page.php:80
+msgid "Settings saved."
+msgstr "Configuración guardada."
+
+#. translators: %d: effective max upload in MB
+#: guest-upload-vault/templates/admin-page.php:88
+#, php-format
+msgid ""
+"Settings saved. Max upload size was clamped to %d MB to match server/runtime "
+"safety limits."
+msgstr ""
+"Configuración guardada. El tamaño máximo de carga se fijó en %d MB para que "
+"coincida con los límites de seguridad del servidor/tiempo de ejecución."
+
+#. translators: %d: deleted files count
+#: guest-upload-vault/templates/admin-page.php:100
+#, php-format
+msgid "%d file was deleted."
+msgstr "Se eliminó el archivo %d."
+
+#: guest-upload-vault/templates/admin-page.php:108
+msgid "File could not be deleted."
+msgstr "No se pudo eliminar el archivo."
+
+#. translators: %d: deleted files count
+#: guest-upload-vault/templates/admin-page.php:116
+#, php-format
+msgid "%d files were deleted."
+msgstr "Se eliminaron %d archivos."
+
+#. translators: 1: deleted files count, 2: skipped files count
+#: guest-upload-vault/templates/admin-page.php:128
+#, php-format
+msgid "%1$d files were deleted. %2$d files were skipped."
+msgstr "Se eliminaron %1$d archivos. Se omitieron %2$d archivos."
+
+#: guest-upload-vault/templates/admin-page.php:137
+msgid "No files could be deleted."
+msgstr "No se pudo eliminar ningún archivo."
+
+#: guest-upload-vault/templates/admin-page.php:145
+msgid "No encrypted files are currently available."
+msgstr "Actualmente no hay archivos cifrados disponibles."
+
+#: guest-upload-vault/templates/admin-page.php:149
+msgid "Bulk ZIP download is not available on this server (ZipArchive missing)."
+msgstr ""
+"La descarga masiva de ZIP no está disponible en este servidor (falta "
+"ZipArchive)."
+
+#: guest-upload-vault/templates/admin-page.php:153
+msgid "Could not create ZIP archive. Please try again."
+msgstr "No se pudo crear el archivo ZIP. Por favor inténtalo de nuevo."
+
+#: guest-upload-vault/templates/admin-page.php:157
+msgid "No files could be added to ZIP download."
+msgstr "No se pudieron agregar archivos a la descarga ZIP."
+
+#: guest-upload-vault/templates/admin-page.php:161
+msgid "Media diagnostics were refreshed."
+msgstr "Se actualizaron los diagnósticos de medios."
+
+#. translators: 1: configured MB, 2: runtime cap MB
+#: guest-upload-vault/templates/admin-page.php:171
+#, php-format
+msgid ""
+"Current configured max is %1$d MB, but this server can safely handle up to "
+"%2$d MB. Uploads are limited to the lower value."
+msgstr ""
+"El máximo configurado actual es %1$d MB, pero este servidor puede manejar de "
+"forma segura hasta %2$d MB. Las cargas están limitadas al valor más bajo."
+
+#. translators: %d: legacy file count
+#: guest-upload-vault/templates/admin-page.php:186
+#, php-format
+msgid ""
+"Detected %d legacy plaintext file(s). They are no longer served by this "
+"plugin. Migrate or remove them from uploads/guest-upload-vault."
+msgstr ""
+"Se detectaron %d archivos de texto sin formato heredados. Este complemento "
+"ya no los atiende. Migrarlos o eliminarlos de uploads/guest-upload-vault."
+
+#: guest-upload-vault/templates/admin-page.php:196
+msgid ""
+"Encryption key status is unhealthy. Media uploads/downloads may fail until "
+"the key configuration is repaired."
+msgstr ""
+"El estado de la clave de cifrado no es correcto. Las cargas/descargas de "
+"medios pueden fallar hasta que se repare la configuración clave."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:206
+#, php-format
+msgid ""
+"%d encrypted file(s) are missing metadata. Those files cannot be downloaded "
+"until metadata is restored."
+msgstr ""
+"A %d archivos cifrados les faltan metadatos. Esos archivos no se pueden "
+"descargar hasta que se restauren los metadatos."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:220
+#, php-format
+msgid ""
+"%d file(s) have damaged or unreadable metadata. Download may fail until "
+"repaired from backup."
+msgstr ""
+"%d archivos tienen metadatos dañados o ilegibles. La descarga puede fallar "
+"hasta que se repare desde la copia de seguridad."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:234
+#, php-format
+msgid ""
+"%d file(s) failed metadata integrity checks. They may have been modified or "
+"corrupted."
+msgstr ""
+"%d archivo(s) no superaron las comprobaciones de integridad de metadatos. Es "
+"posible que hayan sido modificados o dañados."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:248
+#, php-format
+msgid ""
+"%d file(s) require an encryption key version that is not available on this "
+"site."
+msgstr ""
+"Los archivos %d requieren una versión de clave de cifrado que no está "
+"disponible en este sitio."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:262
+#, php-format
+msgid ""
+"%d file(s) still use legacy plaintext metadata. They remain downloadable, "
+"but re-uploading improves privacy."
+msgstr ""
+"%d archivos todavía utilizan metadatos de texto sin formato heredados. "
+"Siguen siendo descargables, pero volver a cargarlos mejora la privacidad."
+
+#. translators: %d: affected files count
+#: guest-upload-vault/templates/admin-page.php:276
+#, php-format
+msgid ""
+"%d file(s) failed the decryption health check. The encrypted file or "
+"metadata may be corrupted."
+msgstr ""
+"%d archivos no pasaron la verificación de estado de descifrado. El archivo "
+"cifrado o los metadatos pueden estar dañados."
+
+#: guest-upload-vault/templates/admin-page.php:295
+msgid "Upload Page URL"
+msgstr "Cargar URL de página"
+
+#. translators: %s: shortcode
+#: guest-upload-vault/templates/admin-page.php:310
+#, php-format
+msgid "Add shortcode %s to this page."
+msgstr "Agregue el código corto %s a esta página."
+
+#: guest-upload-vault/templates/admin-page.php:319
+msgid "Access Token"
+msgstr "Token de acceso"
+
+#: guest-upload-vault/templates/admin-page.php:331
+msgid "Regenerate Guest Link"
+msgstr "Regenerar enlace de invitado"
+
+#: guest-upload-vault/templates/admin-page.php:335
+msgid ""
+"Anyone with the protected link can upload. Regenerating token invalidates "
+"old links and QR prints."
+msgstr ""
+"Cualquiera que tenga el enlace protegido puede subirlo. La regeneración del "
+"token invalida los enlaces antiguos y las impresiones QR."
+
+#: guest-upload-vault/templates/admin-page.php:341
+msgid "Max Upload Size (MB)"
+msgstr "Tamaño máximo de carga (MB)"
+
+#. translators: 1: allowed file types, 2: effective MB
+#: guest-upload-vault/templates/admin-page.php:356
+#, php-format
+msgid "Allowed file types: %1$s. Effective per-file limit: %2$d MB."
+msgstr ""
+"Tipos de archivos permitidos: %1$s. Límite efectivo por archivo: %2$d MB."
+
+#. translators: 1: upload_max_filesize MB, 2: post_max_size MB, 3: memory_limit MB, 4: memory-safe MB
+#: guest-upload-vault/templates/admin-page.php:366
+#, php-format
+msgid ""
+"Runtime limits (MB): upload_max_filesize=%1$d, post_max_size=%2$d, "
+"memory_limit=%3$d, memory-safe ceiling=%4$d."
+msgstr ""
+"Límites de tiempo de ejecución (MB): upload_max_filesize=%1$d, "
+"post_max_size=%2$d, Memory_limit=%3$d, techo de memoria segura=%4$d."
+
+#: guest-upload-vault/templates/admin-page.php:378
+msgid "Cleanup On Uninstall"
+msgstr "Limpieza al desinstalar"
+
+#: guest-upload-vault/templates/admin-page.php:389
+msgid ""
+"Yes, permanently delete guest media + metadata from uploads/guest-upload-"
+"vault when uninstalling this plugin."
+msgstr "Sí, elimina permanentemente los medios de invitados + metadatos de uploads/guest-upload-vault al desinstalar este plugin."
+
+#: guest-upload-vault/templates/admin-page.php:392
+msgid "Leave unchecked to keep files on disk after uninstall."
+msgstr ""
+"Déjelo sin marcar para mantener los archivos en el disco después de la "
+"desinstalación."
+
+#: guest-upload-vault/templates/admin-page.php:395
+msgid "This setting has no effect on normal plugin deactivation."
+msgstr ""
+"Esta configuración no tiene ningún efecto sobre la desactivación normal del "
+"complemento."
+
+#: guest-upload-vault/templates/admin-page.php:400
+msgid "Encryption Key"
+msgstr "Clave de cifrado"
+
+#. translators: 1: healthy/unhealthy, 2: version, 3: key fingerprint
+#: guest-upload-vault/templates/admin-page.php:406
+#, php-format
+msgid "Status: %1$s | Version: %2$d | Fingerprint: %3$s"
+msgstr "Estado: %1$s | Versión: %2$d | Huella digital: %3$s"
+
+#: guest-upload-vault/templates/admin-page.php:407
+#: guest-upload-vault/templates/admin-page.php:572
+msgid "Healthy"
+msgstr "Saludable"
+
+#: guest-upload-vault/templates/admin-page.php:407
+msgid "Problem"
+msgstr "Problema"
+
+#: guest-upload-vault/templates/admin-page.php:414
+msgid ""
+"Backup requirement: keep database/plugin options and uploads/guest-upload-"
+"vault together in the same backup/restore set. Restoring only one can make "
+"media undecryptable."
+msgstr ""
+"Requisito de copia de seguridad: mantenga las opciones de base de datos/"
+"complementos y uploads/guest-upload-vault juntos en el mismo conjunto de "
+"copia de seguridad/restauración. Restaurar sólo uno puede hacer que los "
+"medios no se puedan descifrar."
+
+#: guest-upload-vault/templates/admin-page.php:417
+msgid ""
+"Operational tip: verify restores on a staging site before the event date."
+msgstr ""
+"Consejo operativo: verifique las restauraciones en un sitio de preparación "
+"antes de la fecha del evento."
+
+#: guest-upload-vault/templates/admin-page.php:424
+msgid "Save Settings"
+msgstr "Guardar configuración"
+
+#: guest-upload-vault/templates/admin-page.php:429
+msgid "Protected Upload URL (QR Target)"
+msgstr "URL de carga protegida (destino QR)"
+
+#: guest-upload-vault/templates/admin-page.php:433
+msgid "Guest Upload Link"
+msgstr "Enlace de carga de invitado"
+
+#: guest-upload-vault/templates/admin-page.php:443
+msgid "Copy Link"
+msgstr "Copiar enlace"
+
+#: guest-upload-vault/templates/admin-page.php:446
+msgid "QR Code"
+msgstr "Codigo QR"
+
+#: guest-upload-vault/templates/admin-page.php:447
+msgid "Guest upload QR code"
+msgstr "Invitado subir código QR"
+
+#: guest-upload-vault/templates/admin-page.php:450
+msgid "View QR Code"
+msgstr "Ver QR Code"
+
+#: guest-upload-vault/templates/admin-page.php:453
+msgid "Download QR PNG"
+msgstr "Descargar QR PNG"
+
+#: guest-upload-vault/templates/admin-page.php:457
+msgid ""
+"QR code is generated locally in your browser. The protected upload URL is "
+"not sent to third-party QR services."
+msgstr ""
+"El código QR se genera localmente en su navegador. La URL de carga protegida "
+"no se envía a servicios QR de terceros."
+
+#: guest-upload-vault/templates/admin-page.php:460
+msgid ""
+"Print tip: open the QR image and print at high quality for guest signage."
+msgstr ""
+"Consejo de impresión: abra la imagen QR e imprima en alta calidad para la "
+"señalización de los invitados."
+
+#: guest-upload-vault/templates/admin-page.php:463
+msgid "How to use the QR code"
+msgstr "Cómo utilizar el código QR"
+
+#: guest-upload-vault/templates/admin-page.php:465
+msgid ""
+"Set the Upload Page URL and click Save Settings to generate the current "
+"guest link."
+msgstr ""
+"Configure la URL de la página de carga y haga clic en Guardar configuración "
+"para generar el enlace de invitado actual."
+
+#: guest-upload-vault/templates/admin-page.php:466
+msgid ""
+"Use Copy Link for messages, or print the QR code and place it at your event."
+msgstr "Usa Copiar enlace para mensajes, o imprime el código QR y colócalo en tu evento."
+
+#: guest-upload-vault/templates/admin-page.php:467
+msgid ""
+"Guests scan the QR code on iPhone or Android and upload from camera, photo "
+"library/gallery, or files."
+msgstr ""
+"Los invitados escanean el código QR en iPhone o Android y lo cargan desde la "
+"cámara, biblioteca/galería de fotos o archivos."
+
+#: guest-upload-vault/templates/admin-page.php:468
+msgid ""
+"If you regenerate the guest link/token, all older printed QR codes stop "
+"working and must be reprinted."
+msgstr ""
+"Si vuelve a generar el enlace/token de invitado, todos los códigos QR "
+"impresos más antiguos dejarán de funcionar y deberán volver a imprimirse."
+
+#: guest-upload-vault/templates/admin-page.php:472
+msgid "Set an Upload Page URL to generate the protected link."
+msgstr ""
+"Establezca una URL de página de carga para generar el enlace protegido."
+
+#: guest-upload-vault/templates/admin-page.php:477
+msgid "Collected Media"
+msgstr "Medios recopilados"
+
+#. translators: 1: last updated timestamp, 2: cache source label, 3: cache ttl in seconds
+#: guest-upload-vault/templates/admin-page.php:483
+#, php-format
+msgid "Overview last updated: %1$s. Source: %2$s. Cache TTL: %3$d seconds."
+msgstr ""
+"Resumen actualizado por última vez: %1$s. Fuente: %2$s. TTL de caché: %3$d "
+"segundos."
+
+#: guest-upload-vault/templates/admin-page.php:485
+msgid "Cached"
+msgstr "En caché"
+
+#: guest-upload-vault/templates/admin-page.php:485
+msgid "Live"
+msgstr "Vivir"
+
+#: guest-upload-vault/templates/admin-page.php:493
+msgid "Refresh Diagnostics"
+msgstr "Actualizar diagnóstico"
+
+#: guest-upload-vault/templates/admin-page.php:496
+msgid "No uploads yet."
+msgstr "Aún no hay cargas."
+
+#: guest-upload-vault/templates/admin-page.php:504
+msgid "Download Selected (ZIP)"
+msgstr "Descargar Seleccionados (ZIP)"
+
+#: guest-upload-vault/templates/admin-page.php:507
+msgid "Download All (ZIP)"
+msgstr "Descargar todo (ZIP)"
+
+#: guest-upload-vault/templates/admin-page.php:510
+msgid "Delete Selected"
+msgstr "Eliminar seleccionado"
+
+#: guest-upload-vault/templates/admin-page.php:513
+msgid "Delete All"
+msgstr "Eliminar todo"
+
+#: guest-upload-vault/templates/admin-page.php:521
+msgid "Select all files"
+msgstr "Seleccionar todos los archivos"
+
+#: guest-upload-vault/templates/admin-page.php:524
+msgid "Preview"
+msgstr "Avance"
+
+#: guest-upload-vault/templates/admin-page.php:525
+msgid "Filename"
+msgstr "Nombre del archivo"
+
+#: guest-upload-vault/templates/admin-page.php:526
+msgid "Media Type"
+msgstr "Tipo de medio"
+
+#: guest-upload-vault/templates/admin-page.php:527
+msgid "Size"
+msgstr "Tamaño"
+
+#: guest-upload-vault/templates/admin-page.php:528
+msgid "Uploaded"
+msgstr "subido"
+
+#: guest-upload-vault/templates/admin-page.php:529
+msgid "Health"
+msgstr "Salud"
+
+#: guest-upload-vault/templates/admin-page.php:530
+msgid "Actions"
+msgstr "Comportamiento"
+
+#: guest-upload-vault/templates/admin-page.php:541
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: guest-upload-vault/templates/admin-page.php:576
+msgid "Missing Metadata"
+msgstr "Metadatos faltantes"
+
+#: guest-upload-vault/templates/admin-page.php:580
+msgid "Metadata Damaged"
+msgstr "Metadatos dañados"
+
+#: guest-upload-vault/templates/admin-page.php:584
+msgid "Integrity Failed"
+msgstr "La integridad falló"
+
+#: guest-upload-vault/templates/admin-page.php:588
+msgid "Key Version Mismatch"
+msgstr "La versión clave no coincide"
+
+#: guest-upload-vault/templates/admin-page.php:592
+msgid "Decrypt Failed"
+msgstr "Error al descifrar"
+
+#: guest-upload-vault/templates/admin-page.php:596
+msgid "Legacy Metadata"
+msgstr "Metadatos heredados"
+
+#: guest-upload-vault/templates/admin-page.php:600
+msgid "Legacy Plaintext"
+msgstr "Texto sin formato heredado"
+
+#: guest-upload-vault/templates/admin-page.php:605
+msgid "File"
+msgstr "Archivo"
+
+#: guest-upload-vault/templates/admin-page.php:607
+msgid "Photo"
+msgstr "Foto"
+
+#: guest-upload-vault/templates/admin-page.php:609
+msgid "Video"
+msgstr "Vídeo"
+
+#: guest-upload-vault/templates/admin-page.php:616
+msgid "Select media file"
+msgstr "Seleccionar archivo multimedia"
+
+#: guest-upload-vault/templates/admin-page.php:654
+msgid "View"
+msgstr "Vista"
+
+#: guest-upload-vault/templates/admin-page.php:659
+msgid "Download"
+msgstr "Descargar"
+
+#: guest-upload-vault/templates/admin-page.php:676
+msgid "Delete"
+msgstr "Borrar"
+
+#: guest-upload-vault/templates/admin-page.php:679
+msgid "Unavailable"
+msgstr "Indisponible"
+
+#: guest-upload-vault/templates/admin-page.php:691
+msgid "How this plugin works"
+msgstr "Cómo funciona este complemento"
+
+#: guest-upload-vault/templates/admin-page.php:692
+msgid ""
+"Guest Upload Vault provides a protected guest upload page for event photos "
+"and videos. Guests can only upload through the tokenized link or QR code. "
+"Uploaded files are stored encrypted in uploads/guest-upload-vault and can be "
+"managed by admins in the Media tab."
+msgstr "Guest Upload Vault ofrece una página protegida de subida para invitados de fotos y videos de eventos. Los invitados solo pueden subir mediante el enlace tokenizado o el código QR. Los archivos subidos se almacenan cifrados en uploads/guest-upload-vault y pueden ser gestionados por administradores en la pestaña Medios."
+
+#: guest-upload-vault/templates/admin-page.php:694
+msgid "Create a WordPress page with shortcode [guest_upload_vault]."
+msgstr "Cree una página de WordPress con el código corto [guest_upload_vault]."
+
+#: guest-upload-vault/templates/admin-page.php:695
+msgid "Set that page URL in Settings and save."
+msgstr "Establezca la URL de esa página en Configuración y guárdela."
+
+#: guest-upload-vault/templates/admin-page.php:696
+msgid "Copy the protected guest link or print the QR code."
+msgstr "Copie el enlace del invitado protegido o imprima el código QR."
+
+#: guest-upload-vault/templates/admin-page.php:697
+msgid ""
+"Guests upload photos/videos from phone camera, gallery/library, or files."
+msgstr ""
+"Los invitados cargan fotos/videos desde la cámara del teléfono, galería/"
+"biblioteca o archivos."
+
+#: guest-upload-vault/templates/admin-page.php:698
+msgid ""
+"Use the Media tab to view health status, preview, download, or delete "
+"uploads."
+msgstr ""
+"Utilice la pestaña Medios para ver el estado de salud, obtener una vista "
+"previa, descargar o eliminar cargas."
+
+#: guest-upload-vault/templates/admin-page.php:703
+msgid "Theme and page design info"
+msgstr "Información sobre el tema y el diseño de la página."
+
+#: guest-upload-vault/templates/admin-page.php:704
+msgid ""
+"The visual area above the upload card (for example hero images, logo, page "
+"header, and footer) is controlled by your active theme or page builder. The "
+"plugin itself renders the protected upload form card via shortcode inside "
+"that page."
+msgstr ""
+"El área visual encima de la tarjeta de carga (por ejemplo, imágenes "
+"principales, logotipo, encabezado de página y pie de página) está controlada "
+"por su tema activo o creador de páginas. El complemento en sí muestra la "
+"tarjeta del formulario de carga protegida mediante un código corto dentro de "
+"esa página."
+
+#: guest-upload-vault/templates/admin-page.php:708
+msgid "Pilot handoff notes"
+msgstr "Notas de transferencia piloto"
+
+#: guest-upload-vault/templates/admin-page.php:710
+msgid ""
+"Backup and restore database + uploads/guest-upload-vault together to keep "
+"media decryptable."
+msgstr ""
+"Realice una copia de seguridad y restaure la base de datos + uploads/guest-"
+"upload-vault juntos para mantener los medios descifrables."
+
+#: guest-upload-vault/templates/admin-page.php:711
+msgid ""
+"Regenerating the guest token invalidates previous guest links and printed QR "
+"codes."
+msgstr ""
+"La regeneración del token de invitado invalida los enlaces de invitados "
+"anteriores y los códigos QR impresos."
+
+#: guest-upload-vault/templates/admin-page.php:712
+msgid ""
+"Cleanup On Uninstall runs only when the plugin is uninstalled, not when it "
+"is deactivated."
+msgstr ""
+"Cleanup On Uninstall se ejecuta solo cuando el complemento está "
+"desinstalado, no cuando está desactivado."
+
+#: guest-upload-vault/templates/admin-page.php:713
+msgid ""
+"On shared hosting, runtime and memory limits can reduce effective max upload "
+"size."
+msgstr ""
+"En el alojamiento compartido, los límites de memoria y tiempo de ejecución "
+"pueden reducir el tamaño máximo de carga efectivo."
+
+#: guest-upload-vault/templates/admin-page.php:718
+msgid "Troubleshooting checklist"
+msgstr "Lista de verificación de solución de problemas"
+
+#: guest-upload-vault/templates/admin-page.php:720
+msgid ""
+"If guests cannot open the upload page, check that the URL includes a valid "
+"guv_token."
+msgstr ""
+"Si los invitados no pueden abrir la página de carga, verifique que la URL "
+"incluya un guv_token válido."
+
+#: guest-upload-vault/templates/admin-page.php:721
+msgid "If uploads fail, verify allowed file type and max file size limits."
+msgstr ""
+"Si las cargas fallan, verifique el tipo de archivo permitido y los límites "
+"de tamaño máximo de archivo."
+
+#: guest-upload-vault/templates/admin-page.php:722
+msgid ""
+"If media cannot be downloaded, refresh diagnostics and check file health "
+"status in the Media tab."
+msgstr ""
+"Si no se pueden descargar los medios, actualice los diagnósticos y verifique "
+"el estado del archivo en la pestaña Medios."
+
+#: guest-upload-vault/templates/admin-page.php:723
+msgid ""
+"If decryption errors occur after migration, verify database/options and "
+"uploads were restored together."
+msgstr ""
+"Si se producen errores de descifrado después de la migración, verifique que "
+"la base de datos/opciones y las cargas se hayan restaurado juntas."
+
+#: guest-upload-vault/templates/frontend-upload.php:21
+msgid "Thank you, upload complete."
+msgstr "Gracias, carga completa."
+
+#: guest-upload-vault/templates/frontend-upload.php:21
+msgid "Upload could not be completed."
+msgstr "No se pudo completar la carga."
+
+#: guest-upload-vault/templates/frontend-upload.php:268
+msgid "Protected guest upload"
+msgstr "Carga de invitado protegida"
+
+#: guest-upload-vault/templates/frontend-upload.php:269
+msgid ""
+"This page is only available through the protected event link or QR code."
+msgstr "Esta página solo está disponible mediante el enlace protegido del evento o el código QR."
+
+#: guest-upload-vault/templates/frontend-upload.php:274
+msgid "Share your event moments"
+msgstr "Comparte los momentos de tu evento"
+
+#: guest-upload-vault/templates/frontend-upload.php:275
+msgid "Select photos or videos from your phone and upload them in one step."
+msgstr ""
+"Seleccione fotos o videos desde su teléfono y cárguelos en un solo paso."
+
+#: guest-upload-vault/templates/frontend-upload.php:302
+msgid "Choose Photos or Videos"
+msgstr "Elija fotos o videos"
+
+#. translators: 1: allowed file types, 2: max file size in MB
+#: guest-upload-vault/templates/frontend-upload.php:313
+#, php-format
+msgid "Allowed: %1$s | Max per file: %2$d MB"
+msgstr "Permitido: %1$s | Máximo por archivo: %2$d MB"
+
+#: guest-upload-vault/templates/frontend-upload.php:319
+msgid ""
+"On iPhone/Android you can choose camera, photo library/gallery, or files."
+msgstr ""
+"En iPhone/Android puedes elegir cámara, biblioteca/galería de fotos o "
+"archivos."
+
+#: guest-upload-vault/templates/frontend-upload.php:320
+msgid ""
+"Tip: Long phone videos are often large and may exceed the upload size limit."
+msgstr ""
+"Consejo: Los videos largos hechos por teléfono suelen ser grandes y pueden "
+"exceder el límite de tamaño de carga."
+
+#: guest-upload-vault/templates/frontend-upload.php:321
+msgid "You can select multiple files at once."
+msgstr "Puede seleccionar varios archivos a la vez."
+
+#: guest-upload-vault/templates/frontend-upload.php:325
+msgid "Upload Now"
+msgstr "Subir ahora"
+
+#: guest-upload-vault/templates/frontend-upload.php:332
+msgid "Preparing upload..."
+msgstr "Preparando la carga..."

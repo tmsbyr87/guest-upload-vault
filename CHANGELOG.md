@@ -1,13 +1,19 @@
 # Changelog
 
-All notable changes to `wedding-gallery` are documented in this file.
+All notable changes to `guest-upload-vault` are documented in this file.
 
 ## [1.0.0] - 2026-03-16
 
 ### Changed
+- Full clean-break rebrand from Wedding Gallery to Guest Upload Vault:
+  - New plugin package path: `guest-upload-vault/`
+  - New shortcode: `[guest_upload_vault]`
+  - New token parameter: `guv_token`
+  - New settings namespace: `guv_*` and option key `guv_settings`
+  - New upload root: `wp-content/uploads/guest-upload-vault/`
 - Bumped plugin version and release metadata to `1.0.0`.
 - Completed WordPress.org compliance cleanup for text domain format, readme metadata, hidden files, and prefixed template/uninstall variables.
-- Switched translation runtime/source filenames to `wedding-gallery-*` to match text domain.
+- Switched translation runtime/source filenames to `guest-upload-vault-*` to match text domain.
 - Enforced strict token-based upload page access and added no-cache behavior for protected upload rendering.
 
 ## [0.3.0] - 2026-03-15

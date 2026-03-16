@@ -2,18 +2,18 @@
 	'use strict';
 
 	function getI18nValue(key, fallback) {
-		if (window.wgAdminMediaI18n && window.wgAdminMediaI18n[key]) {
-			return window.wgAdminMediaI18n[key];
+		if (window.guvAdminMediaI18n && window.guvAdminMediaI18n[key]) {
+			return window.guvAdminMediaI18n[key];
 		}
 		return fallback;
 	}
 
 	function onReady() {
-		var bulkForm = document.getElementById('wg_media_bulk_form');
-		var selectAll = document.getElementById('wg_select_all_media');
+		var bulkForm = document.getElementById('guv_media_bulk_form');
+		var selectAll = document.getElementById('guv_select_all_media');
 
 		if (bulkForm && selectAll) {
-			var rowChecks = bulkForm.querySelectorAll('.wg-media-select');
+			var rowChecks = bulkForm.querySelectorAll('.guv-media-select');
 			selectAll.addEventListener('change', function () {
 				var checked = !!selectAll.checked;
 				rowChecks.forEach(function (checkbox) {
@@ -39,8 +39,8 @@
 					return;
 				}
 
-				if (submitter.dataset.wgRequiresSelection === '1') {
-					var hasSelection = !!bulkForm.querySelector('.wg-media-select:checked');
+				if (submitter.dataset.guvRequiresSelection === '1') {
+					var hasSelection = !!bulkForm.querySelector('.guv-media-select:checked');
 					if (!hasSelection) {
 						event.preventDefault();
 						window.alert(getI18nValue('noSelection', 'Please select at least one file first.'));
@@ -50,12 +50,12 @@
 			});
 		}
 
-		var deleteButtons = document.querySelectorAll('.wg-delete-button');
+		var deleteButtons = document.querySelectorAll('.guv-delete-button');
 		deleteButtons.forEach(function (button) {
 			button.addEventListener('click', function (event) {
-				var scope = button.dataset.wgDeleteScope || 'single';
+				var scope = button.dataset.guvDeleteScope || 'single';
 				if (scope === 'selected' && bulkForm) {
-					var hasSelection = !!bulkForm.querySelector('.wg-media-select:checked');
+					var hasSelection = !!bulkForm.querySelector('.guv-media-select:checked');
 					if (!hasSelection) {
 						event.preventDefault();
 						window.alert(getI18nValue('noSelection', 'Please select at least one file first.'));
@@ -68,7 +68,7 @@
 					message = getI18nValue('confirmDeleteSelected', 'Delete selected media permanently?');
 				}
 				if (scope === 'all') {
-					message = getI18nValue('confirmDeleteAll', 'Delete ALL wedding media permanently?');
+					message = getI18nValue('confirmDeleteAll', 'Delete ALL collected media permanently?');
 				}
 				if (!window.confirm(message)) {
 					event.preventDefault();
