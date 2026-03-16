@@ -764,17 +764,18 @@ class WG_Plugin {
 	public function render_upload_shortcode( $atts ) {
 		self::create_upload_dir();
 
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+		nocache_headers();
+
 		$settings      = $this->get_settings();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only token check for protected page access.
 		$current_token = isset( $_GET[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::TOKEN_QUERY_ARG ] ) ) : '';
 		$token         = (string) $settings['access_token'];
 
 		$is_authorized = ! empty( $current_token ) && ! empty( $token ) && hash_equals( $token, $current_token );
-
-		// Let admins preview the page UI without a token while editing.
-		if ( ! $is_authorized && current_user_can( 'manage_options' ) ) {
-			$is_authorized = true;
-		}
+		$authorized_token = $is_authorized ? $current_token : '';
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only UI message state.
 		$status  = isset( $_GET['wg_status'] ) ? sanitize_key( wp_unslash( $_GET['wg_status'] ) ) : '';
@@ -804,18 +805,17 @@ class WG_Plugin {
 
 		$redirect_url = home_url( '/' );
 		$settings     = $this->get_settings();
-
-		$nonce_ok = isset( $_POST['wg_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wg_upload_nonce'] ) ), 'wg_upload_action' );
-		if ( ! $nonce_ok ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'wedding_gallery' ) );
-		}
-		$redirect_url = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url( '/' );
-
 		$posted_token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
 		$token        = (string) $settings['access_token'];
 		if ( empty( $posted_token ) || empty( $token ) || ! hash_equals( $token, $posted_token ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Invalid upload token.', 'wedding_gallery' ) );
 		}
+
+		$nonce_ok = isset( $_POST['wg_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wg_upload_nonce'] ) ), 'wg_upload_action_' . $posted_token );
+		if ( ! $nonce_ok ) {
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'wedding_gallery' ) );
+		}
+		$redirect_url = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url( '/' );
 
 		if ( empty( $_FILES['wg_files'] ) || ! is_array( $_FILES['wg_files'] ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'wedding_gallery' ) );

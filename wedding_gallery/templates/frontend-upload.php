@@ -10,7 +10,7 @@
  * - string $action_url
  * - string $redirect_url
  * - string $allowed_text
- * - array  $settings
+ * - string $authorized_token
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -222,8 +222,8 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 			<form id="wg-upload-form" action="<?php echo esc_url( $action_url ); ?>" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="action" value="wg_upload" />
 				<input type="hidden" id="wg_redirect_to" name="redirect_to" value="<?php echo esc_url( $redirect_url ); ?>" />
-				<input type="hidden" name="<?php echo esc_attr( WG_Plugin::TOKEN_QUERY_ARG ); ?>" value="<?php echo esc_attr( $settings['access_token'] ); ?>" />
-				<?php wp_nonce_field( 'wg_upload_action', 'wg_upload_nonce' ); ?>
+				<input type="hidden" name="<?php echo esc_attr( WG_Plugin::TOKEN_QUERY_ARG ); ?>" value="<?php echo esc_attr( $authorized_token ); ?>" />
+				<?php wp_nonce_field( 'wg_upload_action_' . $authorized_token, 'wg_upload_nonce' ); ?>
 
 				<input
 					id="wg_files"
