@@ -2,13 +2,13 @@
 Contributors: tmsbyr87
 Tags: guest upload, event upload, private upload, qr upload, media collection
 Requires at least: 6.0
-Tested up to: 6.9.4
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Securely collect guest photos and videos via protected link or QR code.
+Collect guest photos and videos through a protected upload link or QR code.
 
 == Description ==
 

@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class GUV_Plugin {
+	const ADMIN_PAGE_SLUG       = 'guest-upload-vault';
+	const ADMIN_PAGE_MEDIA_SLUG = 'guest-upload-vault-media';
+	const ADMIN_PAGE_HELP_SLUG  = 'guest-upload-vault-help';
 	const OPTION_KEY          = 'guv_settings';
 	const SHORTCODE_TAG       = 'guest_upload_vault';
 	const TOKEN_QUERY_ARG     = 'guv_token';
@@ -99,7 +102,13 @@ class GUV_Plugin {
 	 * @return void
 	 */
 	public function enqueue_admin_assets( $hook_suffix ) {
-		if ( 'toplevel_page_guest-upload-vault' !== $hook_suffix ) {
+		$allowed_hooks = array(
+			'toplevel_page_' . self::ADMIN_PAGE_SLUG,
+			self::ADMIN_PAGE_SLUG . '_page_' . self::ADMIN_PAGE_SLUG,
+			self::ADMIN_PAGE_SLUG . '_page_' . self::ADMIN_PAGE_MEDIA_SLUG,
+			self::ADMIN_PAGE_SLUG . '_page_' . self::ADMIN_PAGE_HELP_SLUG,
+		);
+		if ( ! in_array( $hook_suffix, $allowed_hooks, true ) ) {
 			return;
 		}
 
@@ -770,9 +779,37 @@ class GUV_Plugin {
 			__( 'Guest Upload Vault', 'guest-upload-vault' ),
 			__( 'Guest Upload Vault', 'guest-upload-vault' ),
 			'manage_options',
-			'guest-upload-vault',
+			self::ADMIN_PAGE_SLUG,
 			array( $this, 'render_admin_page' ),
 			'dashicons-format-gallery'
+		);
+
+		// Replace WP's auto-generated first submenu with explicit tab entries.
+		remove_submenu_page( self::ADMIN_PAGE_SLUG, self::ADMIN_PAGE_SLUG );
+
+		add_submenu_page(
+			self::ADMIN_PAGE_SLUG,
+			__( 'Settings', 'guest-upload-vault' ),
+			__( 'Settings', 'guest-upload-vault' ),
+			'manage_options',
+			self::ADMIN_PAGE_SLUG,
+			array( $this, 'render_admin_page' )
+		);
+		add_submenu_page(
+			self::ADMIN_PAGE_SLUG,
+			__( 'Media', 'guest-upload-vault' ),
+			__( 'Media', 'guest-upload-vault' ),
+			'manage_options',
+			self::ADMIN_PAGE_MEDIA_SLUG,
+			array( $this, 'render_admin_page' )
+		);
+		add_submenu_page(
+			self::ADMIN_PAGE_SLUG,
+			__( 'Help', 'guest-upload-vault' ),
+			__( 'Help', 'guest-upload-vault' ),
+			'manage_options',
+			self::ADMIN_PAGE_HELP_SLUG,
+			array( $this, 'render_admin_page' )
 		);
 	}
 
@@ -1187,9 +1224,34 @@ class GUV_Plugin {
 	 */
 	private function get_admin_tab() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin UI state.
+		$requested_page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : self::ADMIN_PAGE_SLUG;
+		if ( self::ADMIN_PAGE_MEDIA_SLUG === $requested_page ) {
+			return 'media';
+		}
+		if ( self::ADMIN_PAGE_HELP_SLUG === $requested_page ) {
+			return 'help';
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin UI state.
 		$requested_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'settings';
 
 		return in_array( $requested_tab, array( 'settings', 'media', 'help' ), true ) ? $requested_tab : 'settings';
+	}
+
+	/**
+	 * @param string $tab
+	 * @return string
+	 */
+	private function get_admin_page_slug_for_tab( $tab ) {
+		$tab = sanitize_key( $tab );
+		if ( 'media' === $tab ) {
+			return self::ADMIN_PAGE_MEDIA_SLUG;
+		}
+		if ( 'help' === $tab ) {
+			return self::ADMIN_PAGE_HELP_SLUG;
+		}
+
+		return self::ADMIN_PAGE_SLUG;
 	}
 
 	/**
@@ -1204,7 +1266,7 @@ class GUV_Plugin {
 		}
 
 		$base_args = array(
-			'page' => 'guest-upload-vault',
+			'page' => $this->get_admin_page_slug_for_tab( $tab ),
 			'tab'  => $tab,
 		);
 		$query_args = array_merge( $base_args, $args );
@@ -1546,6 +1608,33 @@ class GUV_Plugin {
 	}
 
 	/**
+	 * @param array<int, array<string, mixed>> $uploads
+	 * @return array<string, int>
+	 */
+	private function get_media_dashboard_summary( $uploads ) {
+		$summary = array(
+			'photo_count'      => 0,
+			'video_count'      => 0,
+			'file_count_total' => 0,
+			'bytes_total'      => 0,
+		);
+
+		foreach ( $uploads as $upload ) {
+			$summary['file_count_total']++;
+			$summary['bytes_total'] += max( 0, absint( isset( $upload['size'] ) ? $upload['size'] : 0 ) );
+
+			$kind = isset( $upload['media_kind'] ) ? sanitize_key( (string) $upload['media_kind'] ) : '';
+			if ( 'photo' === $kind ) {
+				$summary['photo_count']++;
+			} elseif ( 'video' === $kind ) {
+				$summary['video_count']++;
+			}
+		}
+
+		return $summary;
+	}
+
+	/**
 	 * @return string
 	 */
 	private function get_media_overview_cache_key() {
@@ -1575,6 +1664,9 @@ class GUV_Plugin {
 				is_array( $cached['upload_health_summary'] ) &&
 				isset( $cached['generated_at'] )
 			) {
+				if ( ! isset( $cached['media_dashboard'] ) || ! is_array( $cached['media_dashboard'] ) ) {
+					$cached['media_dashboard'] = $this->get_media_dashboard_summary( $cached['uploads'] );
+				}
 				$cached['from_cache'] = true;
 
 				return $cached;
@@ -1583,9 +1675,11 @@ class GUV_Plugin {
 
 		$uploads              = $this->get_uploaded_files();
 		$upload_health_summary = $this->get_upload_health_summary( $uploads );
+		$media_dashboard      = $this->get_media_dashboard_summary( $uploads );
 		$payload              = array(
 			'uploads'               => $uploads,
 			'upload_health_summary' => $upload_health_summary,
+			'media_dashboard'       => $media_dashboard,
 			'generated_at'          => time(),
 			'from_cache'            => false,
 		);
@@ -1922,6 +2016,7 @@ class GUV_Plugin {
 		$effective_max_upload_mb = (int) $upload_limits['effective_mb'];
 		$key_status              = $this->get_encryption_key_status();
 		$upload_health_summary   = $this->get_upload_health_summary( array() );
+		$media_dashboard         = $this->get_media_dashboard_summary( array() );
 		$media_overview_generated_at = 0;
 		$media_overview_from_cache   = false;
 		$media_overview_cache_ttl    = self::MEDIA_OVERVIEW_CACHE_TTL;
@@ -1929,6 +2024,7 @@ class GUV_Plugin {
 			$media_overview            = $this->get_media_overview_data( false );
 			$uploads                   = isset( $media_overview['uploads'] ) && is_array( $media_overview['uploads'] ) ? $media_overview['uploads'] : array();
 			$upload_health_summary     = isset( $media_overview['upload_health_summary'] ) && is_array( $media_overview['upload_health_summary'] ) ? $media_overview['upload_health_summary'] : $upload_health_summary;
+			$media_dashboard           = isset( $media_overview['media_dashboard'] ) && is_array( $media_overview['media_dashboard'] ) ? $media_overview['media_dashboard'] : $this->get_media_dashboard_summary( $uploads );
 			$media_overview_generated_at = isset( $media_overview['generated_at'] ) ? absint( $media_overview['generated_at'] ) : 0;
 			$media_overview_from_cache = ! empty( $media_overview['from_cache'] );
 		}
@@ -2048,6 +2144,32 @@ class GUV_Plugin {
 	}
 
 	/**
+	 * @return string
+	 */
+	private function read_bulk_scope_from_request() {
+		$scope_raw = filter_input( INPUT_POST, 'guv_scope', FILTER_UNSAFE_RAW );
+		if ( ! is_string( $scope_raw ) || '' === $scope_raw ) {
+			return 'selected';
+		}
+
+		return $this->normalize_bulk_scope( sanitize_key( wp_unslash( $scope_raw ) ) );
+	}
+
+	/**
+	 * @return array<int, string>
+	 */
+	private function read_bulk_selected_files_from_request() {
+		$selected_raw = filter_input( INPUT_POST, 'guv_files', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		if ( ! is_array( $selected_raw ) ) {
+			return array();
+		}
+
+		$sanitized = array_map( 'sanitize_file_name', array_map( 'wp_unslash', $selected_raw ) );
+
+		return $this->normalize_selected_blob_files( $sanitized );
+	}
+
+	/**
 	 * @return void
 	 */
 	public function handle_bulk_delete() {
@@ -2057,14 +2179,8 @@ class GUV_Plugin {
 
 		check_admin_referer( 'guv_bulk_delete', 'guv_bulk_delete_nonce' );
 
-		$scope_raw = isset( $_POST['guv_scope'] ) ? wp_unslash( $_POST['guv_scope'] ) : 'selected';
-		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
-
-		$selected_raw = array();
-		if ( isset( $_POST['guv_files'] ) && is_array( $_POST['guv_files'] ) ) {
-			$selected_raw = wp_unslash( $_POST['guv_files'] );
-		}
-		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
+		$scope          = $this->read_bulk_scope_from_request();
+		$selected_files = $this->read_bulk_selected_files_from_request();
 		$files          = $this->get_bulk_target_files( $scope, $selected_files );
 		if ( empty( $files ) ) {
 			$empty_notice = 'all' === $scope ? 'bulk_no_files' : 'bulk_no_selection';
@@ -2111,14 +2227,8 @@ class GUV_Plugin {
 
 		check_admin_referer( 'guv_bulk_download', 'guv_bulk_download_nonce' );
 
-		$scope_raw = isset( $_POST['guv_scope'] ) ? wp_unslash( $_POST['guv_scope'] ) : 'selected';
-		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
-
-		$selected_raw = array();
-		if ( isset( $_POST['guv_files'] ) && is_array( $_POST['guv_files'] ) ) {
-			$selected_raw = wp_unslash( $_POST['guv_files'] );
-		}
-		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
+		$scope          = $this->read_bulk_scope_from_request();
+		$selected_files = $this->read_bulk_selected_files_from_request();
 		$files          = $this->get_bulk_target_files( $scope, $selected_files );
 		if ( empty( $files ) ) {
 			$empty_notice = 'all' === $scope ? 'bulk_no_files' : 'bulk_no_selection';
