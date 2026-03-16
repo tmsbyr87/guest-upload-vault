@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Guest Upload Vault
- * Plugin URI:  https://www.thomas-beyer.com
+ * Plugin URI:  https://thomas-beyer.com
  * Description: Securely collect guest photos and videos via protected link or QR code.
  * Version:     1.0.0
  * Author:      Thomas Beyer
- * Author URI:  https://www.thomas-beyer.com
+ * Author URI:  https://thomas-beyer.com
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * License:     GPL-2.0-or-later
