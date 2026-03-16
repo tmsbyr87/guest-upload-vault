@@ -4,7 +4,10 @@
  * Plugin URI:  https://github.com/tmsbyr87/wedding-gallery
  * Description: Collect wedding guest photos and videos through a protected frontend upload page.
  * Version:     1.0.0
- * Author:      Wedding Gallery Team
+ * Author:      Thomas Beyer
+ * Author URI:  https://www.thomas-beyer.com
+ * Requires at least: 6.4
+ * Requires PHP: 7.4
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wedding-gallery

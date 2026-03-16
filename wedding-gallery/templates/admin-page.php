@@ -400,70 +400,70 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ( $uploads as $wg_file ) : ?>
+					<?php foreach ( $uploads as $wedding_gallery_file ) : ?>
 						<?php
-						$wg_health_status = isset( $wg_file['health_status'] ) ? (string) $wg_file['health_status'] : '';
-						$wg_health_label  = __( 'Unknown', 'wedding-gallery' );
-						$wg_health_class  = 'wg-health-warning';
-						switch ( $wg_health_status ) {
+						$wedding_gallery_health_status = isset( $wedding_gallery_file['health_status'] ) ? (string) $wedding_gallery_file['health_status'] : '';
+						$wedding_gallery_health_label  = __( 'Unknown', 'wedding-gallery' );
+						$wedding_gallery_health_class  = 'wg-health-warning';
+						switch ( $wedding_gallery_health_status ) {
 							case 'ok':
-								$wg_health_label = __( 'Healthy', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-ok';
+								$wedding_gallery_health_label = __( 'Healthy', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-ok';
 								break;
 							case 'missing_metadata':
-								$wg_health_label = __( 'Missing Metadata', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-error';
+								$wedding_gallery_health_label = __( 'Missing Metadata', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-error';
 								break;
 							case 'invalid_metadata':
-								$wg_health_label = __( 'Metadata Damaged', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-error';
+								$wedding_gallery_health_label = __( 'Metadata Damaged', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-error';
 								break;
 							case 'metadata_tampered':
-								$wg_health_label = __( 'Integrity Failed', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-error';
+								$wedding_gallery_health_label = __( 'Integrity Failed', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-error';
 								break;
 							case 'unsupported_key_version':
-								$wg_health_label = __( 'Key Version Mismatch', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-error';
+								$wedding_gallery_health_label = __( 'Key Version Mismatch', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-error';
 								break;
 							case 'decrypt_failed':
-								$wg_health_label = __( 'Decrypt Failed', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-error';
+								$wedding_gallery_health_label = __( 'Decrypt Failed', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-error';
 								break;
 							case 'legacy_metadata_plaintext':
-								$wg_health_label = __( 'Legacy Metadata', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-warning';
+								$wedding_gallery_health_label = __( 'Legacy Metadata', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-warning';
 								break;
 							case 'legacy_plaintext':
-								$wg_health_label = __( 'Legacy Plaintext', 'wedding-gallery' );
-								$wg_health_class = 'wg-health-warning';
+								$wedding_gallery_health_label = __( 'Legacy Plaintext', 'wedding-gallery' );
+								$wedding_gallery_health_class = 'wg-health-warning';
 								break;
 						}
 						?>
 						<tr>
-							<td><?php echo esc_html( $wg_file['name'] ); ?></td>
-							<td><?php echo esc_html( $wg_file['mime_type'] ); ?></td>
-							<td><?php echo esc_html( size_format( (int) $wg_file['size'] ) ); ?></td>
-							<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $wg_file['modified'] ) ); ?></td>
+							<td><?php echo esc_html( $wedding_gallery_file['name'] ); ?></td>
+							<td><?php echo esc_html( $wedding_gallery_file['mime_type'] ); ?></td>
+							<td><?php echo esc_html( size_format( (int) $wedding_gallery_file['size'] ) ); ?></td>
+							<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $wedding_gallery_file['modified'] ) ); ?></td>
 							<td>
-								<span class="wg-health-badge <?php echo esc_attr( $wg_health_class ); ?>"><?php echo esc_html( $wg_health_label ); ?></span><br />
-								<small><?php echo esc_html( isset( $wg_file['health_message'] ) ? (string) $wg_file['health_message'] : '' ); ?></small>
+								<span class="wg-health-badge <?php echo esc_attr( $wedding_gallery_health_class ); ?>"><?php echo esc_html( $wedding_gallery_health_label ); ?></span><br />
+								<small><?php echo esc_html( isset( $wedding_gallery_file['health_message'] ) ? (string) $wedding_gallery_file['health_message'] : '' ); ?></small>
 							</td>
 							<td>
-								<?php if ( ! empty( $wg_file['can_download'] ) ) : ?>
+								<?php if ( ! empty( $wedding_gallery_file['can_download'] ) ) : ?>
 									<?php
-									$wg_download_url = wp_nonce_url(
+									$wedding_gallery_download_url = wp_nonce_url(
 										add_query_arg(
 											array(
 											'action' => 'wg_download_upload',
-											'file'   => $wg_file['stored_file'],
+											'file'   => $wedding_gallery_file['stored_file'],
 										),
 										admin_url( 'admin-post.php' )
 									),
-										'wg_download_file_' . $wg_file['stored_file']
+										'wg_download_file_' . $wedding_gallery_file['stored_file']
 									);
 									?>
-									<a class="button button-secondary" href="<?php echo esc_url( $wg_download_url ); ?>">
+									<a class="button button-secondary" href="<?php echo esc_url( $wedding_gallery_download_url ); ?>">
 										<?php esc_html_e( 'Download', 'wedding-gallery' ); ?>
 									</a>
 								<?php else : ?>

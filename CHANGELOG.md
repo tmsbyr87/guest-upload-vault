@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `wedding_gallery` are documented in this file.
+All notable changes to `wedding-gallery` are documented in this file.
 
 ## [1.0.0] - 2026-03-16
 

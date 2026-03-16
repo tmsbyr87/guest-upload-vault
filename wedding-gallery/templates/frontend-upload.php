@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$wg_status_class = 'success' === $status ? 'wg-alert-success' : 'wg-alert-error';
-$wg_status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedding-gallery' ) : __( 'Upload could not be completed.', 'wedding-gallery' );
+$wedding_gallery_status_class = 'success' === $status ? 'wg-alert-success' : 'wg-alert-error';
+$wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedding-gallery' ) : __( 'Upload could not be completed.', 'wedding-gallery' );
 ?>
 <style>
 .wg-upload-wrap {
@@ -211,8 +211,8 @@ $wg_status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'w
 			<p class="wg-upload-subtitle"><?php esc_html_e( 'Select photos or videos from your phone and upload them in one step.', 'wedding-gallery' ); ?></p>
 
 			<?php if ( ! empty( $status ) && ! empty( $message ) ) : ?>
-				<div class="wg-alert <?php echo esc_attr( $wg_status_class ); ?>" role="status" aria-live="polite">
-					<strong><?php echo esc_html( $wg_status_title ); ?></strong>
+				<div class="wg-alert <?php echo esc_attr( $wedding_gallery_status_class ); ?>" role="status" aria-live="polite">
+					<strong><?php echo esc_html( $wedding_gallery_status_title ); ?></strong>
 					<?php echo esc_html( $message ); ?>
 				</div>
 			<?php endif; ?>

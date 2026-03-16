@@ -15,7 +15,7 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 
 ## Setup (Pilot)
 
-1. Copy folder `wedding_gallery/` into `wp-content/plugins/`.
+1. Copy folder `wedding-gallery/` into `wp-content/plugins/`.
 2. Activate **Wedding Gallery** in WordPress plugins.
 3. Create a page for guest uploads and place shortcode:
    - `[wedding_gallery_upload]`
@@ -69,20 +69,20 @@ Use checked cleanup only when permanent deletion is explicitly desired.
 
 ## Release Packaging Notes
 
-For a production plugin zip, ship the plugin directory `wedding_gallery/` only.
+For a production plugin zip, ship the plugin directory `wedding-gallery/` only.
 
 Do not ship repository noise / handoff artifacts:
 
 - `.git/`, `.gitignore`, `.gitattributes`
 - root-level docs (`README.md`, `CHANGELOG.md`, `docs/`)
 - `.DS_Store`
-- `wedding_gallery/languages/wedding-gallery.pot` (optional source template, not required at runtime)
+- `wedding-gallery/languages/wedding-gallery.pot` (optional source template, not required at runtime)
 
 Language files in release:
 
-- `wedding_gallery/languages/wedding-gallery-de_DE.mo` should be shipped (runtime translations).
-- `wedding_gallery/languages/wedding-gallery-de_DE.po` can also be shipped (useful source/editable translation).
-- `wedding_gallery/languages/wedding-gallery.pot` may be excluded.
+- `wedding-gallery/languages/wedding-gallery-de_DE.mo` should be shipped (runtime translations).
+- `wedding-gallery/languages/wedding-gallery-de_DE.po` can also be shipped (useful source/editable translation).
+- `wedding-gallery/languages/wedding-gallery.pot` may be excluded.
 - Important: if building release zips from Git, make sure `.mo/.po` files are committed so they are actually present in the archive.
 
 ## Plugin Icon/Banner Assets

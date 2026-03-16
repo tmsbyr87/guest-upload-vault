@@ -21,7 +21,7 @@ Wedding Gallery provides a protected guest upload flow for wedding media:
 * Admin-only file listing and download
 
 == Installation ==
-1. Upload the `wedding_gallery` folder to `/wp-content/plugins/`.
+1. Upload the `wedding-gallery` folder to `/wp-content/plugins/`.
 2. Activate the plugin in WordPress.
 3. Create an upload page and add shortcode `[wedding_gallery_upload]`.
 4. Open **Wedding Gallery** in admin and set the upload page URL.
