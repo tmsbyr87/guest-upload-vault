@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$status_class = 'success' === $status ? 'wg-alert-success' : 'wg-alert-error';
-$status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedding_gallery' ) : __( 'Upload could not be completed.', 'wedding_gallery' );
+$wg_status_class = 'success' === $status ? 'wg-alert-success' : 'wg-alert-error';
+$wg_status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedding-gallery' ) : __( 'Upload could not be completed.', 'wedding-gallery' );
 ?>
 <style>
 .wg-upload-wrap {
@@ -201,18 +201,18 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 	<?php if ( ! $is_authorized ) : ?>
 		<div class="wg-upload-card">
 			<div class="wg-alert wg-alert-error">
-				<strong><?php esc_html_e( 'Protected guest upload', 'wedding_gallery' ); ?></strong>
-				<?php esc_html_e( 'This page is only available through the wedding QR link.', 'wedding_gallery' ); ?>
+				<strong><?php esc_html_e( 'Protected guest upload', 'wedding-gallery' ); ?></strong>
+				<?php esc_html_e( 'This page is only available through the wedding QR link.', 'wedding-gallery' ); ?>
 			</div>
 		</div>
 	<?php else : ?>
 		<div class="wg-upload-card">
-			<h2 class="wg-upload-title"><?php esc_html_e( 'Share your wedding moments', 'wedding_gallery' ); ?></h2>
-			<p class="wg-upload-subtitle"><?php esc_html_e( 'Select photos or videos from your phone and upload them in one step.', 'wedding_gallery' ); ?></p>
+			<h2 class="wg-upload-title"><?php esc_html_e( 'Share your wedding moments', 'wedding-gallery' ); ?></h2>
+			<p class="wg-upload-subtitle"><?php esc_html_e( 'Select photos or videos from your phone and upload them in one step.', 'wedding-gallery' ); ?></p>
 
 			<?php if ( ! empty( $status ) && ! empty( $message ) ) : ?>
-				<div class="wg-alert <?php echo esc_attr( $status_class ); ?>" role="status" aria-live="polite">
-					<strong><?php echo esc_html( $status_title ); ?></strong>
+				<div class="wg-alert <?php echo esc_attr( $wg_status_class ); ?>" role="status" aria-live="polite">
+					<strong><?php echo esc_html( $wg_status_title ); ?></strong>
 					<?php echo esc_html( $message ); ?>
 				</div>
 			<?php endif; ?>
@@ -235,10 +235,10 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 					accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,image/jpeg,image/png,image/webp,video/mp4,video/quicktime"
 				/>
 				<label for="wg_files" id="wg_picker_btn" class="wg-picker-btn">
-					<?php esc_html_e( 'Choose Photos or Videos', 'wedding_gallery' ); ?>
+					<?php esc_html_e( 'Choose Photos or Videos', 'wedding-gallery' ); ?>
 				</label>
 				<p id="wg_file_summary" class="wg-file-summary">
-					<?php esc_html_e( 'No files selected yet.', 'wedding_gallery' ); ?>
+					<?php esc_html_e( 'No files selected yet.', 'wedding-gallery' ); ?>
 				</p>
 
 				<div class="wg-hint-list">
@@ -246,26 +246,26 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 						<?php
 						printf(
 							/* translators: 1: allowed file types, 2: max file size in MB */
-							esc_html__( 'Allowed: %1$s | Max per file: %2$d MB', 'wedding_gallery' ),
+							esc_html__( 'Allowed: %1$s | Max per file: %2$d MB', 'wedding-gallery' ),
 							esc_html( $allowed_text ),
 							(int) $max_upload_mb
 						);
 						?>
 					</p>
-					<p><?php esc_html_e( 'On iPhone/Android you can choose camera, photo library/gallery, or files.', 'wedding_gallery' ); ?></p>
-					<p><?php esc_html_e( 'Tip: Long phone videos are often large and may exceed the upload size limit.', 'wedding_gallery' ); ?></p>
-					<p><?php esc_html_e( 'You can select multiple files at once.', 'wedding_gallery' ); ?></p>
+					<p><?php esc_html_e( 'On iPhone/Android you can choose camera, photo library/gallery, or files.', 'wedding-gallery' ); ?></p>
+					<p><?php esc_html_e( 'Tip: Long phone videos are often large and may exceed the upload size limit.', 'wedding-gallery' ); ?></p>
+					<p><?php esc_html_e( 'You can select multiple files at once.', 'wedding-gallery' ); ?></p>
 				</div>
 
 				<button id="wg_submit_btn" class="wg-submit-btn" type="submit">
-					<?php esc_html_e( 'Upload Now', 'wedding_gallery' ); ?>
+					<?php esc_html_e( 'Upload Now', 'wedding-gallery' ); ?>
 				</button>
 
 				<div id="wg_progress_wrap" class="wg-progress-wrap" hidden>
 					<div class="wg-progress-bar-track">
 						<div id="wg_progress_fill" class="wg-progress-bar-fill"></div>
 					</div>
-					<p id="wg_progress_text" class="wg-progress-text"><?php esc_html_e( 'Preparing upload...', 'wedding_gallery' ); ?></p>
+					<p id="wg_progress_text" class="wg-progress-text"><?php esc_html_e( 'Preparing upload...', 'wedding-gallery' ); ?></p>
 				</div>
 			</form>
 		</div>

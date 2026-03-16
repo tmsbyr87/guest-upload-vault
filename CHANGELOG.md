@@ -2,6 +2,14 @@
 
 All notable changes to `wedding_gallery` are documented in this file.
 
+## [1.0.0] - 2026-03-16
+
+### Changed
+- Bumped plugin version and release metadata to `1.0.0`.
+- Completed WordPress.org compliance cleanup for text domain format, readme metadata, hidden files, and prefixed template/uninstall variables.
+- Switched translation runtime/source filenames to `wedding-gallery-*` to match text domain.
+- Enforced strict token-based upload page access and added no-cache behavior for protected upload rendering.
+
 ## [0.3.0] - 2026-03-15
 
 ### Added

@@ -3,11 +3,11 @@
  * Plugin Name: Wedding Gallery
  * Plugin URI:  https://github.com/tmsbyr87/wedding-gallery
  * Description: Collect wedding guest photos and videos through a protected frontend upload page.
- * Version:     0.3.0
+ * Version:     1.0.0
  * Author:      Wedding Gallery Team
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wedding_gallery
+ * Text Domain: wedding-gallery
  * Domain Path: /languages
  */
 
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WG_PLUGIN_VERSION', '0.3.0' );
+define( 'WG_PLUGIN_VERSION', '1.0.0' );
 define( 'WG_PLUGIN_FILE', __FILE__ );
 define( 'WG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

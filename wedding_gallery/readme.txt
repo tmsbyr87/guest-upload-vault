@@ -1,10 +1,10 @@
 === Wedding Gallery ===
 Contributors: tmsbyr87
-Tags: gallery, wedding, uploads, photos, videos, qr-code
+Tags: gallery, wedding, uploads, photos, videos
 Requires at least: 6.4
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,9 +38,12 @@ Encrypted media files are stored in `wp-content/uploads/wedding-gallery/`.
 Yes. Enable **Cleanup On Uninstall** in plugin settings before uninstalling.
 
 == Changelog ==
+= 1.0.0 =
+* WordPress.org compliance cleanup, strict token access enforcement, and release metadata finalization.
+
 = 0.3.0 =
 * Pilot release with tokenized guest uploads, local QR generation, encrypted storage, mobile-first UX, and diagnostics.
 
 == Upgrade Notice ==
-= 0.3.0 =
-Pilot-ready release with secure guest upload workflow and admin diagnostics.
+= 1.0.0 =
+Production-ready release with compliance cleanup and hardened token access controls.

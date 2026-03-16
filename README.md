@@ -1,4 +1,4 @@
-# Wedding Gallery Plugin (Pilot 0.3.0)
+# Wedding Gallery Plugin (1.0.0)
 
 WordPress plugin for collecting guest wedding photos/videos through a protected upload link (QR-ready), with encrypted media storage and admin-only download.
 
@@ -11,7 +11,7 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 - Encrypted media blob storage in `wp-content/uploads/wedding-gallery/`
 - Metadata integrity checks and tamper detection
 - Admin file list, health states, diagnostics, and admin-only download
-- WordPress i18n support (`wedding_gallery` text domain) with German (`de_DE`) translations
+- WordPress i18n support (`wedding-gallery` text domain) with German (`de_DE`) translations
 
 ## Setup (Pilot)
 
@@ -26,7 +26,7 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 
 ## Version
 
-- Current pilot target: `0.3.0`
+- Current release target: `1.0.0`
 
 ## Guest Token + QR Workflow
 
@@ -76,13 +76,13 @@ Do not ship repository noise / handoff artifacts:
 - `.git/`, `.gitignore`, `.gitattributes`
 - root-level docs (`README.md`, `CHANGELOG.md`, `docs/`)
 - `.DS_Store`
-- `wedding_gallery/languages/wedding_gallery.pot` (optional source template, not required at runtime)
+- `wedding_gallery/languages/wedding-gallery.pot` (optional source template, not required at runtime)
 
 Language files in release:
 
-- `wedding_gallery/languages/wedding_gallery-de_DE.mo` should be shipped (runtime translations).
-- `wedding_gallery/languages/wedding_gallery-de_DE.po` can also be shipped (useful source/editable translation).
-- `wedding_gallery/languages/wedding_gallery.pot` may be excluded.
+- `wedding_gallery/languages/wedding-gallery-de_DE.mo` should be shipped (runtime translations).
+- `wedding_gallery/languages/wedding-gallery-de_DE.po` can also be shipped (useful source/editable translation).
+- `wedding_gallery/languages/wedding-gallery.pot` may be excluded.
 - Important: if building release zips from Git, make sure `.mo/.po` files are committed so they are actually present in the archive.
 
 ## Plugin Icon/Banner Assets
