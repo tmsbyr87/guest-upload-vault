@@ -287,7 +287,7 @@ $guest_upload_vault_status_title = 'success' === $status ? __( 'Thank you, uploa
 				<input type="hidden" name="action" value="guest_upload_vault_upload" />
 				<input type="hidden" id="guest_upload_vault_redirect_to" name="redirect_to" value="<?php echo esc_url( $redirect_url ); ?>" />
 				<input type="hidden" name="<?php echo esc_attr( Guest_Upload_Vault_Plugin::TOKEN_QUERY_ARG ); ?>" value="<?php echo esc_attr( $authorized_token ); ?>" />
-				<?php wp_nonce_field( 'guest_upload_vault_upload_action_' . $authorized_token, 'guest_upload_vault_upload_nonce' ); ?>
+				<?php wp_nonce_field( 'guest_upload_vault_upload_action', 'guest_upload_vault_upload_nonce' ); ?>
 
 				<input
 					id="guest_upload_vault_files"

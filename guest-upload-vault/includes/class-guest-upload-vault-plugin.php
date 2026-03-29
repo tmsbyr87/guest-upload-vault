@@ -889,18 +889,6 @@ class Guest_Upload_Vault_Plugin {
 	}
 
 	/**
-	 * @return string
-	 */
-	private function get_posted_token() {
-		$token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
-		if ( '' !== $token ) {
-			return $token;
-		}
-
-		return isset( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ) : '';
-	}
-
-	/**
 	 * @param array<string, mixed> $atts Shortcode attributes.
 	 * @return string
 	 */
@@ -948,16 +936,21 @@ class Guest_Upload_Vault_Plugin {
 
 		$redirect_url = home_url( '/' );
 		$settings     = $this->get_settings();
-		$posted_token = $this->get_posted_token();
-		$token        = (string) $settings['access_token'];
+		$nonce_ok = isset( $_POST['guest_upload_vault_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guest_upload_vault_upload_nonce'] ) ), 'guest_upload_vault_upload_action' );
+		if ( ! $nonce_ok ) {
+			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'guest-upload-vault' ) );
+		}
+
+		$posted_token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
+		if ( '' === $posted_token ) {
+			$posted_token = isset( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ) : '';
+		}
+
+		$token = (string) $settings['access_token'];
 		if ( empty( $posted_token ) || empty( $token ) || ! hash_equals( $token, $posted_token ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Invalid upload token.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_POST['guest_upload_vault_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guest_upload_vault_upload_nonce'] ) ), 'guest_upload_vault_upload_action_' . $posted_token );
-		if ( ! $nonce_ok ) {
-			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'guest-upload-vault' ) );
-		}
 		$redirect_url = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url( '/' );
 
 		if ( empty( $_FILES['guest_upload_vault_files'] ) || ! is_array( $_FILES['guest_upload_vault_files'] ) ) {
